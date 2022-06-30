@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
         //查看preference中是否存有用户号和密码
         login_sp = getSharedPreferences("userInfo", 0);

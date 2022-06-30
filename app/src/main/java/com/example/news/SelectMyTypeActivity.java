@@ -33,7 +33,7 @@ public class SelectMyTypeActivity extends AppCompatActivity {
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
 
         mBtRegister.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,7 @@ public class SelectMyTypeActivity extends AppCompatActivity {
     protected void onResume() {
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();
+            //mUserDataManager.openDataBase();
         }
         super.onResume();
     }
@@ -125,7 +125,7 @@ public class SelectMyTypeActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         if (mUserDataManager != null) {
-            mUserDataManager.closeDataBase();
+            //mUserDataManager.closeDataBase();
             mUserDataManager = null;
         }
         super.onPause();

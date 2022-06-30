@@ -70,7 +70,7 @@ public class LoginActivity extends Activity {
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
 
         mTvEnroll.setOnClickListener(new View.OnClickListener(){
@@ -183,7 +183,7 @@ public class LoginActivity extends Activity {
     protected void onResume() {
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();
+            //.openDataBase();
         }
         super.onResume();
     }
@@ -194,7 +194,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onPause() {
         if (mUserDataManager != null) {
-            mUserDataManager.closeDataBase();
+            //mUserDataManager.closeDataBase();
             mUserDataManager = null;
         }
         super.onPause();

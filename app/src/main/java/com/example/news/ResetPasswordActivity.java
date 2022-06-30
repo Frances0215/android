@@ -52,7 +52,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         mCancelButton.setOnClickListener(m_resetpwd_Listener);
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
 
         mIvEye.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +144,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     Toast.makeText(this,"两次密码输入不相同",Toast.LENGTH_SHORT).show();
                     return ;
                 } else {
-                    mUserDataManager.openDataBase();
+                    //mUserDataManager.openDataBase();
                     mUserDataManager.updatePassword(userPhone,userPwd_new);
 //                    if (flag == false) {
 //                        Toast.makeText(this, getString(R.string.resetpwd_fail),Toast.LENGTH_SHORT).show();

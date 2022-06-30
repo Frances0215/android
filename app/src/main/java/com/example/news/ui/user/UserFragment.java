@@ -127,7 +127,7 @@ public class UserFragment extends Fragment {
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(getActivity());
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
 
         initView();
@@ -191,7 +191,7 @@ public class UserFragment extends Fragment {
         super.onResume();
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(getActivity());
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
         initData();
     }
@@ -229,7 +229,7 @@ public class UserFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (mUserDataManager != null) {
-            mUserDataManager.closeDataBase();
+            //mUserDataManager.closeDataBase();
             mUserDataManager = null;
         }
     }

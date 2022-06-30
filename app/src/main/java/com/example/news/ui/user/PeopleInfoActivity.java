@@ -84,7 +84,7 @@ public class PeopleInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //.openDataBase();                              //建立本地数据库
         }
         setContentView(R.layout.activity_people_information);
         initView();
@@ -250,7 +250,7 @@ public class PeopleInfoActivity extends BaseActivity {
     @Override
     protected void onPause() {
         if (mUserDataManager != null) {
-            mUserDataManager.closeDataBase();
+            //mUserDataManager.closeDataBase();
             mUserDataManager = null;
         }
         super.onPause();
@@ -260,7 +260,7 @@ public class PeopleInfoActivity extends BaseActivity {
     protected void onResume() {
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();
+            //mUserDataManager.openDataBase();
         }
         super.onResume();
     }

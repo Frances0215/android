@@ -49,7 +49,7 @@ public class AppSettingActivity extends BaseActivity {
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
 
         initView();
@@ -194,7 +194,7 @@ public class AppSettingActivity extends BaseActivity {
     @Override
     protected void onPause() {
         if (mUserDataManager != null) {
-            mUserDataManager.closeDataBase();
+            //mUserDataManager.closeDataBase();
             mUserDataManager = null;
         }
         super.onPause();
@@ -204,7 +204,7 @@ public class AppSettingActivity extends BaseActivity {
     protected void onResume() {
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();
+            //mUserDataManager.openDataBase();
         }
         super.onResume();
     }

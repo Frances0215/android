@@ -31,6 +31,7 @@ public class DBUtils {
 
             //数据的IP地址，你的真实IP地址。应该是数据库的ip地址
             String ip = "114.132.126.248";
+            //String ip="10.135.1.154";
             String port = "3306";//不用改
             String url = "jdbc:mysql://" + ip + ":" + port + "/" + dbName;
             connection = DriverManager.getConnection(url, user, password);

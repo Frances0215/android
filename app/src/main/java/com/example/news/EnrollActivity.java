@@ -51,7 +51,7 @@ public class EnrollActivity extends AppCompatActivity {
         mIvReEye = (ImageView)findViewById(R.id.mIvReEye);
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+            //mUserDataManager.openDataBase();                              //建立本地数据库
         }
 
         mBtCancel.setOnClickListener(new View.OnClickListener() {

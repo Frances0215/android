@@ -38,7 +38,7 @@ public class UserDataManager {
     private Context mContext = null;
 
     private DBUtils myDBUtil = new DBUtils();
-    private Connection myConn = null;
+ //   private Connection myConn = null;
 //    private MyDatabaseHelper mDatabaseHelper;
 //    private SQLiteDatabase mSQLiteDatabase;
 
@@ -46,26 +46,28 @@ public class UserDataManager {
         mContext = context;
         Log.i(TAG,"UserDataManager construction!");
     }
-    //建立连接
-    public void openDataBase() {
-        myConn = myDBUtil.getConn(DB_NAME);
-    }
-    //关闭连接
-    public void closeDataBase() {
-        try {
-            myConn.close();
-        }catch (java.sql.SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    //建立连接
+//    public void openDataBase() {
+//        myConn = myDBUtil.getConn(DB_NAME);
+//    }
+//    //关闭连接
+//    public void closeDataBase() {
+//        try {
+//            myConn.close();
+//        }catch (java.sql.SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     //添加新用户，即注册
     public void insertUserData(UserData userData) {
 
         new Thread(new Runnable() {
+
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
                 String sql = "insert into users(birthday,name,pawd,sex,phone,id) values(?,?,?,?,?,?)";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
@@ -79,9 +81,10 @@ public class UserDataManager {
 
                     //执行更新数据库
                     pstm.executeUpdate();
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
 
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -93,8 +96,10 @@ public class UserDataManager {
     public boolean isUserValid(String phone,String psw){
         final boolean[] isValid = new boolean[1];
         new Thread(new Runnable() {
+
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
                 String sql = "select * from users where phone = '"+ phone+"'" + "and pawd = '" + psw +"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
@@ -102,9 +107,9 @@ public class UserDataManager {
                     if(rSet.next()) isValid[0] = true;
                     else isValid[0]=false;
 
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -119,8 +124,11 @@ public class UserDataManager {
     public UserData fetchUserData(String ID) throws SQLException {
         UserData user = new UserData(null,null,null,null,null,null,0,null,null,0,0,null);
         new Thread(new Runnable() {
+
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
+
                 String sql = "select * from users where ID = '"+ ID+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
@@ -141,9 +149,9 @@ public class UserDataManager {
                         user.setType(rSet.getString("type"));
                     }
 
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -158,6 +166,7 @@ public class UserDataManager {
     public ArrayList<UserData> fetchAllUserDatas() {
         ArrayList<UserData> users = new ArrayList<>();
         new Thread(new Runnable() {
+            Connection myConn = myDBUtil.getConn(DB_NAME);
             @Override
             public void run() {
                 String sql = "select * from users";
@@ -183,9 +192,9 @@ public class UserDataManager {
                         users.add(user);
                     }
 
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -201,13 +210,14 @@ public class UserDataManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
                 String sql ="delect from users where id = '"+ID+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -220,6 +230,7 @@ public class UserDataManager {
     public boolean findUserByPhone(String phone){
         final boolean[] isValid = new boolean[1];
         new Thread(new Runnable() {
+            Connection myConn = myDBUtil.getConn(DB_NAME);
             @Override
             public void run() {
                 String sql = "select * from users where phone = '"+ phone+"'";
@@ -229,9 +240,9 @@ public class UserDataManager {
                     if(rSet.next()) isValid[0] = true;
                     else isValid[0]=false;
 
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -246,13 +257,14 @@ public class UserDataManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
                 String sql = "update users set password = '"+newPwd+"'"+"where phone = '"+ phone +"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -266,13 +278,14 @@ public class UserDataManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
                 String sql = "update users set birthday = '"+birthday+"',sex = '"+sex+"', name = '"+name+"',type = '"+type+"' where id = '"+phone+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -285,13 +298,14 @@ public class UserDataManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
                 String sql = "update users set " + item+"='"+content+"' where id = '"+id+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
-                    closeDataBase();
+                    //closeDataBase();
                     pstm.close();
-
+                    myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
