@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/主题色"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_arrow_right"
+            android:onClick="back_to_mine"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/qaa"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/MainList"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:divider="#ffffff"
+        android:layout_weight="0.25" >
+    </ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/bg_grey"
+        android:gravity="center"
+        >
+
+        <EditText
+            android:id="@+id/InputBox"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="8"
+            android:ems="10"
+            android:inputType="text"
+            android:textSize="18sp"
+            android:hint="请输入您的问题或建议"
+            android:padding="7dp"
+            android:background="@color/white"
+            android:textColor="#000000"
+            android:paddingLeft="7dp">
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/BtnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            android:drawableEnd="@drawable/ic_send_24"
+            android:text="@string/BtnSend"
+            android:textColor="#212121"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>

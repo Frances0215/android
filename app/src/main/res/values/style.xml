@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--选中的样式，可以设置选择的字体颜色，这里只是为了改变选择时的字体大小-->
+    <style name="bottom_tab_title_active">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">#0E4AFF</item>
+    </style>
+
+    <!--没有选中的样式，导航默认的字体大小就是12sp-->
+    <style name="bottom_tab_title_inactive">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#FF888888</item>
+    </style>
+
+    <style name="TabLayoutTheme">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    //一键登录
+    <style name="ActivityDialogStyle" >
+        <!--去掉action bar和标题栏-->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--背景透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--dialog圆角-->
+        <item name="android:windowBackground">@drawable/dialog_bg</item>
+
+        <!--弹窗后整个屏幕的背景是否有遮障层，默认是半透明的-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+</resources>

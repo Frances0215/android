@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="25dp">
+
+    <ImageView
+        android:id="@+id/RobotHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/ic_support_agent_48" />
+
+    <TextView
+        android:id="@+id/From_Content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/RobotHeader"
+        android:background="#B2D1DC"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textIsSelectable="false"
+        android:textSize="17sp"
+        tools:text="what can I do for you?" />
+</RelativeLayout>

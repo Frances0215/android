@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ui.mine.UserProfileActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mTvUser"
+        android:layout_width="400dp"
+        android:layout_height="230dp"
+        android:background="@drawable/bg_user"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20px">
+
+        <TextView
+            android:id="@+id/mTvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="轩 辕 奇 闻"
+            android:textColor="@color/white"
+            android:textSize="38sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:layout_marginTop="40px">
+
+        <LinearLayout
+            android:id="@+id/mLlComment"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.25">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/comment"
+                android:layout_gravity="center_horizontal"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="评论"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mLlCollect"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.25">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/collection_full"
+                android:layout_gravity="center_horizontal"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收藏"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mLlHistory"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.25">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/history"
+                android:layout_gravity="center_horizontal"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="历史"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mLlMessage"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.25">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/message"
+                android:layout_gravity="center_horizontal"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消息"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10px"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/mRlSet"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/corners_bg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="30px"
+        >
+
+        <TextView
+            android:id="@+id/tv_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="APP设置"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/mTvSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_birthday"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:gravity="right"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/mRlUse"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/corners_bg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
+        >
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="使用指南"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/mTvUse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_gender"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:gravity="right"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/mRlAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/corners_bg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="联系我们"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/mTvAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_phone"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:gravity="right"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/mRlSuggest"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/corners_bg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_workplace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="问题与建议"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/mTvSuggest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@id/tv_workplace"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:gravity="right"
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>

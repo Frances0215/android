@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/mTvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="北京房山韵达快递聚集性疫情已感染21人，疫情期间如何安全收发快递？"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/mTvPublish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="人民日报"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/mTvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:text="2022-05-21"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+</LinearLayout>

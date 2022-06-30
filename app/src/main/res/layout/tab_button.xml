@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="119dip"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_tabs_tabHost"
+        android:layout_width="119dip"
+        android:layout_height="39dip"
+        android:gravity="center"
+        android:text="tab1" />
+
+</LinearLayout>

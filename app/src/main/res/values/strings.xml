@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">News</string>
+    <string name="title_home">主页</string>
+    <string name="title_photograph">拍照</string>
+    <string name="title_user">我的</string>
+    <string name="title_activity_show_news">Show_news_Activity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    <string name="minimum">极小</string>
+    <string name="small">小</string>
+    <string name="normal">标准</string>
+    <string name="big">大</string>
+    <string name="maximum">极大</string>
+    <string name="oversize">超大</string>
+
+    <string name="Founder_blackbody">方正黑体</string>
+    <string name="Founder_smooth_round">方正细圆</string>
+    <string name="STXingkai">华文行楷</string>
+    <string name="STXinwei">华文新魏</string>
+
+    <string name="Shaking_the">震动一下</string>
+    <string name="Length_of_vibration">长短震动</string>
+    <string name="Continuous_vibration">连续震动</string>
+    <string name="Closed_vibration">关闭震动</string>
+    <string name="theme_setting">主题设置</string>
+
+    <string name="information_edit">个人资料编辑</string>
+    <string name="app_usage">使用指南</string>
+    <string name="app_setting">App设置</string>
+    <string name="contact_us">联系我们</string>
+    <string name="qaa">问题与建议</string>
+
+    <string name="BtnSend">发送</string>
+
+</resources>
