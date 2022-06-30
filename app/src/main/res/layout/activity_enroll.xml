@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EnrollActivity">
+
+    <TextView
+        android:id="@+id/mTvEnroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1"/>
+
+
+    <LinearLayout
+        android:id="@+id/mLlAccount"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mTvEnroll"
+        app:layout_constraintVertical_bias="0.07">
+
+        <ImageView
+            android:id="@+id/mIvAccount"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/account"/>
+
+        <EditText
+            android:id="@+id/mEtAccount"
+            android:layout_width="220dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入电话号码"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLlName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mLlAccount"
+        app:layout_constraintVertical_bias="0.05">
+
+        <ImageView
+            android:id="@+id/mIvName"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/account"/>
+
+        <EditText
+            android:id="@+id/mEtName"
+            android:layout_width="220dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入用户名"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLlPwd"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mLlName">
+
+        <ImageView
+            android:id="@+id/imageView_password"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/password"
+             />
+
+        <EditText
+            android:id="@+id/mEtPassword"
+            android:layout_width="220dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toEndOf="@+id/imageView_password"
+            app:layout_constraintTop_toBottomOf="@+id/edit_account"
+            app:layout_constraintVertical_bias="0.15" />
+
+        <ImageView
+            android:id="@+id/mIvEye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_eye"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/edit_password"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLlRePwd"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mLlPwd"
+        app:layout_constraintVertical_bias="0.07">
+
+        <ImageView
+            android:id="@+id/imageView_resetPassword"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/password" />
+
+        <EditText
+            android:id="@+id/mEtSure"
+            android:layout_width="220dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入密码"
+            android:inputType="textPassword" />
+
+        <ImageView
+            android:id="@+id/mIvReEye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_eye"
+            app:layout_constraintVertical_bias="0.5" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/mBtEnroll"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/button_enroll"
+        android:drawableStart="@drawable/right2"
+        android:paddingLeft="30px"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75"/>
+
+    <Button
+        android:id="@+id/mBtCancel"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:text="取消注册"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

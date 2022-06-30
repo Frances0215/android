@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="字体大小"
+            android:paddingLeft="10dp"
+            android:textSize="15sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/Size01"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:inputType="textCapSentences"
+                android:text="@string/minimum"
+                tools:ignore="TextViewEdits" />
+
+            <Button
+                android:id="@+id/Size02"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:inputType="textCapSentences"
+                android:text="@string/small"
+                tools:ignore="TextViewEdits" />
+
+            <Button
+                android:id="@+id/Size03"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:inputType="textCapSentences"
+                android:text="@string/normal"
+                tools:ignore="TextViewEdits" />
+
+            <Button
+                android:id="@+id/Size04"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:inputType="textCapSentences"
+                android:text="@string/big"
+                tools:ignore="TextViewEdits" />
+
+            <Button
+                android:id="@+id/Size05"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:inputType="textCapSentences"
+                android:text="@string/oversize"
+                tools:ignore="TextViewEdits" />
+
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seekBar01"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:max="4"
+            android:progress="0" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="字体样式"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/Font01"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/Founder_blackbody"
+                    tools:ignore="TextViewEdits" />
+
+                <Button
+                    android:id="@+id/Font02"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/Founder_smooth_round"
+                    tools:ignore="TextViewEdits" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/Font03"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/STXingkai"
+                    tools:ignore="TextViewEdits" />
+
+                <Button
+                    android:id="@+id/Font04"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/STXinwei"
+                    tools:ignore="TextViewEdits" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="震动方式"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/shake01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/Shaking_the"
+                    tools:ignore="TextViewEdits" />
+
+                <Button
+                    android:id="@+id/shake02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/Length_of_vibration"
+                    tools:ignore="TextViewEdits" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/shake03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/Continuous_vibration"
+                    tools:ignore="TextViewEdits" />
+
+                <Button
+                    android:id="@+id/shake04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:text="@string/Closed_vibration"
+                    tools:ignore="TextViewEdits" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="一键应用主题"
+            android:textColor="@color/white"
+            android:background="@color/主题色"
+            android:onClick="restart"/>
+    </LinearLayout>
+
+</RelativeLayout>
