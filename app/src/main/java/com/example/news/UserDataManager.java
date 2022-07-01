@@ -31,10 +31,10 @@ public class UserDataManager {
     public static final String ID = "ID";
     public static final String USER_NAME = "name";
     public static final String USER_PWD = "pawd";
-    public static final String USER_TELEPHONE = "phone";
     public static final String USER_SEX = "sex";
     public static final String USER_BIRTHDAY = "birthday";
     private static final String DB_NAME = "newsRec";
+    private Boolean isValid[] = new Boolean[5];
     private Context mContext = null;
 
     private DBUtils myDBUtil = new DBUtils();
@@ -45,6 +45,7 @@ public class UserDataManager {
     public UserDataManager(Context context) {
         mContext = context;
         Log.i(TAG,"UserDataManager construction!");
+
     }
 //    //建立连接
 //    public void openDataBase() {
@@ -68,7 +69,7 @@ public class UserDataManager {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "insert into users(birthday,name,pawd,sex,phone,id) values(?,?,?,?,?,?)";
+                String sql = "insert into users(birthday,name,pawd,sex,ID) values(?,?,?,?,?);";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     //赋值
@@ -76,15 +77,20 @@ public class UserDataManager {
                     pstm.setString(2,userData.getName());
                     pstm.setString(3,userData.getPassword());
                     pstm.setString(4,userData.getSex());
-                    pstm.setString(5,userData.getPhone());
-                    pstm.setString(6,userData.getPhone());//id和电话号码设置为相同
+                    pstm.setString(5,userData.getID());//id和电话号码设置为相同
 
                     //执行更新数据库
-                    pstm.executeUpdate();
+                    int value = pstm.executeUpdate();
+                    if (value > 0) {
+                        Log.e("test", "register: 注册成功");
+                    }else {
+                        Log.e("test", "register: 注册失败");
+                    }
+                    myConn.close();
                     //closeDataBase();
                     pstm.close();
 
-                    myConn.close();
+
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
@@ -92,41 +98,66 @@ public class UserDataManager {
         }).start();
     }
 
-    //登录，查找用户密码和账户是否匹配
-    public boolean isUserValid(String phone,String psw){
-        final boolean[] isValid = new boolean[1];
-        new Thread(new Runnable() {
+//    final  Handler mHandler = new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case 0:
+//                    //final boolean[] isValid = new boolean[1];
+//                    isValid[0] = (Boolean)msg.obj;
+//                    Log.e("isValid",""+isValid[0]);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//
+//    };
 
-            @Override
-            public void run() {
+    //登录，查找用户密码和账户是否匹配
+    public boolean isUserValid(String id,String psw){
+        boolean flag = false;
+        //boolean[] isValid = new boolean[1];
+//        new Thread(new Runnable() {
+
+           // @Override
+            //public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "select * from users where phone = '"+ phone+"'" + "and pawd = '" + psw +"'";
+                String sql = "select * from users where ID = '"+ id+"'" + "and pawd = '" + psw +"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
-                    if(rSet.next()) isValid[0] = true;
-                    else isValid[0]=false;
 
+                    if(rSet.next()) flag = true;
+                    else flag=false;
+
+//                    Message message = new Message();
+//                    message.obj =flag;
+//                    message.what = 0;
+//                    mHandler.sendMessage(message);
                     //closeDataBase();
                     pstm.close();
                     myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
-        return isValid[0];
+                return flag;
+//            }
+//        }).start();
+//
+//        return isValid[0];
     }
 
 
     //根据id得到用户数据
 
     public UserData fetchUserData(String ID) throws SQLException {
-        UserData user = new UserData(null,null,null,null,null,null,0,null,null,0,0,null);
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
+        UserData user = new UserData(null,null,null,null,null,0,null,null,0,0,null);
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
 
                 String sql = "select * from users where ID = '"+ ID+"'";
@@ -140,7 +171,6 @@ public class UserDataManager {
                         user.setPassword(rSet.getString("pawd"));
                         user.setSex(rSet.getString("sex"));
                         user.setBirthday(rSet.getString("birthday"));
-                        user.setPhone(rSet.getString("phone"));
                         user.setAge(rSet.getInt("age"));
                         user.setUserSystem(rSet.getString("userSystem"));
                         user.setArea(rSet.getString("area"));
@@ -157,8 +187,8 @@ public class UserDataManager {
                 }
 
 
-            }
-        }).start();
+//            }
+//        }).start();
         return user;
     }
 
@@ -166,15 +196,15 @@ public class UserDataManager {
     public ArrayList<UserData> fetchAllUserDatas() {
         ArrayList<UserData> users = new ArrayList<>();
         new Thread(new Runnable() {
-            Connection myConn = myDBUtil.getConn(DB_NAME);
             @Override
             public void run() {
+                Connection myConn = myDBUtil.getConn(DB_NAME);
                 String sql = "select * from users";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
                     while (rSet.next()) {
-                        UserData user = new UserData(null,null,null,null,null,null,0,null,null,0,0,null);
+                        UserData user = new UserData(null,null,null,null,null,0,null,null,0,0,null);
 
                         //columnLabel是属性名
                         user.setID(rSet.getString("ID"));
@@ -182,7 +212,6 @@ public class UserDataManager {
                         user.setPassword(rSet.getString("pawd"));
                         user.setSex(rSet.getString("sex"));
                         user.setBirthday(rSet.getString("birthday"));
-                        user.setPhone(rSet.getString("phone"));
                         user.setAge(rSet.getInt("age"));
                         user.setUserSystem(rSet.getString("userSystem"));
                         user.setArea(rSet.getString("area"));
@@ -211,7 +240,7 @@ public class UserDataManager {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql ="delect from users where id = '"+ID+"'";
+                String sql ="delect from users where ID = '"+ID+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
@@ -226,39 +255,36 @@ public class UserDataManager {
 
     }
 
-    //根据电话号码查找该用户是否存在
-    public boolean findUserByPhone(String phone){
-        final boolean[] isValid = new boolean[1];
-        new Thread(new Runnable() {
-            Connection myConn = myDBUtil.getConn(DB_NAME);
-            @Override
-            public void run() {
-                String sql = "select * from users where phone = '"+ phone+"'";
-                try {
-                    PreparedStatement pstm = myConn.prepareStatement(sql);
-                    ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
-                    if(rSet.next()) isValid[0] = true;
-                    else isValid[0]=false;
+    //根据id查找该用户是否存在
+    public boolean findUserByPhone(String id){
 
-                    //closeDataBase();
-                    pstm.close();
-                    myConn.close();
-                } catch (java.sql.SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        final boolean[] isValid = new boolean[1];
+        Connection myConn = myDBUtil.getConn(DB_NAME);
+        String sql = "select * from users where ID = '"+ id+"'";
+        try {
+            PreparedStatement pstm = myConn.prepareStatement(sql);
+            ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
+            if(rSet.next()) isValid[0] = true;
+            else isValid[0]=false;
+
+            //closeDataBase();
+            pstm.close();
+            myConn.close();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
         return isValid[0];
     }
 
     //更改用户密码
-    public void updatePassword(String phone,String newPwd){
+    public void updatePassword(String id,String newPwd){
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "update users set password = '"+newPwd+"'"+"where phone = '"+ phone +"'";
+                String sql = "update users set pawd = '"+newPwd+"'"+"where ID = '"+ id +"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
@@ -274,24 +300,29 @@ public class UserDataManager {
     }
 
     //更改用户数据，根据电话号码
-    public void updateUserData(String phone,String birthday,String sex,String name,String type){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+    public int updateUserData(String id,String birthday,String sex,String name,String type){
+       // new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+                int result = 0;
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "update users set birthday = '"+birthday+"',sex = '"+sex+"', name = '"+name+"',type = '"+type+"' where id = '"+phone+"'";
+                String sql = "update users set birthday = '"+birthday+"',sex = '"+sex+"', name = '"+name+"',type = '"+type+"' where ID = '"+id+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
-                    pstm.executeUpdate();//更新数据库中的数据
+                    result = pstm.executeUpdate();//更新数据库中的数据
                     //closeDataBase();
+
                     pstm.close();
                     myConn.close();
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
+
+        return result;
+
     }
+//        }).start();
+//    }
 
     //更改用户数据，其中一项
     public void updateUserDataById(String content,String item,String id){
@@ -299,7 +330,7 @@ public class UserDataManager {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "update users set " + item+"='"+content+"' where id = '"+id+"'";
+                String sql = "update users set " + item+"='"+content+"' where ID = '"+id+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据

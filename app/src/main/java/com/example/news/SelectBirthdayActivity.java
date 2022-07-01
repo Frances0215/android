@@ -44,7 +44,8 @@ public class SelectBirthdayActivity extends AppCompatActivity {
         mDpBirthday.init(year, cal.get(Calendar.MONTH), day, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mEtBirthday.setText(year+"-"+monthOfYear+"-"+dayOfMonth);
+                int month_temp = monthOfYear+1;
+                mEtBirthday.setText(year+"-"+month_temp+"-"+dayOfMonth);
             }
         });
 

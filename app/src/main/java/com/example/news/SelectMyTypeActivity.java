@@ -1,5 +1,6 @@
 package com.example.news;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -24,12 +25,34 @@ public class SelectMyTypeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_sex);
+        setContentView(R.layout.activity_select_my_type);
         init();
 
         for(int i=0;i< btn.length;i++){
-            btn[i].setOnClickListener(new DBListener(i));
+            btn[i].setTag(i);
+            btn[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int a = (Integer)v.getTag();
+                    if(!isCheck[a]){//之前没有选中
+                        isCheck[a] = true;
+                        btn[a].setSelected(isCheck[a]);
+                        //改变全局变量中的值
+                        if(!myType.contains(btn[a].getText()))
+                            myType.add((String) btn[a].getText());
+
+                    }else {//之前已经选中，再点击设为没选中状态
+                        isCheck[a] = false;
+                        btn[a].setSelected(isCheck[a]);
+                        //删掉全局变量中的值
+                        if(myType.contains(btn[a].getText()))
+                            myType.remove((String) btn[a].getText());
+                    }
+                }
+            });
         }
+
+
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
@@ -54,29 +77,49 @@ public class SelectMyTypeActivity extends AppCompatActivity {
                     //将用户信息写入手机缓存中
                     login_sp = getSharedPreferences("userInfo", 0);
                     SharedPreferences.Editor editor =login_sp.edit();
-                    editor.putString("USER_NAME", mUser.getName());
+                    editor.putString("USER_ID", mUser.getName());
                     editor.putString("PASSWORD", mUser.getPassword());
-                    editor.putString("USER_PHONE",mUser.getPhone());
+                    editor.putBoolean("mRememberCheck", true);
+                    editor.commit();
+
+                    //跳转页面至主页面
+                    Intent intent = new Intent(SelectMyTypeActivity.this, MainActivity.class) ;    //切换Login Activity至User Activity
+                    startActivity(intent);
+                    finish();
                 }
+            }
+        });
+
+        mBtCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //先把全局变量中的值清空
+                NewsAPP mApp = (NewsAPP) getApplication();
+                mApp.clearUser();
+
+                //跳转页面至登录页面
+                Intent intent = new Intent(SelectMyTypeActivity.this,LoginActivity.class) ;    //切换Login Activity至User Activity
+                startActivity(intent);
+                finish();
             }
         });
     }
 
     public void init(){
-        btn[0] = findViewById(R.id.mBt1);
-        btn[1] = findViewById(R.id.mBt2);
-        btn[2] = findViewById(R.id.mBt3);
-        btn[3] = findViewById(R.id.mBt4);
-        btn[4] = findViewById(R.id.mBt5);
-        btn[5] = findViewById(R.id.mBt6);
-        btn[6] = findViewById(R.id.mBt7);
-        btn[7] = findViewById(R.id.mBt8);
-        btn[8] = findViewById(R.id.mBt9);
-        btn[9] = findViewById(R.id.mBt10);
-        btn[10] = findViewById(R.id.mBt11);
-        btn[11] = findViewById(R.id.mBt12);
-        btn[12] = findViewById(R.id.mBt13);
-        btn[13] = findViewById(R.id.mBt14);
+        btn[0] = (Button) findViewById(R.id.mBt1);
+        btn[1] = (Button)findViewById(R.id.mBt2);
+        btn[2] = (Button)findViewById(R.id.mBt3);
+        btn[3] = (Button)findViewById(R.id.mBt4);
+        btn[4] = (Button)findViewById(R.id.mBt5);
+        btn[5] = (Button)findViewById(R.id.mBt6);
+        btn[6] = (Button)findViewById(R.id.mBt7);
+        btn[7] = (Button)findViewById(R.id.mBt8);
+        btn[8] = (Button)findViewById(R.id.mBt9);
+        btn[9] = (Button)findViewById(R.id.mBt10);
+        btn[10] = (Button)findViewById(R.id.mBt11);
+        btn[11] = (Button)findViewById(R.id.mBt12);
+        btn[12] = (Button)findViewById(R.id.mBt13);
+        btn[13] = (Button)findViewById(R.id.mBt14);
 
         for(int n = 0;n<isCheck.length;n++){
             isCheck[n] = false;
@@ -86,29 +129,28 @@ public class SelectMyTypeActivity extends AppCompatActivity {
         mBtCancel = (Button) findViewById(R.id.mBtCancel);
     }
 
-    class DBListener implements View.OnClickListener {
-        private int position;
-        public DBListener(int p){
-            this.position = p;
-        }
-        public void onClick(View arg0) {
-            if(!isCheck[position]){//之前没有选中
-                isCheck[position] = true;
-                btn[position].setSelected(isCheck[position]);
-                //改变全局变量中的值
-                if(!myType.contains(btn[position].getText()))
-                    myType.add((String) btn[position].getText());
-
-            }else {//之前已经选中，再点击设为没选中状态
-                isCheck[position] = false;
-                btn[position].setSelected(isCheck[position]);
-                //删掉全局变量中的值
-                if(myType.contains(btn[position].getText()))
-                    myType.remove((String) btn[position].getText());
-            }
-        }
-
-    }
+//    class DBListener implements View.OnClickListener {
+//        private int position;
+//        public DBListener(int p){
+//            this.position = p;
+//        }
+//        public void onClick(View arg0) {
+//            if(!isCheck[position]){//之前没有选中
+//                isCheck[position] = true;
+//                btn[position].setSelected(isCheck[position]);
+//                //改变全局变量中的值
+//                if(!myType.contains(btn[position].getText()))
+//                    myType.add((String) btn[position].getText());
+//
+//            }else {//之前已经选中，再点击设为没选中状态
+//                isCheck[position] = false;
+//                btn[position].setSelected(isCheck[position]);
+//                //删掉全局变量中的值
+//                if(myType.contains(btn[position].getText()))
+//                    myType.remove((String) btn[position].getText());
+//            }
+//
+// }
 
     @Override
     protected void onResume() {

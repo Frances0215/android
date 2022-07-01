@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
@@ -45,6 +46,7 @@ public class EnrollActivity extends AppCompatActivity {
         mEtName = (EditText)findViewById(R.id.mEtName);
         mEtPass = (EditText)findViewById(R.id.mEtPassword);
         mEtName = (EditText)findViewById(R.id.mEtName);
+        mEtAccount=(EditText)findViewById(R.id.mEtAccount);
         mEtSure = (EditText)findViewById(R.id.mEtSure);
         mBtCancel = (Button)findViewById(R.id.mBtCancel);
         mIvEye = (ImageView)findViewById(R.id.mIvEye);
@@ -119,36 +121,46 @@ public class EnrollActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void register_check() {                                //确认按钮的监听事件
         if (isUserNameAndPwdValid()) {
-            String userAccount = mEtAccount.getText().toString().trim();
-            String userName = mEtName.getText().toString().trim();
-            String userPwd = mEtPass.getText().toString().trim();
-            String userPwdCheck = mEtSure.getText().toString().trim();
-            //检查用户是否存在
-            boolean isValid=mUserDataManager.findUserByPhone(userAccount);
-            //用户已经存在时返回，给出提示文字
-            if(isValid){
-                Toast.makeText(this, "该用户已存在",Toast.LENGTH_SHORT).show();
-                return ;
-            }
-            if(userPwd.equals(userPwdCheck)==false){     //两次密码输入不一样
-                Toast.makeText(this, "两次密码输入不相同",Toast.LENGTH_SHORT).show();
-                return ;
-            } else {//注册用户
-                //不直接注册用户，先存入全局变量中，最后再存入数据库中
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String userAccount = mEtAccount.getText().toString().trim();
+                    String userName = mEtName.getText().toString().trim();
+                    String userPwd = mEtPass.getText().toString().trim();
+                    String userPwdCheck = mEtSure.getText().toString().trim();
+                    //检查用户是否存在
+                    boolean isValid=mUserDataManager.findUserByPhone(userAccount);
+                    //用户已经存在时返回，给出提示文字
+                    if(isValid){
+                        Looper.prepare();
+                        Toast.makeText(EnrollActivity.this, "该用户已存在",Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                        return ;
+                    }
+                    if(userPwd.equals(userPwdCheck)==false){     //两次密码输入不一样
+                        Looper.prepare();
+                        Toast.makeText(EnrollActivity.this, "两次密码输入不相同",Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                        return ;
+                    } else {//注册用户
+                        //不直接注册用户，先存入全局变量中，最后再存入数据库中
 
-                NewsAPP mApp = (NewsAPP) getApplication();
-                mApp.setUserPhone(userAccount);
-                mApp.setPwd(userPwd);
-                mApp.setName(userName);
+                        NewsAPP mApp = (NewsAPP) getApplication();
+                        mApp.setUserID(userAccount);
+                        mApp.setPwd(userPwd);
+                        mApp.setName(userName);
 
-                //跳转到性别选择页面
-                Intent intent_Register_to_Login = new Intent(EnrollActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
-                startActivity(intent_Register_to_Login);
-                finish();
+                        //跳转到性别选择页面
+                        Intent intent_Register_to_Login = new Intent(EnrollActivity.this,SelectSexActivity.class) ;    //切换User Activity至Login Activity
+                        startActivity(intent_Register_to_Login);
+                        finish();
 
-            }
+                    }
+                }
 
 
+
+            }).start();
         }
     }
 

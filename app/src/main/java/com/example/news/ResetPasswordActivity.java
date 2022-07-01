@@ -134,18 +134,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void resetpwd_check() {                                //确认按钮的监听事件
         if (isUserNameAndPwdValid()) {
-            String userPhone = mAccount.getText().toString().trim();
+            String userId = mAccount.getText().toString().trim();
             String userPwd_old = mPwd_old.getText().toString().trim();
             String userPwd_new = mPwd_new.getText().toString().trim();
             String userPwdCheck = mPwdCheck.getText().toString().trim();
-            boolean result=mUserDataManager.isUserValid(userPhone, userPwd_old);
+            boolean result=mUserDataManager.isUserValid(userId, userPwd_old);
             if(result){                                             //返回真说明用户名和密码均正确,继续后续操作
                 if(userPwd_new.equals(userPwdCheck)==false){           //两次密码输入不一样
                     Toast.makeText(this,"两次密码输入不相同",Toast.LENGTH_SHORT).show();
                     return ;
                 } else {
                     //mUserDataManager.openDataBase();
-                    mUserDataManager.updatePassword(userPhone,userPwd_new);
+                    mUserDataManager.updatePassword(userId,userPwd_new);
 //                    if (flag == false) {
 //                        Toast.makeText(this, getString(R.string.resetpwd_fail),Toast.LENGTH_SHORT).show();
 //                    }else{

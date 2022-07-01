@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,7 +36,7 @@ public class LoginActivity extends Activity {
     private TextView mTvEnroll;
     private TextView mTvReset;
     private ImageView mIvEye;
-
+    //private Boolean isValid[] = new Boolean[5];
 
     private boolean isOpenEye = false;
     private SharedPreferences login_sp;
@@ -57,13 +61,13 @@ public class LoginActivity extends Activity {
         mIvEye = (ImageView)findViewById(R.id.mIvEye);
 
         login_sp = getSharedPreferences("userInfo", 0);
-        String name=login_sp.getString("USER_NAME", "");
+        String id=login_sp.getString("USER_ID", "");
         String pwd =login_sp.getString("PASSWORD", "");
         boolean choseRemember =login_sp.getBoolean("mRememberCheck", false);
         boolean choseAutoLogin =login_sp.getBoolean("mAutologinCheck", false);
         //如果上次选了记住密码，那进入登录页面也自动勾选记住密码，并填上用户名和密码
         if(choseRemember){
-            mEtAccount.setText(name);
+            mEtAccount.setText(id);
             mEtPassword.setText(pwd);
             mCbRememberPass.setChecked(true);
         }
@@ -103,16 +107,6 @@ public class LoginActivity extends Activity {
             }
         });
 
-//        mIvEye.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                mEtPassword.setInputType(128);
-//            }
-//        });
-
-//        ImageView image = (ImageView) findViewById(R.id.logo);             //使用ImageView显示logo
-//        image.setImageResource(R.drawable.logo);
-
         mIvEye.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,37 +127,48 @@ public class LoginActivity extends Activity {
 
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void login() {
         //登录按钮监听事件
         if (isUserNameAndPwdValid()) {
-            String userPhone = mEtAccount.getText().toString().trim();    //获取当前输入的用户名和密码信息
-            String userPwd = mEtPassword.getText().toString().trim();
-            SharedPreferences.Editor editor =login_sp.edit();
-            boolean result=mUserDataManager.isUserValid(userPhone, userPwd);
-            if(result){                                             //返回1说明用户名和密码均正确
-                //保存用户名和密码
-                editor.putString("USER_PHONE", userPhone);
-                editor.putString("PASSWORD", userPwd);
-                //是否记住密码
-                if(mCbRememberPass.isChecked()){
-                    editor.putBoolean("mRememberCheck", true);
-                }else{
-                    editor.putBoolean("mRememberCheck", false);
-                }
-                editor.commit();
-                //记录登录的ID
-                NewsAPP app =(NewsAPP) getApplication();
-                app.setUserPhone(userPhone);
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class) ;    //切换Login Activity至User Activity
-                startActivity(intent);
-                finish();
-                Toast.makeText(this, "登录成功",Toast.LENGTH_SHORT).show();//登录成功提示
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String userId = mEtAccount.getText().toString().trim();    //获取当前输入的用户名和密码信息
+                    String userPwd = mEtPassword.getText().toString().trim();
+                    SharedPreferences.Editor editor =login_sp.edit();
+                    boolean flag = mUserDataManager.isUserValid(userId, userPwd);
+                    Message message = new Message();
+                    if(flag){
+                        //保存用户名和密码
+                        editor.putString("USER_ID", userId);
+                        editor.putString("PASSWORD", userPwd);
+                        //是否记住密码
+                        if(mCbRememberPass.isChecked()){
+                            editor.putBoolean("mRememberCheck", true);
+                        }else{
+                            editor.putBoolean("mRememberCheck", false);
+                        }
+                        editor.commit();
+                        //记录登录的ID
+                        NewsAPP app =(NewsAPP) getApplication();
+                        app.setUserID(userId);
+                        Intent intent = new Intent(LoginActivity.this,MainActivity.class) ;    //切换Login Activity至User Activity
+                        startActivity(intent);
+                        finish();
 
-            }else if(!result){
-                Toast.makeText(getApplicationContext(), "账号或密码错误",Toast.LENGTH_SHORT).show();  //登录失败提示
-            }
+                        Looper.prepare();
+                        Toast.makeText(LoginActivity.this, "登录成功",Toast.LENGTH_SHORT).show();//登录成功提示
+                        Looper.loop();
+                    }else
+                        message.what = 1;
+                        Looper.prepare();
+                        Toast.makeText(LoginActivity.this, "账号或密码错误",Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                }
+
+            }).start();
+
         }
     }
 

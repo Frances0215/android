@@ -10,6 +10,8 @@ import android.database.Cursor;
 import android.database.CursorWindow;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import android.os.Message;
 
 import com.example.news.NewsAPP;
 import com.example.news.R;
@@ -79,7 +82,25 @@ public class UserFragment extends Fragment {
             }
         });
         return root;
+
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (mUserDataManager == null) {
+            mUserDataManager = new UserDataManager(getActivity());
+            //mUserDataManager.openDataBase();                              //建立本地数据库
+        }
+
+        initView();
+        initData();
+        setListeners();
+    }
+
+
 
     private void initView(){
         mTvUser = getActivity().findViewById(R.id.mTvUser);
@@ -99,40 +120,40 @@ public class UserFragment extends Fragment {
         getDataFromSpf();
     }
 
+        final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    UserData user = (UserData) msg.obj;
+                    mTvName.setText(user.getName());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void getDataFromSpf() {
         //final UserApp app =(UserApp)getActivity().getApplication();
-        NewsAPP app = (NewsAPP) getActivity().getApplication();
-        UserData mUser = app.getMyUser();
-        mTvName.setText(mUser.getName());
-//        int userId = app.getmUserId();
-//        Cursor mCursor = mUserDataManager.fetchUserData(userId);
-//
-//        CursorWindow cw = new CursorWindow("test", 500000000);
-//        AbstractWindowedCursor ac = (AbstractWindowedCursor) mCursor;
-//        ac.setWindow(cw);
-//
-//        String name = mCursor.getString(mCursor.getColumnIndex("name"));
-//        String image64 = mCursor.getString(mCursor.getColumnIndex("photo"));
-//
-//        tvName.setText(name);
-//        ivPhoto.setImageBitmap(ImageUtil.base64ToImage(image64));
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (mUserDataManager == null) {
-            mUserDataManager = new UserDataManager(getActivity());
-            //mUserDataManager.openDataBase();                              //建立本地数据库
-        }
-
-        initView();
-        initData();
-        //setListeners();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NewsAPP app = (NewsAPP) getActivity().getApplication();
+                String id = app.getID();
+                UserData mUser = mUserDataManager.fetchUserData(id);
+                Message message = new Message();
+                message.obj =mUser;
+                message.what = 0;
+                mHandler.sendMessage(message);
+            }
+        }).start();
+//        NewsAPP app = (NewsAPP) getActivity().getApplication();
+//        UserData mUser = app.getMyUser();
+//        mTvName.setText(mUser.getName());
     }
 
     private void setListeners() {

@@ -13,6 +13,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences login_sp;
@@ -40,23 +42,41 @@ public class MainActivity extends AppCompatActivity {
             mUserDataManager = new UserDataManager(this);
             //mUserDataManager.openDataBase();                              //建立本地数据库
         }
-        //查看preference中是否存有用户号和密码
-        login_sp = getSharedPreferences("userInfo", 0);
-        String name=login_sp.getString("USER_NAME", "");
-        String pwd =login_sp.getString("PASSWORD", "");
-        String phone = login_sp.getString("PHONE","");
-        boolean choseRemember =login_sp.getBoolean("mRememberCheck", false);
-        boolean choseAutoLogin =login_sp.getBoolean("mAutologinCheck", false);
-        boolean isLogin = mUserDataManager.isUserValid(phone,pwd);
-        if(!isLogin){
-            Intent intent_Login = new Intent(MainActivity.this,LoginActivity.class) ;    //切换Login Activity至User Activity
-            startActivity(intent_Login);
-            finish();
-        }else {
-            NewsAPP mNews = (NewsAPP)getApplicationContext();
-            mNews.setPwd(pwd);
-            mNews.setUserPhone(phone);
-        }
+
+//        ArrayList<UserData> userData = mUserDataManager.fetchAllUserDatas();
+//        UserData myUser = new UserData("18778939300","123456");
+//        myUser.setSex("女");
+//        myUser.setBirthday("2002-03-28");
+//        myUser.setName("又耳牙");
+//        mUserDataManager.insertUserData(myUser);
+
+
+        //查看preference中是否存有用户号和密码,这个数据只在登录界面中修改
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                login_sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+                String id=login_sp.getString("USER_ID", "");
+                String pwd =login_sp.getString("PASSWORD", "");
+
+                boolean choseRemember =login_sp.getBoolean("mRememberCheck", false);
+                boolean choseAutoLogin =login_sp.getBoolean("mAutologinCheck", false);
+                boolean isLogin = mUserDataManager.isUserValid(id,pwd);
+                //boolean isLogin =false;
+                if(!isLogin){
+                    Intent intent_Login = new Intent(MainActivity.this,LoginActivity.class) ;    //切换Login Activity至User Activity
+                    startActivity(intent_Login);
+                    finish();
+                }else {
+                    NewsAPP mNews = (NewsAPP)getApplicationContext();
+                    mNews.setPwd(pwd);
+                    mNews.setUserID(id);
+                }
+            }
+        }).start();
+
 
     }
 

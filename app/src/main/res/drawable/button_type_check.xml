@@ -3,6 +3,6 @@
     <!-- 圆角的半径 -->
     <corners android:radius="10dp"/>
     <!-- 填充颜色 -->
-    <solid android:color="#9debff"/>
+    <solid android:color="@color/主题色"/>
 
 </shape>

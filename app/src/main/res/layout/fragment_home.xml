@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="cursive"
-            android:text="视障"
+            android:text="听闻"
             android:textColor="@color/主题色"
             android:textSize="27sp" />
 

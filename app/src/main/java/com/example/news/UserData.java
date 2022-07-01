@@ -6,7 +6,6 @@ public class UserData {
     private String password;
     private String sex;
     private String birthday;
-    private String phone;
     private int age;
     private String userSystem;
     private String area;
@@ -14,22 +13,22 @@ public class UserData {
     private int equipment;
     private String type;
 
-    public UserData(String name,String password,String sex,String phone){
+    public UserData(String name,String password,String sex,String id){
 
         this.name = name;
         this.password = password;
         this.sex = sex;
-        this.phone = phone;
+        this.ID=id;
 
     }
 
-    public UserData(String phone,String password){
-        this.phone = phone;
+    public UserData(String id,String password){
+        this.ID = id;
         this.password = password;
     }
 
-    public UserData(String ID,String name,String password,String sex,String birthday,String phone,int age,String userSystem,String area,int environment,int equipment,String type){
-        this.phone = phone;
+    public UserData(String ID,String name,String password,String sex,String birthday,int age,String userSystem,String area,int environment,int equipment,String type){
+
         this.sex = sex;
         this.age = age;
         this.name = name;
@@ -78,9 +77,6 @@ public class UserData {
         return password;
     }
 
-    public String getPhone() {
-        return phone;
-    }
 
     public String getSex() {
         return sex;
@@ -122,10 +118,6 @@ public class UserData {
         this.password = password;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public void setSex(String sex) {
         this.sex = sex;
     }
@@ -147,7 +139,6 @@ public class UserData {
         this.setArea(null);
         this.setBirthday(null);
         this.setAge(0);
-        this.setPhone(null);
         this.setName(null);
         this.setUserSystem(null);
         this.setType(null);

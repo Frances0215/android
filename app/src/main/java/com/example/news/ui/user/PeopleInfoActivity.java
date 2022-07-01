@@ -28,6 +28,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -100,41 +103,82 @@ public class PeopleInfoActivity extends BaseActivity {
         mPassword = findViewById(R.id.tv_password_text);
         mBtSave = findViewById(R.id.mBtSave);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void initData(){
         getDataFromSpf();
     }
 
     public void save(){
-        String name = mName.getText().toString();
-        String birthday = mBirthday.getText().toString();
-        String type = mType.getText().toString();
-        String phone = mPhoneNumber.getText().toString();
-        String gender = mGender.getText().toString();
-        //存入数据库中
-        UserData userData = new UserData(name,gender,birthday,phone);
-        mUserDataManager.updateUserData(phone,birthday,gender,name,type);
-        Toast.makeText(this,"已保存修改。",Toast.LENGTH_SHORT).show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String name = mName.getText().toString();
+                String birthday = mBirthday.getText().toString();
+                String type = mType.getText().toString();
+                if(type.equals("")){
+                    type=null;
+                }
+                String phone = mPhoneNumber.getText().toString();
+                String gender = mGender.getText().toString();
+                //存入数据库中
+                //UserData userData = new UserData(name,gender,birthday,phone);
+                int result = mUserDataManager.updateUserData(phone,birthday,gender,name,type);
+                if(result>0){
+                    Looper.prepare();
+                    Toast.makeText(PeopleInfoActivity.this,"已保存修改。",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }else {
+                    Looper.prepare();
+                    Toast.makeText(PeopleInfoActivity.this,"修改失败。",Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+
+            }
+        }).start();
+
 //        this.finish(); //退出该页面
     }
 
+    final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    UserData user = (UserData) msg.obj;
+                    String name = user.getName();
+                    String birthday = user.getBirthday();
+                    String phone = user.getID();
+                    String gender = user.getSex();
+                    String type = user.getType();
+
+                    mName.setText(name);
+                    mBirthday.setText(birthday);
+                    mPhoneNumber.setText(phone);
+                    mGender.setText(gender);
+                    mType.setText(type);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void getDataFromSpf(){
-        NewsAPP mApp = (NewsAPP)getApplication();
-        String id = mApp.getUserPhone();//id与phone相同
-        UserData mUser = mUserDataManager.fetchUserData(id);
-
-        String name = mUser.getName();
-        String birthday = mUser.getBirthday();
-        String phone = mUser.getPhone();
-        String gender = mUser.getSex();
-        String type = mUser.getType();
-
-        mName.setText(name);
-        mBirthday.setText(birthday);
-        mPhoneNumber.setText(phone);
-        mGender.setText(gender);
-        mType.setText(type);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NewsAPP mApp = (NewsAPP)getApplication();
+                String id = mApp.getID();//id与phone相同
+                UserData mUser = mUserDataManager.fetchUserData(id);
+                Message message = new Message();
+                message.obj =mUser;
+                message.what = 0;
+                mHandler.sendMessage(message);
+            }
+        }).start();
 
     }
 

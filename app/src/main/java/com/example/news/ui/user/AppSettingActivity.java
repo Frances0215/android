@@ -114,7 +114,7 @@ public class AppSettingActivity extends BaseActivity {
 //                          //修改数据库中的用户名数据
                             String userName = etUsername.getText().toString();
                             NewsAPP mApp = (NewsAPP)getApplication();
-                            String id = mApp.getUserPhone();
+                            String id = mApp.getMyUser().getID();
                             mUserDataManager.updateUserDataById(userName,"name",id);
                             Toast.makeText(AppSettingActivity.this, "用户名修改成功",Toast.LENGTH_SHORT).show();
 
@@ -153,7 +153,7 @@ public class AppSettingActivity extends BaseActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     NewsAPP mApp = (NewsAPP)getApplication();
-                                    String id = mApp.getUserPhone();
+                                    String id = mApp.getID();
                                     mUserDataManager.deleteUserData(id);
                                     mApp.clearUser();
                                     Intent intent = new Intent(AppSettingActivity.this, LoginActivity.class);

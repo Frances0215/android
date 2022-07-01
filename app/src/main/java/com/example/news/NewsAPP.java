@@ -7,7 +7,7 @@ import java.util.ArrayList;
 //用于存放全局变量
 public class NewsAPP extends Application {
 
-    private UserData myUser;
+    private UserData myUser = new UserData(null,null,null,null,null,0,null,null,0,0,null);
     private String[] news_type = {"推荐","实时","政治","军事","娱乐","法律","经济","社会","科技","健康","时尚","美食"};
     private ArrayList<String> my_news_type = new ArrayList<String>();
     private static final int DB_VERSION = 2;
@@ -21,6 +21,7 @@ public class NewsAPP extends Application {
         return myUser.getPassword();
     }
 
+    public String getID(){return myUser.getID();}
     public UserData getMyUser() {
         return myUser;
     }
@@ -33,10 +34,6 @@ public class NewsAPP extends Application {
         return DB_NAME;
     }
 
-    public String getUserPhone() {
-        return myUser.getPhone();
-    }
-
     public String[] getNews_type() {
         return news_type;
     }
@@ -45,8 +42,8 @@ public class NewsAPP extends Application {
         this.news_type = news_type;
     }
 
-    public void setUserPhone(String userPhone) {
-        myUser.setPhone(userPhone);
+    public void setUserID(String id) {
+        myUser.setID(id);
     }
 
     public void setMy_news_type(ArrayList<String> my_news_type) {
