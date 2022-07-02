@@ -28,15 +28,15 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="b9f702d8-3913-405a-8a90-89f5b4653070">
-      <console name="Connection" type="STANDARD" schema="" session="Main"><![CDATA[select * from users]]></console>
+    <connection id="8746523c-0d09-4445-8c86-a688605a4935">
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from type]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="b9f702d8-3913-405a-8a90-89f5b4653070" />
+    <connection id="8746523c-0d09-4445-8c86-a688605a4935" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -67,21 +67,24 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="b9f702d8-3913-405a-8a90-89f5b4653070" active="true" signed="true">
+      <connection id="8746523c-0d09-4445-8c86-a688605a4935" active="true" signed="true">
         <database>
           <name value="Connection" />
           <description value="" />
-          <database-type value="MYSQL" />
+          <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="9999.0" />
+          <database-version value="3.3" />
           <driver-source value="BUILTIN" />
           <driver-library value="" />
           <driver value="" />
-          <url-type value="DATABASE" />
-          <host value="localhost" />
-          <port value="3306" />
-          <database value="mysql" />
-          <type value="USER_PASSWORD" />
+          <url-type value="FILE" />
+          <host value="" />
+          <port value="" />
+          <database value="" />
+          <files>
+            <file path="C:\news_data\Data2.dp" schema="main" />
+          </files>
+          <type value="NONE" />
           <user value="" />
           <deprecated-pwd value="" />
         </database>

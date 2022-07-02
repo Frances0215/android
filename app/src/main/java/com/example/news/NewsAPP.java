@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class NewsAPP extends Application {
 
     private UserData myUser = new UserData(null,null,null,null,null,0,null,null,0,0,null);
-    private String[] news_type = {"推荐","实时","政治","军事","娱乐","法律","经济","社会","科技","健康","时尚","美食"};
+    private String[] news_type = {"财经","彩票","房产","股票","家居","教育","科技","社会","时尚","时政","体育","星座","游戏","娱乐"};
     private ArrayList<String> my_news_type = new ArrayList<String>();
     private static final int DB_VERSION = 2;
     private static final String DB_NAME = "Data2.dp";

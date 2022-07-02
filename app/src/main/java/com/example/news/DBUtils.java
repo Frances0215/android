@@ -43,85 +43,85 @@ public class DBUtils {
         return connection;
     }
 
-    public static List<News> getNews() {
-        List<News> myNews = new ArrayList<>();
-        Connection connection = getConn("newsRec");
-        if (connection != null) {
-            String sql = "select * from news";
-            try {
-                java.sql.Statement statement = connection.createStatement();
-                ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
-                while (rSet.next()) {
-                    //columnLabel是属性名
-                    News myNew = new News(null, null, null, null, null, null);
-                    myNew.setTitle(rSet.getString("title"));
-                    myNew.setPublisher(rSet.getString("publisher"));
-                    myNew.setDate(rSet.getString("publishTime"));
-                    myNew.setID(rSet.getString("ID"));
-                    myNew.setContents(rSet.getString("contents"));
-                    myNews.add(myNew);
-                    Log.e(TAG, "数组组装成功");
-                }
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        ;
-        Log.e(TAG, "数组已返回");
-        return myNews;
-
-    }
-
-    //根据新闻类型得到新闻
-    public static List<News> getNewsByType(String type) {
-        List<News> myNews = new ArrayList<>();
-        Connection connection = getConn("news");
-        if (connection != null) {
-            String sql = "select * from news where type = " + type ;
-            try {
-                java.sql.Statement statement = connection.createStatement();
-                ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
-                while (rSet.next()) {
-                    //columnLabel是属性名
-                    News myNew = new News(null, null, null, null, null, null);
-                    myNew.setTitle(rSet.getString("title"));
-                    myNew.setPublisher(rSet.getString("publisher"));
-                    myNew.setDate(rSet.getString("publishTime"));
-                    myNew.setID(rSet.getString("ID"));
-                    myNew.setContents(rSet.getString("contents"));
-                    myNews.add(myNew);
-                    Log.e(TAG, "数组组装成功");
-                }
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        ;
-        Log.e(TAG, "数组已返回");
-        return myNews;
-
-    }
-
-    public int addNews(String content){
-        int i=0;
-        Connection connection = getConn("newsRec");
-        if (connection != null) {
-            String sql = "UPDATE news SET content = '"+content+"' where ID=0001"  ;
-            try {
-                java.sql.Statement statement = connection.createStatement();
-                i = statement.executeUpdate(sql);//得到数据库中的数据
-
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        ;
-        Log.e(TAG, "数组已返回");
-        return i;
-    }
+//    public static List<News> getNews() {
+//        List<News> myNews = new ArrayList<>();
+//        Connection connection = getConn("newsRec");
+//        if (connection != null) {
+//            String sql = "select * from news";
+//            try {
+//                java.sql.Statement statement = connection.createStatement();
+//                ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
+//                while (rSet.next()) {
+//                    //columnLabel是属性名
+//                    News myNew = new News(null, null, null, null, null, null);
+//                    myNew.setTitle(rSet.getString("title"));
+//                    myNew.setPublisher(rSet.getString("publisher"));
+//                    myNew.setPublishTime(rSet.getString("publishTime"));
+//                    myNew.setID(rSet.getString("ID"));
+//                    myNew.setContents(rSet.getString("contents"));
+//                    myNews.add(myNew);
+//                    Log.e(TAG, "数组组装成功");
+//                }
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        ;
+//        Log.e(TAG, "数组已返回");
+//        return myNews;
+//
+//    }
+//
+//    //根据新闻类型得到新闻
+//    public static List<News> getNewsByType(String type) {
+//        List<News> myNews = new ArrayList<>();
+//        Connection connection = getConn("news");
+//        if (connection != null) {
+//            String sql = "select * from news where type = " + type ;
+//            try {
+//                java.sql.Statement statement = connection.createStatement();
+//                ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
+//                while (rSet.next()) {
+//                    //columnLabel是属性名
+//                    News myNew = new News(null, null, null, null, null, null);
+//                    myNew.setTitle(rSet.getString("title"));
+//                    myNew.setPublisher(rSet.getString("publisher"));
+//                    myNew.setPublishTime(rSet.getString("publishTime"));
+//                    myNew.setID(rSet.getString("ID"));
+//                    myNew.setContents(rSet.getString("contents"));
+//                    myNews.add(myNew);
+//                    Log.e(TAG, "数组组装成功");
+//                }
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        ;
+//        Log.e(TAG, "数组已返回");
+//        return myNews;
+//
+//    }
+//
+//    public int addNews(String content){
+//        int i=0;
+//        Connection connection = getConn("newsRec");
+//        if (connection != null) {
+//            String sql = "UPDATE news SET content = '"+content+"' where ID=0001"  ;
+//            try {
+//                java.sql.Statement statement = connection.createStatement();
+//                i = statement.executeUpdate(sql);//得到数据库中的数据
+//
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        ;
+//        Log.e(TAG, "数组已返回");
+//        return i;
+//    }
 }
 
 

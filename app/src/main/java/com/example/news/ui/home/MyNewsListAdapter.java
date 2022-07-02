@@ -49,7 +49,7 @@ public class MyNewsListAdapter extends ArrayAdapter<News>{
 
         holder.mTvTitle.setText(news.getTitle());
         holder.mTvPublish.setText(news.getPublisher());
-        holder.mTvDate.setText(news.getDate());
+        holder.mTvDate.setText(news.getPublishTime());
 
         return view;
     }
@@ -60,52 +60,4 @@ public class MyNewsListAdapter extends ArrayAdapter<News>{
         TextView mTvDate;
     }
 }
-//import android.content.Context;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.BaseAdapter;
-//import android.widget.Toast;
-//
-//import androidx.recyclerview.widget.RecyclerView;
-//
-//import java.util.List;
-//
-//public class MyNewsListAdapter extends BaseAdapter {
-//
-//    private List<News> myNews;
-//    private LayoutInflater mInflater;
-//    private Callback mCallback;
-//
-//    public interface Callback{
-//        public void click(View v);
-//    }
-//
-//    public MyNewsListAdapter(Context context,List<News> news,Callback callback){
-//        myNews = news;
-//        mInflater = LayoutInflater.from(context);
-//        mCallback = callback;
-//    }
-//    @Override
-//    public int getCount() {
-//        return myNews.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int position) {
-//        return myNews.get(position);
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        RecyclerView.ViewHolder vh;
-//
-//
-//        return null;
-//    }
-//}
+

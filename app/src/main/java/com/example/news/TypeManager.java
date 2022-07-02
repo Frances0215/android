@@ -59,5 +59,11 @@ public class TypeManager {
         return myType;
     }
 
+    //删除所有的类型
+    public int delectAllType(){
+        int i = mSQLiteDatabase.delete(TABLE_NAME,null,null);
+        return i;
+    }
+
 
 }

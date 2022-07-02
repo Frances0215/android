@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.news.ui.home.News;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,12 +15,14 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences login_sp;
     //在手机缓存中只存入用户名、密码、手机号码以及是否记住密码
     private UserDataManager mUserDataManager;
+    private List<News> myNews = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,20 @@ public class MainActivity extends AppCompatActivity {
 
         //查看preference中是否存有用户号和密码,这个数据只在登录界面中修改
 
+//        TypeManager typeManager = new TypeManager(this);
+//        typeManager.openDataBase();
+//        typeManager.delectAllType();
+//        NewsManager mNewsManager = new NewsManager(this);
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(myNews.size()!=0)
+//                    myNews.clear();
+//                myNews = mNewsManager.getNewsByType("房产");
+//
+//            }
+//        }).start();
 
         new Thread(new Runnable() {
             @Override

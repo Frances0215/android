@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.news.R;
 
+import java.util.ArrayList;
+
 public class PageFragment extends Fragment {
 
     private TextView mTvContents;
@@ -31,11 +33,11 @@ public class PageFragment extends Fragment {
         mTvContents=(TextView) view.findViewById(R.id.mTvContents);
         int label = getArguments().getInt("label");
         myNews = (News) getArguments().getSerializable("news");
-        String[] content = myNews.getContent_f();
+        ArrayList<String> content = myNews.getContent_f();
         if(label==0){
-            mTvContents.setText(myNews.getTitle()+"\n"+myNews.getPublisher()+myNews.getDate());
+            mTvContents.setText(myNews.getTitle()+"\n"+myNews.getPublisher()+myNews.getPublishTime());
         }else
-            mTvContents.setText(content[label-1]);
+            mTvContents.setText(content.get(label-1));
 
     }
 

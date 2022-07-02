@@ -48,9 +48,9 @@ public class Show_news_Activity extends AppCompatActivity {
         news_this = (News)bundle.getSerializable("news");
         initView();
         //加一，用于放标题
-        String[] Contents ={"奥法施工的活动公司发的方式告诉","dgfhfdggqrqtgwehdsgavdf","fasgqresfdfcas"};
-        news_this.setContent_f(Contents);
-        pageNumber = news_this.getContent_f().length +1;
+//        String[] Contents ={"奥法施工的活动公司发的方式告诉","dgfhfdggqrqtgwehdsgavdf","fasgqresfdfcas"};
+        //news_this.setContent_f(Contents);
+        pageNumber = news_this.getContent_f().size() +1;
 
         initTabViewpager();
         initTab();
