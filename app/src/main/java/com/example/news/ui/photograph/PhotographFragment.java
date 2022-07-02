@@ -1,7 +1,8 @@
 package com.example.news.ui.photograph;
 
 import static android.app.Activity.RESULT_OK;
-
+import java.text.SimpleDateFormat;
+import android.app.Activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
@@ -19,6 +20,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +47,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.graphics.PixelFormat;
+import android.hardware.Camera;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
-public class PhotographFragment extends Fragment  {
+
+
+
+    public class PhotographFragment extends Fragment  {
+
 
     private PhotographViewModel photographViewModel;
 
@@ -79,22 +105,88 @@ public class PhotographFragment extends Fragment  {
         mFlCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                takePhoto(view);
             }
         });
     }
 
 
 
-//    public void takePhoto(View view) {
-//        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
-//            //执行拍照
-//            doTake();
-//        }else{
-//            //去申请权限
-//            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},1);
-//        }
-//    }
+    public void takePhoto(View view) {
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
+            //执行拍照
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            startActivityForResult(intent, 1);
+//            takePic();
+        }else{
+            //去申请权限
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},1);
+        }
+    }
+
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            Log.v("phtograph","enterFile");
+            if (resultCode == Activity.RESULT_OK){
+                String sdStatus = Environment.getExternalStorageState();
+
+                if(!sdStatus.equals(Environment.MEDIA_MOUNTED)){
+                    System.out.println(" ------------- sd card is not avaiable ---------------");
+                    return;
+                }
+
+
+                String name = "photo.jpg";
+
+                Bundle bundle = data.getExtras();
+                Bitmap bitmap = (Bitmap) bundle.get("data");
+
+                File dir=new File(getActivity().getExternalFilesDir(null).getPath()+"/");
+                Log.v("",dir.getAbsolutePath());
+                if (!dir.exists()){
+                    dir.mkdir();
+                }
+                //创建文件
+                File file = new File(dir+name);
+                if (!file.exists()){
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+//            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/");
+//            file.mkdirs(); //创建文件夹
+//            String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+name;
+                //String fileName = "sdcard"+"/"+name;
+                FileOutputStream fos =null;
+
+                try {
+//                    System.out.println(fileName);
+                    fos = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }finally {
+                    try {
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+
+
+
+
 //
 //    //接收权限申请的结果
 //    @Override
@@ -116,7 +208,7 @@ public class PhotographFragment extends Fragment  {
 //    }
 //
 //    private void doTake() {
-//        File imageTemp = new File(getExternalCacheDir(),"imageOut.jpeg");
+//        File imageTemp = new File("imageOut.jpeg");
 //        if(imageTemp.exists()){
 //            imageTemp.delete();
 //        }
@@ -142,40 +234,40 @@ public class PhotographFragment extends Fragment  {
 //
 //
 //    @Override
-////    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-////        super.onActivityResult(requestCode, resultCode, data);
-////        if(requestCode==REQUEST_CODE_TAKE){
-////            if(resultCode==RESULT_OK){
-////                //获取拍摄的照片
-////                try {
-////                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
-////                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-////                    mPicture.setImageBitmap(bitmap);//显示头像
-//////                    //保存图片
-////                    String imageToBase64 = ImageUtil.imageToBase64(bitmap);
-////                    imageBase64 = imageToBase64;
-////
-////                } catch (FileNotFoundException e) {
-////                    e.printStackTrace();
-////                }
-////            }
-////        }else if(requestCode == REQUEST_CODE_CHOOSE){ //获取相册中的图片
-////            if(Build.VERSION.SDK_INT < 19){
-////                try {
-////                    handleImageBeforeApi19(data);
-////                } catch (FileNotFoundException e) {
-////                    e.printStackTrace();
-////                }
-////            }else{
-////                try {
-////                    handleImageOnApi19(data);
-////                } catch (FileNotFoundException e) {
-////                    e.printStackTrace();
-////                }
-////            }
-////
-////        }
-////    }
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode==REQUEST_CODE_TAKE){
+//            if(resultCode==RESULT_OK){
+//                //获取拍摄的照片
+//                try {
+//                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
+//                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//                    mPicture.setImageBitmap(bitmap);//显示头像
+////                    //保存图片
+//                    String imageToBase64 = ImageUtil.imageToBase64(bitmap);
+//                    imageBase64 = imageToBase64;
+//
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }else if(requestCode == REQUEST_CODE_CHOOSE){ //获取相册中的图片
+//            if(Build.VERSION.SDK_INT < 19){
+//                try {
+//                    handleImageBeforeApi19(data);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }else{
+//                try {
+//                    handleImageOnApi19(data);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        }
+//    }
 //
 //    public static boolean getRootPath(Context context) {
 //

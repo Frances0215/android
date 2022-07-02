@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             //mUserDataManager.openDataBase();                              //建立本地数据库
         }
         //查看preference中是否存有用户号和密码
+        /*
         login_sp = getSharedPreferences("userInfo", 0);
         String name=login_sp.getString("USER_NAME", "");
         String pwd =login_sp.getString("PASSWORD", "");
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             mNews.setPwd(pwd);
             mNews.setUserPhone(phone);
         }
-
+        */
     }
 
 

@@ -3,6 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/News/app/src/main/res/layout/activity_app_usage.xml" value="0.22826086956521738" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_main.xml" value="0.10364583333333334" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_mine_item.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_people_information.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_reset_password.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_select_my_type.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_select_type.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_set_item.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/edit_dialog.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_home.xml" value="0.10364583333333334" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_photograph.xml" value="0.22826086956521738" />
+        <entry key="..\:/News/app/src/main/res/layout/main.xml" value="0.22826086956521738" />
+        <entry key="..\:/News/app/src/main/res/layout/menu_nav_home.xml" value="0.22826086956521738" />
+        <entry key="..\:/News/app/src/main/res/layout/menu_nav_photograph.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/menu_nav_user.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/layout/message_time_layout.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1671875" />
+        <entry key="..\:/News/app/src/main/res/xml/file_paths.xml" value="0.10364583333333334" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/drawable-v24/icon_eye.xml" value="0.1285" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/drawable/bg_button_camera.xml" value="0.1" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/drawable/bg_editsearch.xml" value="0.1" />
