@@ -20,14 +20,14 @@
 
     <ImageView
         android:id="@+id/mIvBoy"
-        android:layout_width="300px"
-        android:layout_height="400px"
+        android:layout_width="400px"
+        android:layout_height="500px"
         android:background="@drawable/button_boy"
         android:padding="30dp"
         android:src="@drawable/boy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4" />
@@ -46,14 +46,14 @@
 
     <ImageView
         android:id="@+id/mIvGirl"
-        android:layout_width="300px"
-        android:layout_height="400px"
+        android:layout_width="400px"
+        android:layout_height="500px"
         android:background="@drawable/button_girl"
         android:padding="30dp"
         android:src="@drawable/girl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4" />
@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7"/>
+        app:layout_constraintVertical_bias="0.75"/>
 
     <Button
         android:id="@+id/mBtCancel"

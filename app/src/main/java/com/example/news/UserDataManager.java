@@ -69,7 +69,7 @@ public class UserDataManager {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "insert into users(birthday,name,pawd,sex,ID) values(?,?,?,?,?);";
+                String sql = "insert into users(birthday,name,pawd,sex,user_id) values(?,?,?,?,?);";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     //赋值
@@ -124,24 +124,27 @@ public class UserDataManager {
            // @Override
             //public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "select * from users where ID = '"+ id+"'" + "and pawd = '" + psw +"'";
-                try {
-                    PreparedStatement pstm = myConn.prepareStatement(sql);
-                    ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
+                if(myConn!=null){
+                    String sql = "select * from users where user_id = '"+ id+"'" + "and pawd = '" + psw +"'";
+                    try {
+                        PreparedStatement pstm = myConn.prepareStatement(sql);
+                        ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
 
-                    if(rSet.next()) flag = true;
-                    else flag=false;
+                        if(rSet.next()) flag = true;
+                        else flag=false;
 
 //                    Message message = new Message();
 //                    message.obj =flag;
 //                    message.what = 0;
 //                    mHandler.sendMessage(message);
-                    //closeDataBase();
-                    pstm.close();
-                    myConn.close();
-                } catch (java.sql.SQLException e) {
-                    e.printStackTrace();
+                        //closeDataBase();
+                        pstm.close();
+                        myConn.close();
+                    } catch (java.sql.SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
+
                 return flag;
 //            }
 //        }).start();
@@ -160,22 +163,18 @@ public class UserDataManager {
 //            public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
 
-                String sql = "select * from users where ID = '"+ ID+"'";
+                String sql = "select * from users where user_id = '"+ ID+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
                     while (rSet.next()) {
                         //columnLabel是属性名
-                        user.setID(rSet.getString("ID"));
+                        user.setID(rSet.getString("user_id"));
                         user.setName(rSet.getString("name"));
                         user.setPassword(rSet.getString("pawd"));
                         user.setSex(rSet.getString("sex"));
                         user.setBirthday(rSet.getString("birthday"));
                         user.setAge(rSet.getInt("age"));
-                        user.setUserSystem(rSet.getString("userSystem"));
-                        user.setArea(rSet.getString("area"));
-                        user.setEnvironment(rSet.getInt("environment"));
-                        user.setEquipment(rSet.getInt("equipment"));
                         user.setType(rSet.getString("type"));
                     }
 
@@ -207,16 +206,12 @@ public class UserDataManager {
                         UserData user = new UserData(null,null,null,null,null,0,null,null,0,0,null);
 
                         //columnLabel是属性名
-                        user.setID(rSet.getString("ID"));
+                        user.setID(rSet.getString("user_id"));
                         user.setName(rSet.getString("name"));
                         user.setPassword(rSet.getString("pawd"));
                         user.setSex(rSet.getString("sex"));
                         user.setBirthday(rSet.getString("birthday"));
                         user.setAge(rSet.getInt("age"));
-                        user.setUserSystem(rSet.getString("userSystem"));
-                        user.setArea(rSet.getString("area"));
-                        user.setEnvironment(rSet.getInt("environment"));
-                        user.setEquipment(rSet.getInt("equipment"));
                         user.setType(rSet.getString("type"));
                         users.add(user);
                     }
@@ -240,7 +235,7 @@ public class UserDataManager {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql ="delect from users where ID = '"+ID+"'";
+                String sql ="delect from users where user_id = '"+ID+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
@@ -260,7 +255,7 @@ public class UserDataManager {
 
         final boolean[] isValid = new boolean[1];
         Connection myConn = myDBUtil.getConn(DB_NAME);
-        String sql = "select * from users where ID = '"+ id+"'";
+        String sql = "select * from users where user_id = '"+ id+"'";
         try {
             PreparedStatement pstm = myConn.prepareStatement(sql);
             ResultSet rSet = pstm.executeQuery(sql);//得到数据库中的数据
@@ -284,7 +279,7 @@ public class UserDataManager {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "update users set pawd = '"+newPwd+"'"+"where ID = '"+ id +"'";
+                String sql = "update users set pawd = '"+newPwd+"'"+"where user_id = '"+ id +"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
@@ -306,7 +301,7 @@ public class UserDataManager {
 //            public void run() {
                 int result = 0;
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "update users set birthday = '"+birthday+"',sex = '"+sex+"', name = '"+name+"',type = '"+type+"' where ID = '"+id+"'";
+                String sql = "update users set birthday = '"+birthday+"',sex = '"+sex+"', name = '"+name+"',type = '"+type+"' where user_id = '"+id+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     result = pstm.executeUpdate();//更新数据库中的数据
@@ -330,7 +325,7 @@ public class UserDataManager {
             @Override
             public void run() {
                 Connection myConn = myDBUtil.getConn(DB_NAME);
-                String sql = "update users set " + item+"='"+content+"' where ID = '"+id+"'";
+                String sql = "update users set " + item+"='"+content+"' where user_id = '"+id+"'";
                 try {
                     PreparedStatement pstm = myConn.prepareStatement(sql);
                     pstm.executeUpdate();//更新数据库中的数据
