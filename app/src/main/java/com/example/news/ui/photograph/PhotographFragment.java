@@ -216,7 +216,7 @@ import java.util.HashMap;
                     fos = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
                     if (requestCode == REQUEST_CODE_GENERAL_BASIC && resultCode == Activity.RESULT_OK) {
-                        RecognizeService.recGeneralBasic(getActivity().getApplicationContext(), file.getAbsolutePath(),
+                        RecognizeService.recAccurateBasic(getActivity().getApplicationContext(), file.getAbsolutePath(),
                                 new RecognizeService.ServiceListener() {
                                     @Override
                                     public void onResult(String result) {
