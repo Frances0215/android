@@ -20,11 +20,13 @@
 
 
 
-    <ImageView
+    <com.example.news.FontIconView
         android:id="@+id/imageView_wode"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/user4"
+        android:text="@string/account"
+        android:textSize="40dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
@@ -57,11 +59,13 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_account"
         >
 
-        <ImageView
+        <com.example.news.FontIconView
             android:id="@+id/imageView_password"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/password"
+            android:text="@string/psw"
+            android:textSize="40dp"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.15"

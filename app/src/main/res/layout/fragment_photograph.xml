@@ -25,13 +25,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.example.news.FontIconView
             android:id="@+id/mIvCamera"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/camera_white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
+            android:text="@string/camera"
+            android:textSize="150dp"
+            android:textColor="@color/white"
             />
 
         <TextView

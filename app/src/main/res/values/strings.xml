@@ -40,4 +40,19 @@
 
     <string name="BtnSend">发送</string>
 
+    <string name="girl">&#xe632;</string>
+    <string name="boy">&#xe611;</string>
+    <string name="camera">&#xe6ba;</string>
+    <string name="home">&#xe60b;</string>
+    <string name="search">&#xeafe;</string>
+    <string name="history">&#xe67d;</string>
+    <string name="comment">&#xe8c5;</string>
+    <string name="collect">&#xe86d;</string>
+    <string name="message">&#xe65b;</string>
+    <string name="menu">&#xeb71;</string>
+    <string name="account">&#xe61b;</string>
+    <string name="user_name">&#xe655;</string>
+    <string name="psw">&#xe619;</string>
+    <string name="repsw">&#xe60a;</string>
+
 </resources>

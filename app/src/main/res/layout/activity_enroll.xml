@@ -29,11 +29,13 @@
         app:layout_constraintTop_toBottomOf="@+id/mTvEnroll"
         app:layout_constraintVertical_bias="0.07">
 
-        <ImageView
+        <com.example.news.FontIconView
             android:id="@+id/mIvAccount"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/account"/>
+            android:text="@string/account"
+            android:textColor="@color/black"
+            android:textSize="40dp"/>
 
         <EditText
             android:id="@+id/mEtAccount"
@@ -56,11 +58,13 @@
         app:layout_constraintTop_toBottomOf="@+id/mLlAccount"
         app:layout_constraintVertical_bias="0.05">
 
-        <ImageView
+        <com.example.news.FontIconView
             android:id="@+id/mIvName"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/account"/>
+            android:textSize="40dp"
+            android:text="@string/user_name"
+            android:textColor="@color/black"/>
 
         <EditText
             android:id="@+id/mEtName"
@@ -83,11 +87,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mLlName">
 
-        <ImageView
+        <com.example.news.FontIconView
             android:id="@+id/imageView_password"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/password"
+            android:text="@string/psw"
+            android:textSize="40dp"
+            android:textColor="@color/black"
              />
 
         <EditText
@@ -129,11 +135,13 @@
         app:layout_constraintTop_toBottomOf="@+id/mLlPwd"
         app:layout_constraintVertical_bias="0.07">
 
-        <ImageView
+        <com.example.news.FontIconView
             android:id="@+id/imageView_resetPassword"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/password" />
+            android:text="@string/repsw"
+            android:textColor="@color/black"
+            android:textSize="40dp"/>
 
         <EditText
             android:id="@+id/mEtSure"
@@ -159,7 +167,7 @@
         android:layout_height="100dp"
         android:background="@drawable/button_enroll"
         android:drawableStart="@drawable/right2"
-        android:paddingLeft="30px"
+        android:paddingLeft="36px"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

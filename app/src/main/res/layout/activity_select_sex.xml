@@ -18,13 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.15"/>
 
-    <ImageView
+    <com.example.news.FontIconView
         android:id="@+id/mIvBoy"
         android:layout_width="400px"
         android:layout_height="500px"
         android:background="@drawable/button_boy"
         android:padding="30dp"
-        android:src="@drawable/boy"
+        android:text="@string/boy"
+        android:textSize="300px"
+        android:textColor="@color/white"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
@@ -44,13 +47,16 @@
         app:layout_constraintVertical_bias="0.05"
         app:layout_constraintHorizontal_bias="0.26"/>
 
-    <ImageView
+    <com.example.news.FontIconView
         android:id="@+id/mIvGirl"
         android:layout_width="400px"
         android:layout_height="500px"
         android:background="@drawable/button_girl"
         android:padding="30dp"
-        android:src="@drawable/girl"
+        android:text="@string/girl"
+        android:textSize="300px"
+        android:textColor="@color/white"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.85"
@@ -76,7 +82,7 @@
         android:layout_height="100dp"
         android:background="@drawable/button_enroll"
         android:drawableStart="@drawable/right2"
-        android:paddingLeft="30px"
+        android:paddingLeft="36px"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

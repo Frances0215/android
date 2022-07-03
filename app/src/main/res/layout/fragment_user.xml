@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.mine.UserProfileActivity">
+    tools:context=".ui.user.PeopleInfoActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
         android:layout_height="230dp"
         android:background="@drawable/bg_user"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20px">
+        >
 
         <TextView
             android:id="@+id/mTvName"
@@ -43,10 +43,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="0.25">
-            <ImageView
+            <com.example.news.FontIconView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/comment"
+                android:text="@string/comment"
+                android:textSize="50dp"
+                android:textColor="#7091f3"
                 android:layout_gravity="center_horizontal"
                 />
             <TextView
@@ -64,10 +66,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="0.25">
-            <ImageView
+            <com.example.news.FontIconView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/collection_full"
+                android:text="@string/collect"
+                android:textSize="50dp"
+                android:textColor="#ffcc0e"
                 android:layout_gravity="center_horizontal"
                 />
             <TextView
@@ -85,10 +89,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="0.25">
-            <ImageView
+            <com.example.news.FontIconView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/history"
+                android:text="@string/history"
+                android:textSize="50dp"
+                android:textColor="#ffa48f"
                 android:layout_gravity="center_horizontal"
                 />
             <TextView
@@ -106,10 +112,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="0.25">
-            <ImageView
+            <com.example.news.FontIconView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/message"
+                android:text="@string/message"
+                android:textSize="50dp"
+                android:textColor="#597be4"
                 android:layout_gravity="center_horizontal"
                 />
             <TextView

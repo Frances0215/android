@@ -68,12 +68,12 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.alibaba.fastjson.JSONObject;
-import com.chinamobile.cmss.sdk.ocr.ECloudDefaultClient;
-import com.chinamobile.cmss.sdk.ocr.http.constant.Region;
-import com.chinamobile.cmss.sdk.ocr.http.signature.Credential;
-import com.chinamobile.cmss.sdk.ocr.request.IECloudRequest;
-import com.chinamobile.cmss.sdk.ocr.request.ocr.OcrRequestFactory;
-import com.chinamobile.cmss.sdk.ocr.util.ImageUtil;
+//import com.chinamobile.cmss.sdk.ocr.ECloudDefaultClient;
+//import com.chinamobile.cmss.sdk.ocr.http.constant.Region;
+//import com.chinamobile.cmss.sdk.ocr.http.signature.Credential;
+//import com.chinamobile.cmss.sdk.ocr.request.IECloudRequest;
+//import com.chinamobile.cmss.sdk.ocr.request.ocr.OcrRequestFactory;
+//import com.chinamobile.cmss.sdk.ocr.util.ImageUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -85,14 +85,14 @@ import org.apache.http.client.HttpClient;
 
         public static String user_ak;
         private static String user_sk;
-        private static ECloudDefaultClient client;
-        static {
-
-            user_ak = "c5215af31af34b4dbea82ac010f8cdfe";
-            user_sk = "83f6ffb0f1c84604935acd23905c640e";
-            Credential credential = new Credential(user_ak, user_sk);
-            client = new ECloudDefaultClient(credential, Region.POOL_SZ);
-        }
+        //private static ECloudDefaultClient client;
+//        static {
+//
+//            user_ak = "c5215af31af34b4dbea82ac010f8cdfe";
+//            user_sk = "83f6ffb0f1c84604935acd23905c640e";
+//            Credential credential = new Credential(user_ak, user_sk);
+//            client = new ECloudDefaultClient(credential, Region.POOL_SZ);
+//        }
     private PhotographViewModel photographViewModel;
 
     private FrameLayout mFlCamera;
