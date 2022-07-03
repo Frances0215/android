@@ -44,8 +44,9 @@ public class NewsManager {
                     myNew.setTitle(rSet.getString("title"));
                     myNew.setPublisher(rSet.getString("publisher"));
                     myNew.setPublishTime(rSet.getString("publishTime"));
-                    myNew.setID(rSet.getString("ID"));
+                    myNew.setID(rSet.getString("news_id"));
                     myNew.setContents(rSet.getString("contents"));
+                    myNew.setType(rSet.getString("category"));
                     myNews.add(myNew);
                     Log.e(TAG, "数组组装成功");
                 }
@@ -75,7 +76,7 @@ public class NewsManager {
                     myNew.setTitle(rSet.getString("title"));
                     myNew.setPublisher(rSet.getString("publisher"));
                     myNew.setPublishTime(rSet.getString("publishTime"));
-                    myNew.setID(rSet.getString("ID"));
+                    myNew.setID(rSet.getString("news_id"));
                     myNew.setContents(rSet.getString("contents"));
                     myNew.setType(rSet.getString("category"));
                     myNews.add(myNew);
@@ -96,7 +97,7 @@ public class NewsManager {
         int i=0;
         Connection connection = myDBUtil.getConn(DB_NAME);
         if (connection != null) {
-            String sql = "UPDATE news SET contents = '"+content+"' where ID=0001"  ;
+            String sql = "UPDATE news SET contents = '"+content+"' where news_id=0001"  ;
             try {
                 java.sql.Statement statement = connection.createStatement();
                 i = statement.executeUpdate(sql);//得到数据库中的数据
@@ -126,7 +127,7 @@ public class NewsManager {
                     myNew.setTitle(rSet.getString("title"));
                     myNew.setPublisher(rSet.getString("publisher"));
                     myNew.setPublishTime(rSet.getString("publishTime"));
-                    myNew.setID(rSet.getString("ID"));
+                    myNew.setID(rSet.getString("news_id"));
                     myNew.setContents(rSet.getString("contents"));
                     myNew.setType(rSet.getString("category"));
                     myNews.add(myNew);
@@ -145,7 +146,7 @@ public class NewsManager {
         Connection connection = myDBUtil.getConn(DB_NAME);
         int value=0;
         if (connection != null) {
-            String sql = "insert into userClick(userID,newsID) values(?,?);";
+            String sql = "insert into user_click(userid,click_article_id) values(?,?);";
             try {
                 PreparedStatement pstm = connection.prepareStatement(sql);
                 //赋值

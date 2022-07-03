@@ -74,7 +74,7 @@ public class TabFragment extends Fragment {
                 News news_c = (News) parent.getItemAtPosition(position);
                 handler.obtainMessage(0,news_c).sendToTarget();
                 new Thread(new Runnable() {
-                    Handler handler;
+
                     @Override
                     public void run() {
 
@@ -186,6 +186,6 @@ public class TabFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        myLooper.quit();
+//        myLooper.quit();
     }
 }
