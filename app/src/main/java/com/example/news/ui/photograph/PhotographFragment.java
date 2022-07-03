@@ -43,6 +43,7 @@ import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
 import com.example.news.R;
+import com.example.news.ui.user.AppUsageActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,6 +109,14 @@ import java.util.HashMap;
     private Uri imageUri; //定位资源位置
     private String imageBase64;
 
+//        //定义回调接口,用于向activity中传值
+//        public interface MyListener{
+//            public void sendValue(String value);
+//        }
+//
+//        private MyListener myListener;
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         photographViewModel =
@@ -126,11 +135,7 @@ import java.util.HashMap;
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-
                 initAccessToken();
-
 
 //                user_ak = "c5215af31af34b4dbea82ac010f8cdfe";
 //                user_sk = "83f6ffb0f1c84604935acd23905c640e";
@@ -144,11 +149,7 @@ import java.util.HashMap;
                     }
                 });
 
-
-
     }
-
-
 
     public void takePhoto(View view) {
         if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
@@ -249,7 +250,11 @@ import java.util.HashMap;
         }
 
         private void infoPopText(final String result) {
-            Log.v("RESULT", result);
+            Intent intent = new Intent(getActivity(), PhotoResultActivity.class);
+            Bundle bundle=new Bundle();
+            bundle.putString("result",result);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
 
         private void initAccessToken() {
@@ -268,7 +273,14 @@ import java.util.HashMap;
             }, getActivity().getApplicationContext());
         }
 
-//        public static void textGeneral(String filepath) {
+//        @Override
+//        public void onAttach(@NonNull Context context) {
+//            super.onAttach(context);
+//            //获取实现接口的activity
+//            myListener = (MyListener) getActivity();//或者myListener=(MainActivity) context;
+//        }
+
+        //        public static void textGeneral(String filepath) {
 //            HashMap<String, Object> generalParams = new HashMap<>();
 //            JSONObject generalOptions = new JSONObject();
 //            generalOptions.put("rotate_180", true);

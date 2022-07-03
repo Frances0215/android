@@ -8,6 +8,8 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,7 @@ import com.example.news.DBUtils;
 import com.example.news.FontIconView;
 import com.example.news.R;
 import com.example.news.TypeManager;
+import com.example.news.UserData;
 import com.example.news.VoiceTrans;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -107,6 +110,7 @@ public class HomeFragment extends Fragment {
         mIvAdd = view.findViewById(R.id.mIvAdd);
         mFbRadioStart = view.findViewById(R.id.mFbRadioStart);
         mFbRadioStop = view.findViewById(R.id.mFbRadioStop);
+        mEtSearch = view.findViewById(R.id.mEtSearch);
 
         initTab();
         initTabViewpager();
@@ -152,7 +156,12 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void run() {
                             try {
-                                myTrans.voiceTrans(FILE_NAME);
+                                String result = myTrans.voiceTrans(FILE_NAME);
+                                Message message = new Message();
+                                message.obj =result;
+                                message.what = 0;
+                                mHandler.sendMessage(message);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -165,6 +174,23 @@ public class HomeFragment extends Fragment {
 
 
     }
+
+    final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    String searchFor = (String) msg.obj;
+                    mEtSearch.setText(searchFor);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
 
     private void initTabViewpager(){
         //添加适配器
@@ -226,12 +252,12 @@ public class HomeFragment extends Fragment {
 
     private void createAudioRecord() {
         recordBufsize = AudioRecord
-                .getMinBufferSize(44100,
+                .getMinBufferSize(16000,
                         AudioFormat.CHANNEL_IN_MONO,
                         AudioFormat.ENCODING_PCM_16BIT);
         Log.i("audioRecordTest", "size->" + recordBufsize);
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                44100,
+                16000,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
                 recordBufsize);
@@ -242,6 +268,9 @@ public class HomeFragment extends Fragment {
             return;
         }
         isRecording = true;
+        if(audioRecord==null) {
+            createAudioRecord();
+        }
         audioRecord.startRecording();
         Log.i("audioRecordTest", "开始录音");
         recordingThread = new Thread(() -> {
