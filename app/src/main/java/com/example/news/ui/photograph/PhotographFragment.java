@@ -37,6 +37,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+//import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.example.news.R;
 
 import java.io.File;
@@ -67,7 +72,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSONObject;
 //import com.chinamobile.cmss.sdk.ocr.ECloudDefaultClient;
 //import com.chinamobile.cmss.sdk.ocr.http.constant.Region;
 //import com.chinamobile.cmss.sdk.ocr.http.signature.Credential;
@@ -77,22 +82,23 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
-import org.apache.http.client.HttpClient;
+
+
+
 
 
 
     public class PhotographFragment extends Fragment  {
 
+        Activity context;
+
+
+        private static final int REQUEST_CODE_GENERAL_BASIC = 106;
         public static String user_ak;
         private static String user_sk;
-        //private static ECloudDefaultClient client;
-//        static {
-//
-//            user_ak = "c5215af31af34b4dbea82ac010f8cdfe";
-//            user_sk = "83f6ffb0f1c84604935acd23905c640e";
-//            Credential credential = new Credential(user_ak, user_sk);
-//            client = new ECloudDefaultClient(credential, Region.POOL_SZ);
-//        }
+//        private static ECloudDefaultClient client;
+        private boolean hasGotToken = false;
+
     private PhotographViewModel photographViewModel;
 
     private FrameLayout mFlCamera;
@@ -120,13 +126,26 @@ import org.apache.http.client.HttpClient;
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mFlCamera=view.findViewById(R.id.mFlCamera);
-        mFlCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePhoto(view);
-            }
-        });
+
+
+
+                initAccessToken();
+
+
+//                user_ak = "c5215af31af34b4dbea82ac010f8cdfe";
+//                user_sk = "83f6ffb0f1c84604935acd23905c640e";
+//                Credential credential = new Credential(user_ak, user_sk);
+//                client = new ECloudDefaultClient(credential, Region.POOL_SZ);
+                mFlCamera=view.findViewById(R.id.mFlCamera);
+                mFlCamera.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        takePhoto(view);
+                    }
+                });
+
+
+
     }
 
 
@@ -134,9 +153,14 @@ import org.apache.http.client.HttpClient;
     public void takePhoto(View view) {
         if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
             //执行拍照
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(hasGotToken){
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
+            }
+            else {
+                Log.v("ERROR","NO LIENCE");
+            }
 
-            startActivityForResult(intent, 1);
 //            takePic();
         }else{
             //去申请权限
@@ -150,6 +174,7 @@ import org.apache.http.client.HttpClient;
             super.onActivityResult(requestCode, resultCode, data);
 
             Log.v("phtograph","enterFile");
+
             if (resultCode == Activity.RESULT_OK){
                 String sdStatus = Environment.getExternalStorageState();
 
@@ -190,7 +215,17 @@ import org.apache.http.client.HttpClient;
                     Log.v("out",file.getAbsolutePath());
                     fos = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+                    if (requestCode == REQUEST_CODE_GENERAL_BASIC && resultCode == Activity.RESULT_OK) {
+                        RecognizeService.recGeneralBasic(getActivity().getApplicationContext(), file.getAbsolutePath(),
+                                new RecognizeService.ServiceListener() {
+                                    @Override
+                                    public void onResult(String result) {
+                                        infoPopText(result);
+                                    }
+                                });
+                    }
                 } catch (FileNotFoundException e) {
+                    Log.v("NNOOOOOOOO","no photo");
                     e.printStackTrace();
                 }finally {
                     try {
@@ -204,9 +239,34 @@ import org.apache.http.client.HttpClient;
 //                textGeneral(file.getAbsolutePath());
             }
 
+
+        }
+        private boolean checkTokenStatus() {
+            if (!hasGotToken) {
+                Toast.makeText(getActivity().getApplicationContext(), "token还未成功获取", Toast.LENGTH_LONG).show();
+            }
+            return hasGotToken;
         }
 
+        private void infoPopText(final String result) {
+            Log.v("RESULT", result);
+        }
 
+        private void initAccessToken() {
+            OCR.getInstance(getActivity().getApplicationContext()).initAccessToken(new OnResultListener<AccessToken>() {
+                @Override
+                public void onResult(AccessToken accessToken) {
+                    String token = accessToken.getAccessToken();
+                    hasGotToken = true;
+                }
+
+                @Override
+                public void onError(OCRError error) {
+                    error.printStackTrace();
+                    Log.v("licence方式获取token失败", error.getMessage());
+                }
+            }, getActivity().getApplicationContext());
+        }
 
 //        public static void textGeneral(String filepath) {
 //            HashMap<String, Object> generalParams = new HashMap<>();

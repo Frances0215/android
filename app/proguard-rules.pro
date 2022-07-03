@@ -43,3 +43,6 @@
 
         -dontwarn com.sdk.**
         -keep class com.sdk.** { *; }
+
+        -keep class com.baidu.ocr.sdk.**{*;}
+        -dontwarn com.baidu.ocr.**

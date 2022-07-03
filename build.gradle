@@ -1,8 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-        google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+
+//        google()
+//        jcenter()
 //        mavenCentral()
 //        maven {
 //            url "https://mvn.mob.com/android"
@@ -24,6 +27,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.1'
+
         //classpath "com.mob.sdk:MobSDK:2022.0512.1512"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -33,8 +37,11 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+
+//        google()
+//        jcenter()
 //        mavenCentral()
 //        maven() {
 //            url 'https://maven.aliyun.com/repository/jcenter'

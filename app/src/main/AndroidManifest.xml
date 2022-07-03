@@ -54,12 +54,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.News"
+        tools:replace="android:theme"
         android:name=".NewsAPP"
         android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
 
         >
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library android:name="org.apache.http.legacy" android:required="true"/>
 
         <activity android:name=".ui.home.Show_news_Activity"
             android:label="新闻阅读"/>

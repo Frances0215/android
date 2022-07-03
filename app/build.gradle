@@ -2,7 +2,11 @@
 plugins {
     id 'com.android.application'
 }
-
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 android {
 
     compileSdkVersion 30
@@ -67,6 +71,7 @@ android {
     //banner组件需要
 
 
+
 }
 
 dependencies {
@@ -85,19 +90,31 @@ dependencies {
 
     implementation files('libs\\mysql-connector-java-5.1.46-bin.jar')
     implementation files('libs\\Online_SDK.aar')
-//    implementation files('libs\\fastjson-2.0.3.android.jar')
+    implementation files('libs\\fastjson-2.0.3.android.jar')
 //    implementation files('libs\\httpclient-4.3.1.wso2v1.jar')
-    implementation files('libs\\fastjson-1.2.79.jar')
+//    implementation files('libs\\fastjson-1.2.79.jar')
+//    implementation(fileTree("libs"))
     implementation files('libs\\httpclient-4.5.8.jar')
+
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(name: 'ocrsdk', ext: 'aar')
+//    implementation(name: 'baidu-ocr-sdk-base-release', ext: 'aar')
+//    implementation(name: 'baidu-ocr-sdk-bankcard-ui-release', ext: 'aar')
+//    implementation(name: 'baidu-ocr-sdk-idcard-ui-release', ext: 'aar')
+
+
+//    api 'org.apache.httpcomponents:httpcore:4.4.6'
+//    api 'org.apache.httpcomponents:httpmime:4.3.6'
+//        api 'org.apache.httpcomponents:httpcore:4.4.10'
 //    implementation files('libs\\org.apache.http.legacy.jar')
 //    api files('libs\\ecloud-sdk-ocr-1.5.3-jar-with-dependencies.jar')
-//    implementation files('libs\\ecloud-sdk-ocr-1.5.3-jar-with-dependencies.jar')
+//    api files('libs\\ecloud-sdk-ocr-1.5.3-jar-with-dependencies.jar')
 
 
 //    implementation files('libs\\org.apache.http.legacy.jar')
 //    implementation group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
-//    implementation 'org.apache.httpcomponents:httpcore:4.4.10'
-//    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
+
+//    api 'org.apache.httpcomponents:httpclient:4.5.6'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
