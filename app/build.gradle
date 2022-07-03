@@ -4,9 +4,10 @@ plugins {
 }
 
 android {
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    useLibrary 'org.apache.http.legacy'
 //    极光配置，一键登录
 //    sourceSets{
 //        main{
@@ -20,6 +21,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
 
 //        ndk {
 //            //兼容的 cpu 类型
@@ -77,6 +79,14 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation files('libs\\mysql-connector-java-5.1.46-bin.jar')
     implementation files('libs/Online_SDK.aar')
+//    implementation files('libs\\org.apache.http.legacy.jar')
+    api files('libs\\ecloud-sdk-ocr-1.5.3-jar-with-dependencies.jar')
+
+
+//    implementation files('libs\\org.apache.http.legacy.jar')
+//    implementation group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+//    implementation 'org.apache.httpcomponents:httpcore:4.4.10'
+//    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

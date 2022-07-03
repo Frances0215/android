@@ -67,13 +67,32 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.cmss.sdk.ocr.ECloudDefaultClient;
+import com.chinamobile.cmss.sdk.ocr.http.constant.Region;
+import com.chinamobile.cmss.sdk.ocr.http.signature.Credential;
+import com.chinamobile.cmss.sdk.ocr.request.IECloudRequest;
+import com.chinamobile.cmss.sdk.ocr.request.ocr.OcrRequestFactory;
+import com.chinamobile.cmss.sdk.ocr.util.ImageUtil;
 
+import java.io.File;
+import java.util.HashMap;
+import org.apache.http.client.HttpClient;
 
 
 
     public class PhotographFragment extends Fragment  {
 
+        public static String user_ak;
+        private static String user_sk;
+        private static ECloudDefaultClient client;
+        static {
 
+            user_ak = "c5215af31af34b4dbea82ac010f8cdfe";
+            user_sk = "83f6ffb0f1c84604935acd23905c640e";
+            Credential credential = new Credential(user_ak, user_sk);
+            client = new ECloudDefaultClient(credential, Region.POOL_SZ);
+        }
     private PhotographViewModel photographViewModel;
 
     private FrameLayout mFlCamera;
@@ -144,7 +163,7 @@ import android.widget.Button;
 
                 Bundle bundle = data.getExtras();
                 Bitmap bitmap = (Bitmap) bundle.get("data");
-
+                Log.v("bitmap",bitmap.toString());
                 File dir=new File(getActivity().getExternalFilesDir(null).getPath()+"/");
                 Log.v("",dir.getAbsolutePath());
                 if (!dir.exists()){
@@ -168,6 +187,7 @@ import android.widget.Button;
 
                 try {
 //                    System.out.println(fileName);
+                    Log.v("out",file.getAbsolutePath());
                     fos = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
                 } catch (FileNotFoundException e) {
@@ -181,10 +201,49 @@ import android.widget.Button;
                     }
 
                 }
+//                textGeneral(file.getAbsolutePath());
             }
+
         }
 
 
+
+//        public static void textGeneral(String filepath) {
+//            HashMap<String, Object> generalParams = new HashMap<>();
+//            JSONObject generalOptions = new JSONObject();
+//            generalOptions.put("rotate_180", true);
+//            generalOptions.put("language", "zh");
+//            generalParams.put("options", generalOptions);
+//            String img_path =  filepath; //把这里路径换成图片存储路径就行
+//            //参数为图片路径
+//            IECloudRequest generalRequest = OcrRequestFactory.getOcrRequest("/api/ocr/v1/general", img_path, generalParams);
+//
+//            //参数为图片的base64编码
+//            IECloudRequest generalRequestBase64 = OcrRequestFactory.getOcrBase64Request("/api/ocr/v1/general",
+//                    ImageUtil.fileToBase64(img_path),generalParams);
+//
+//            try {
+//                JSONObject response = (JSONObject) client.call(generalRequest);
+//                String content = response.toString();
+//                System.out.println(content);
+//                String output = "";
+//                for(int i = 0; i + 13 < content.length(); i++) {
+//                    if (content.charAt(i) == 'i' && content.charAt(i + 1) == 't' && content.charAt(i + 2) == 'e' && content.charAt(i + 3) == 'm' && content.charAt(i + 4) == 's' && content.charAt(i + 5) == 't' && content.charAt(i + 6) == 'r' && content.charAt(i + 7) == 'i' && content.charAt(i + 8) == 'n' && content.charAt(i + 9) == 'g') {
+//                        i += 13;
+//                        while (content.charAt(i) != '\"') {
+//                            output += Character.toString(content.charAt(i));
+//                            i++;
+//                            //System.out.println(output);
+//                        }
+//                    }
+//                }
+//                JSONObject responseBase64 = (JSONObject) client.call(generalRequestBase64);
+//                System.out.println(output);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 
 //

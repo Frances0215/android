@@ -71,28 +71,28 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }).start();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                login_sp = getSharedPreferences("userInfo", MODE_PRIVATE);
-                String id=login_sp.getString("USER_ID", "");
-                String pwd =login_sp.getString("PASSWORD", "");
-
-                boolean choseRemember =login_sp.getBoolean("mRememberCheck", false);
-                boolean choseAutoLogin =login_sp.getBoolean("mAutologinCheck", false);
-                boolean isLogin = mUserDataManager.isUserValid(id,pwd);
-                //boolean isLogin =false;
-                if(!isLogin){
-                    Intent intent_Login = new Intent(MainActivity.this,LoginActivity.class) ;    //切换Login Activity至User Activity
-                    startActivity(intent_Login);
-                    finish();
-                }else {
-                    NewsAPP mNews = (NewsAPP)getApplicationContext();
-                    mNews.setPwd(pwd);
-                    mNews.setUserID(id);
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                login_sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+//                String id=login_sp.getString("USER_ID", "");
+//                String pwd =login_sp.getString("PASSWORD", "");
+//
+//                boolean choseRemember =login_sp.getBoolean("mRememberCheck", false);
+//                boolean choseAutoLogin =login_sp.getBoolean("mAutologinCheck", false);
+//                boolean isLogin = mUserDataManager.isUserValid(id,pwd);
+//                //boolean isLogin =false;
+//                if(!isLogin){
+//                    Intent intent_Login = new Intent(MainActivity.this,LoginActivity.class) ;    //切换Login Activity至User Activity
+//                    startActivity(intent_Login);
+//                    finish();
+//                }else {
+//                    NewsAPP mNews = (NewsAPP)getApplicationContext();
+//                    mNews.setPwd(pwd);
+//                    mNews.setUserID(id);
+//                }
+//            }
+//        }).start();
 
 
     }
