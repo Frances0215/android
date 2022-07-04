@@ -43,6 +43,7 @@ import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
 import com.example.news.R;
+import com.example.news.ui.user.AppUsageActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -265,8 +266,11 @@ import java.util.HashMap;
         }
 
         private void infoPopText(final String result) {
-
-        Log.v("RESULT", result);
+            Intent intent = new Intent(getActivity(), PhotoResultActivity.class);
+            Bundle bundle=new Bundle();
+            bundle.putString("result",result);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
 
         private void initAccessToken() {

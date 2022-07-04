@@ -63,7 +63,7 @@ public class VoiceTrans {
         }
         return "调用完成";
     }
-    public static void voiceTrans(String file) throws Exception {
+    public static String voiceTrans(String file) throws Exception {
         //TODO 替换为本地https证书文件全路径，证书文件通过运行 InstallCert 得到(先不管这个)
         //System.setProperty("javax.net.ssl.trustStore", "C:\\Users\\Lenovo\\Desktop\\demo2\\jssecacerts");
         sid = UUID.randomUUID().toString();
@@ -86,7 +86,8 @@ public class VoiceTrans {
         //String file = "C:\\Users\\Lenovo\\Desktop\\16k_test.pcm";
         String msg = sendFile(file, sessionParam, 40960);
         System.out.println(msg);
-        getResult();
+        String result = getResult();
+        return result;
     }
 
 
@@ -142,7 +143,8 @@ public class VoiceTrans {
             }
         }
     }
-    public static void getResult() throws Exception {
+    public static String getResult() throws Exception {
+        String output = "";
         ApiUrlTest urlTest = new ApiUrlTest();
         String urlpath = urlTest.doSignature(url2, "GET", accessKey, secret);
         iatHttpUrl = gatewayAddress + urlpath;
@@ -158,7 +160,7 @@ public class VoiceTrans {
             System.out.println("转写结果：" + jsonObject);
             String content = jsonObject.toString();
             //System.out.println(content);
-            String output = "";
+
             for(int i = 0; i + 13 < content.length(); i++) {
                 if (content.charAt(i) == '[' && content.charAt(i + 1) == '{' && content.charAt(i + 2) == '\\' && content.charAt(i + 3) == '\"' && content.charAt(i + 4) == 'w' && content.charAt(i + 5) == '\\' && content.charAt(i + 6) == '\"' && content.charAt(i + 7) == ':' && content.charAt(i + 8) == '\\' && content.charAt(i + 9) == '\"') {
                     i += 10;
@@ -173,5 +175,7 @@ public class VoiceTrans {
         } else {
             System.out.println("无转写结果");
         }
+        return output;
     }
+
 }

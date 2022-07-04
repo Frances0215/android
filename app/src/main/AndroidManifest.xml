@@ -87,6 +87,7 @@
         <activity android:name=".ui.user.PeopleInfoActivity"/>
         <activity android:name=".ui.user.QAAActivity"/>
         <activity android:name=".ui.user.ThemeActivity"/>
+        <activity android:name=".ui.photograph.PhotoResultActivity"/>
 <!--        //一键登录-->
 <!--        <activity android:name="cn.jiguang.demo.jverification.MainActivity"-->
 <!--            tools:ignore="MissingClass" />-->
