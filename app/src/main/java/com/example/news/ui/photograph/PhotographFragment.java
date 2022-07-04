@@ -220,7 +220,23 @@ import java.util.HashMap;
                                 new RecognizeService.ServiceListener() {
                                     @Override
                                     public void onResult(String result) {
-                                        infoPopText(result);
+                                        String d="";
+                                        String[] tempa=result.split("]");
+                                        String[] temp=tempa[0].split("\"words\":");
+                                        if(temp.length>1){
+
+                                            for(int i=1;i<temp.length;i++){
+                                                d=d+temp[i];
+                                            }
+                                            d=d.replace("\"","");
+                                            d=d.replace("{","");
+                                            d=d.replace(",","");
+                                        }
+                                        else{
+                                            d="无结果";
+                                        }
+
+                                    infoPopText(d);
                                     }
                                 });
                     }
@@ -249,7 +265,8 @@ import java.util.HashMap;
         }
 
         private void infoPopText(final String result) {
-            Log.v("RESULT", result);
+
+        Log.v("RESULT", result);
         }
 
         private void initAccessToken() {
