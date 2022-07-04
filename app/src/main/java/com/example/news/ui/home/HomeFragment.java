@@ -1,11 +1,14 @@
 package com.example.news.ui.home;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -16,11 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -35,7 +41,9 @@ import com.example.news.FontIconView;
 import com.example.news.R;
 import com.example.news.TypeManager;
 import com.example.news.UserData;
+import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
+import com.example.news.ui.user.PeopleInfoActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -55,24 +63,24 @@ public class HomeFragment extends Fragment {
     private DBUtils myDb ;
     private FontIconView mIvAdd;
     private FloatingActionButton mFbRadioStart;
-    private FloatingActionButton mFbRadioStop;
+    //private FloatingActionButton mFbRadioStop;
     //tab内容，这只是数据库中的type类型不包括推荐类型
     private ArrayList<String> myTypeTab = new ArrayList<>();
     private List<TabFragment> tabFragmentList = new ArrayList<>();
     private List<News> myNews;
-
+//    private final String FILE_NAME = getContext().getFilesDir().getPath().toString()+"/test.pcm";
     private TypeManager myTypeManager;
 
 
-    private static final String FILE_NAME = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator + "test.pcm";
-
-    private AudioRecord audioRecord;
-    private int recordBufsize = 0;
-    private boolean isRecording = false;
+//    private static final String FILE_NAME = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator + "test.pcm";
+//
+//    private AudioRecord audioRecord;
+//    private int recordBufsize = 0;
+//    private boolean isRecording = false;
 
     private VoiceTrans myTrans = new VoiceTrans();
-
-    private Thread recordingThread;
+    private VoiceRecord myVoice = new VoiceRecord();
+    //private Thread recordingThread;
 
 
     public HomeFragment() {
@@ -109,7 +117,7 @@ public class HomeFragment extends Fragment {
         mVpNews = view.findViewById(R.id.view_pager);
         mIvAdd = view.findViewById(R.id.mIvAdd);
         mFbRadioStart = view.findViewById(R.id.mFbRadioStart);
-        mFbRadioStop = view.findViewById(R.id.mFbRadioStop);
+       // mFbRadioStop = view.findViewById(R.id.mFbRadioStop);
         mEtSearch = view.findViewById(R.id.mEtSearch);
 
         initTab();
@@ -138,39 +146,108 @@ public class HomeFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, 2000);
         }
 
-        createAudioRecord();
 
-        //语音输入
+
+        //语音输入开始
         mFbRadioStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startRecord();
-            }
-        });
+                //myVoice.startRecord(myVoice.getFileName());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        mFbRadioStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopRecord();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                String result = myTrans.voiceTrans(FILE_NAME);
-                                Message message = new Message();
-                                message.obj =result;
-                                message.what = 0;
-                                mHandler.sendMessage(message);
+                View view2 = View.inflate(getContext(), R.layout.voice_input, null);
+                final LinearLayout mLlVoice = (LinearLayout) view2.findViewById(R.id.mLlVoice);
+                builder.setView(view2).setPositiveButton("结束语音输入", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        myVoice.stopRecord();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    //String result = myTrans.voiceTrans(myVoice.getFileName());
+                                    String result = "哈哈";
+                                    Message message = new Message();
+                                    message.obj =result;
+                                    message.what = 0;
+                                    mHandler.sendMessage(message);
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    }).start();
+                        }).start();
+                    }
+                });
+//                builder.create();
+//                AlertDialog dialog = builder.show();
+//
+//                builder.setView(view2).setPositiveButton("结束语音输入", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                });
+                //builder.setView(view2);
+                builder.create();
+                AlertDialog dialog = builder.show();
+                dialog.getWindow().setLayout(1000,800);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(30);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                mLlVoice.setOnClickListener(new View.OnClickListener() {
 
+                    @Override
+
+                    public void onClick(View v) {
+                        myVoice.stopRecord();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    //String result = myTrans.voiceTrans(myVoice.getFileName());
+                                    //String result = myTrans.voiceTrans(FILE_NAME);
+                                    String result="哈哈";
+                                    Message message = new Message();
+                                    message.obj =result;
+                                    message.what = 0;
+                                    mHandler.sendMessage(message);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
+                        dialog.dismiss();
+                    }
+                });
 
             }
         });
+
+        //语音输入结束
+//        mFbRadioStop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                myVoice.stopRecord();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                String result = myTrans.voiceTrans(myVoice.getFileName());
+//                                Message message = new Message();
+//                                message.obj =result;
+//                                message.what = 0;
+//                                mHandler.sendMessage(message);
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }).start();
+//
+//
+//            }
+//        });
 
 
     }
@@ -250,75 +327,75 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void createAudioRecord() {
-        recordBufsize = AudioRecord
-                .getMinBufferSize(16000,
-                        AudioFormat.CHANNEL_IN_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT);
-        Log.i("audioRecordTest", "size->" + recordBufsize);
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                16000,
-                AudioFormat.CHANNEL_IN_MONO,
-                AudioFormat.ENCODING_PCM_16BIT,
-                recordBufsize);
-    }
-
-    private void startRecord() {
-        if (isRecording) {
-            return;
-        }
-        isRecording = true;
-        if(audioRecord==null) {
-            createAudioRecord();
-        }
-        audioRecord.startRecording();
-        Log.i("audioRecordTest", "开始录音");
-        recordingThread = new Thread(() -> {
-            byte data[] = new byte[recordBufsize];
-            File file = new File(FILE_NAME);
-            FileOutputStream os = null;
-            try {
-                if (!file.exists()) {
-                    file.createNewFile();
-                    Log.i("audioRecordTest", "创建录音文件->" + FILE_NAME);
-                }
-                os = new FileOutputStream(file);//从头开始覆盖写入
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            int read;
-            if (os != null) {
-                while (isRecording) {
-                    read = audioRecord.read(data, 0, recordBufsize);
-                    if (AudioRecord.ERROR_INVALID_OPERATION != read) {
-                        try {
-                            os.write(data);
-                            Log.i("audioRecordTest", "写录音数据->" + read+FILE_NAME);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-            try {
-                os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        recordingThread.start();
-    }
-
-    private void stopRecord() {
-        isRecording = false;
-        if (audioRecord != null) {
-            audioRecord.stop();
-            Log.i("audioRecordTest", "停止录音");
-            audioRecord.release();
-            audioRecord = null;
-            recordingThread = null;
-        }
-    }
+//    private void createAudioRecord() {
+//        recordBufsize = AudioRecord
+//                .getMinBufferSize(16000,
+//                        AudioFormat.CHANNEL_IN_MONO,
+//                        AudioFormat.ENCODING_PCM_16BIT);
+//        Log.i("audioRecordTest", "size->" + recordBufsize);
+//        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
+//                16000,
+//                AudioFormat.CHANNEL_IN_MONO,
+//                AudioFormat.ENCODING_PCM_16BIT,
+//                recordBufsize);
+//    }
+//
+//    private void startRecord() {
+//        if (isRecording) {
+//            return;
+//        }
+//        isRecording = true;
+//        if(audioRecord==null) {
+//            createAudioRecord();
+//        }
+//        audioRecord.startRecording();
+//        Log.i("audioRecordTest", "开始录音");
+//        recordingThread = new Thread(() -> {
+//            byte data[] = new byte[recordBufsize];
+//            File file = new File(FILE_NAME);
+//            FileOutputStream os = null;
+//            try {
+//                if (!file.exists()) {
+//                    file.createNewFile();
+//                    Log.i("audioRecordTest", "创建录音文件->" + FILE_NAME);
+//                }
+//                os = new FileOutputStream(file);//从头开始覆盖写入
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            int read;
+//            if (os != null) {
+//                while (isRecording) {
+//                    read = audioRecord.read(data, 0, recordBufsize);
+//                    if (AudioRecord.ERROR_INVALID_OPERATION != read) {
+//                        try {
+//                            os.write(data);
+//                            Log.i("audioRecordTest", "写录音数据->" + read+FILE_NAME);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//            try {
+//                os.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        recordingThread.start();
+//    }
+//
+//    private void stopRecord() {
+//        isRecording = false;
+//        if (audioRecord != null) {
+//            audioRecord.stop();
+//            Log.i("audioRecordTest", "停止录音");
+//            audioRecord.release();
+//            audioRecord = null;
+//            recordingThread = null;
+//        }
+//    }
 
 
     @Override

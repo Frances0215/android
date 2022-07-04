@@ -37,7 +37,7 @@ public class TabFragment extends Fragment {
     private List<News> myNews = new ArrayList<>();
     private NewsManager mNewsManager;
 
-    private Handler handler;
+    //private Handler handler;
     private Looper myLooper;
 
     public static TabFragment newInstance(String label) {
@@ -67,36 +67,16 @@ public class TabFragment extends Fragment {
         //新闻类别
         String label = getArguments().getString("label");
         initNews(label);
-
+        ClickThread myThread = new ClickThread();
+        myThread.start();
         mLvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news_c = (News) parent.getItemAtPosition(position);
-                handler.obtainMessage(0,news_c).sendToTarget();
-                new Thread(new Runnable() {
 
-                    @Override
-                    public void run() {
-
-                        Looper.prepare();
-                        handler = new Handler() {
-                            @Override
-                            public void handleMessage(@NonNull Message msg) {
-                                super.handleMessage(msg);
-                                //Toast.makeText(SecondActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
-                                News n = (News) msg.obj;
-                                String news_id=n.getID();
-                                NewsAPP mApp = (NewsAPP)getActivity().getApplication();
-                                String user_id = mApp.getID();
-                                mNewsManager.newsClickEvent(user_id,news_id);
-                            }
-                        };
-                        myLooper = Looper.myLooper();
-                        Looper.loop();
-
-                    }
-                }).start();
-
+                Message msg = Message.obtain();
+                msg.obj = news_c;
+                myThread.handler.sendMessage(msg);
 
                 //跳转页面，并传递参数
                 Bundle bundle = new Bundle();
@@ -107,6 +87,33 @@ public class TabFragment extends Fragment {
             }
         });
     }
+
+
+    class ClickThread extends Thread{
+        public Handler handler;
+        @Override
+        public void run() {
+            super.run();
+            Looper.prepare();
+            handler = new Handler() {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    //Toast.makeText(SecondActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+                    News n = (News) msg.obj;
+                    Log.i("子线程",n.getID());
+                    String news_id=n.getID();
+                    NewsAPP mApp = (NewsAPP)getActivity().getApplication();
+                    String user_id = mApp.getID();
+                    mNewsManager.newsClickEvent(user_id,news_id);
+                }
+            };
+            myLooper = Looper.myLooper();
+            Looper.loop();
+
+        }
+    }
+
 
     @Override
     public void onStart() {
@@ -189,3 +196,5 @@ public class TabFragment extends Fragment {
 //        myLooper.quit();
     }
 }
+
+

@@ -21,7 +21,7 @@ public class NewsManager {
     public static final String TITLE = "title";
     public static final String PUBLISHER = "publisher";
     public static final String TYPE = "category";
-    public static final String PUBLISH_TIME = "publishtime";
+    public static final String PUBLISH_TIME = "publish_time";
     public static final String CONTENT="contents";
     private static final String DB_NAME = "newsRec";
     private static DBUtils myDBUtil=new DBUtils();;
@@ -42,8 +42,8 @@ public class NewsManager {
                     //columnLabel是属性名
                     News myNew = new News(null, null, null, null, null, null);
                     myNew.setTitle(rSet.getString("title"));
-                    myNew.setPublisher(rSet.getString("publisher"));
-                    myNew.setPublishTime(rSet.getString("publishTime"));
+                    //myNew.setPublisher(rSet.getString("publisher"));
+                    myNew.setPublishTime(rSet.getString("publish_time"));
                     myNew.setID(rSet.getString("news_id"));
                     myNew.setContents(rSet.getString("contents"));
                     myNew.setType(rSet.getString("category"));
@@ -74,8 +74,8 @@ public class NewsManager {
                     //columnLabel是属性名
                     News myNew = new News(null, null, null, null, null, null);
                     myNew.setTitle(rSet.getString("title"));
-                    myNew.setPublisher(rSet.getString("publisher"));
-                    myNew.setPublishTime(rSet.getString("publishTime"));
+                    //myNew.setPublisher(rSet.getString("publisher"));
+                    myNew.setPublishTime(rSet.getString("publish_time"));
                     myNew.setID(rSet.getString("news_id"));
                     myNew.setContents(rSet.getString("contents"));
                     myNew.setType(rSet.getString("category"));
@@ -125,8 +125,8 @@ public class NewsManager {
                     //columnLabel是属性名
                     News myNew = new News(null, null, null, null, null, null);
                     myNew.setTitle(rSet.getString("title"));
-                    myNew.setPublisher(rSet.getString("publisher"));
-                    myNew.setPublishTime(rSet.getString("publishTime"));
+                    //myNew.setPublisher(rSet.getString("publisher"));
+                    myNew.setPublishTime(rSet.getString("publish_time"));
                     myNew.setID(rSet.getString("news_id"));
                     myNew.setContents(rSet.getString("contents"));
                     myNew.setType(rSet.getString("category"));
@@ -146,7 +146,7 @@ public class NewsManager {
         Connection connection = myDBUtil.getConn(DB_NAME);
         int value=0;
         if (connection != null) {
-            String sql = "insert into user_click(userid,click_article_id) values(?,?);";
+            String sql = "insert into user_click(user_id,click_article_id) values(?,?);";
             try {
                 PreparedStatement pstm = connection.prepareStatement(sql);
                 //赋值
@@ -162,4 +162,26 @@ public class NewsManager {
         Log.e(TAG, "数组已返回");
         return value;
     }
+
+    public void showClickEvent(){
+        Connection connection = myDBUtil.getConn(DB_NAME);
+        if (connection != null) {
+            String sql = "select * from user_click";
+            try {
+                java.sql.Statement statement = connection.createStatement();
+                ResultSet rSet = statement.executeQuery(sql);
+                while (rSet.next()){
+                    Log.e(TAG, rSet.getString("user_id"));
+                    Log.e(TAG, rSet.getString("click_article_id"));
+                }
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+    }
+
 }

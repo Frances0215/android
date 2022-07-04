@@ -54,5 +54,6 @@
     <string name="user_name">&#xe655;</string>
     <string name="psw">&#xe619;</string>
     <string name="repsw">&#xe60a;</string>
+    <string name="voice">&#xe8f7;</string>
 
 </resources>
