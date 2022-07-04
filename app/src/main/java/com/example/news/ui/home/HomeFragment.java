@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -152,7 +153,7 @@ public class HomeFragment extends Fragment {
         mFbRadioStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //myVoice.startRecord(myVoice.getFileName());
+                myVoice.startRecord(myVoice.getFileName());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                 View view2 = View.inflate(getContext(), R.layout.voice_input, null);
@@ -165,8 +166,8 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void run() {
                                 try {
-                                    //String result = myTrans.voiceTrans(myVoice.getFileName());
-                                    String result = "哈哈";
+                                    String result = myTrans.voiceTrans(myVoice.getFileName());
+                                    //String result = "哈哈";
                                     Message message = new Message();
                                     message.obj =result;
                                     message.what = 0;
@@ -179,21 +180,20 @@ public class HomeFragment extends Fragment {
                         }).start();
                     }
                 });
-//                builder.create();
-//                AlertDialog dialog = builder.show();
-//
-//                builder.setView(view2).setPositiveButton("结束语音输入", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-                //builder.setView(view2);
+
                 builder.create();
                 AlertDialog dialog = builder.show();
                 dialog.getWindow().setLayout(1000,800);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(30);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+
+                //设置确定按钮的位置大小
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextSize(35);
+                positiveButton.setTextColor(Color.BLACK);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+                layoutParams.weight = 10;
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setLayoutParams(layoutParams);
+                //设置使点击空白处不能关闭
+                dialog.setCanceledOnTouchOutside(false);
                 mLlVoice.setOnClickListener(new View.OnClickListener() {
 
                     @Override
@@ -204,9 +204,9 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void run() {
                                 try {
-                                    //String result = myTrans.voiceTrans(myVoice.getFileName());
+                                    String result = myTrans.voiceTrans(myVoice.getFileName());
                                     //String result = myTrans.voiceTrans(FILE_NAME);
-                                    String result="哈哈";
+                                    //String result="哈哈";
                                     Message message = new Message();
                                     message.obj =result;
                                     message.what = 0;

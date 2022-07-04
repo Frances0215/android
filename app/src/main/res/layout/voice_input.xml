@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:id="@+id/mLlVoice">
+    android:id="@+id/mLlVoice"
+    android:layout_marginTop="30dp">
 
     <com.example.news.FontIconView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/voice"
-        android:textSize="100dp"
+        android:textSize="150dp"
         android:textColor="@color/black"
         android:layout_gravity="center"/>
 
