@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.news.R;
 
+import java.util.Collections;
 import java.util.List;
 
 //主页面适配器
@@ -26,8 +27,14 @@ public class MyNewsListAdapter extends ArrayAdapter<News>{
     public MyNewsListAdapter(@NonNull FragmentActivity context, int resource, @NonNull List<News> objects) {
         super(context, resource, objects);
         myContext = context;
+        Collections.reverse(objects);
         myNews = objects;
         resourceId = resource;
+    }
+
+    public void setMyNews(List<News> news){
+        Collections.reverse(news);
+        this.myNews = news;
     }
 
     @NonNull
@@ -39,7 +46,6 @@ public class MyNewsListAdapter extends ArrayAdapter<News>{
         if(convertView == null){
             view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
             holder.mTvTitle = view.findViewById(R.id.mTvTitle);
-            holder.mTvPublish = view.findViewById(R.id.mTvPublish);
             holder.mTvDate = view.findViewById(R.id.mTvDate);
             view.setTag(holder);
         }else{
@@ -48,7 +54,6 @@ public class MyNewsListAdapter extends ArrayAdapter<News>{
         }
 
         holder.mTvTitle.setText(news.getTitle());
-        holder.mTvPublish.setText(news.getPublisher());
         holder.mTvDate.setText(news.getPublishTime());
 
         return view;
@@ -56,7 +61,6 @@ public class MyNewsListAdapter extends ArrayAdapter<News>{
 
     class ViewHolder{
         TextView mTvTitle;
-        TextView mTvPublish;
         TextView mTvDate;
     }
 }

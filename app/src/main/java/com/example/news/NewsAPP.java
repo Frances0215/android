@@ -3,6 +3,7 @@ package com.example.news;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 //用于存放全局变量
 public class NewsAPP extends Application {
@@ -12,6 +13,12 @@ public class NewsAPP extends Application {
     private ArrayList<String> my_news_type = new ArrayList<String>();
     private static final int DB_VERSION = 2;
     private static final String DB_NAME = "Data2.dp";
+
+    private HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+    public HashMap<String, Integer> getMap() {
+        return map;
+    }
 
     public ArrayList<String> getMy_news_type() {
         return my_news_type;

@@ -61,12 +61,14 @@ public class NewsManager {
 
     }
 
-    //根据新闻类型得到新闻
-    public static List<News> getNewsByType(String type) {
+    //根据新闻类型得到新闻,每次往后获取十条
+    public static List<News> getNewsByType(String type, Integer start) {
         List<News> myNews = new ArrayList<>();
         Connection connection = myDBUtil.getConn(DB_NAME);
+        String sql;
         if (connection != null) {
-            String sql = "select * from news where category = '" + type +"'";
+            int flag = start*10;
+            sql = "select * from news where category = '" + type +"' order by news_id limit "+flag+",10";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
@@ -113,11 +115,12 @@ public class NewsManager {
     }
 
     //得到推荐的新闻
-    public static List<News> getRecByUserId(String ID) {
+    public static List<News> getRecByUserId(String ID, Integer start) {
         List<News> myNews = new ArrayList<>();
         Connection connection = myDBUtil.getConn(DB_NAME);
         if (connection != null) {
-            String sql = "select * from rec where user_ID = '" + ID +"'";
+            int flag = start*10;
+            String  sql = "select * from itemcf_baseline where user_ID = '" + ID +"' limit "+flag+",10";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据

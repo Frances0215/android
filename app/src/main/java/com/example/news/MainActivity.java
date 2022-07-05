@@ -59,15 +59,15 @@ public class MainActivity extends AppCompatActivity {
 //        TypeManager typeManager = new TypeManager(this);
 //        typeManager.openDataBase();
 //        typeManager.delectAllType();
-        NewsManager mNewsManager = new NewsManager(this);
+//        NewsManager mNewsManager = new NewsManager(this);
 //
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mNewsManager.showClickEvent();
-
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                mNewsManager.showClickEvent();
+//
+//            }
+//        }).start();
 
         new Thread(new Runnable() {
             @Override
@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
 
+
     }
+
 
 
     @Override

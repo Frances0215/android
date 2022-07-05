@@ -36,62 +36,88 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/主题色"
-            app:tabTextAppearance="@style/TabLayoutTheme"
-            app:tabTextColor="@color/主题色"
-            />
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-        <com.example.news.FontIconView
-            android:id="@+id/mIvAdd"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="@string/menu"
-            android:textSize="100px"
-            android:textColor="@color/black"/>
+            <Button
+                android:id="@+id/mBtRefresh"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:background="@drawable/bt_search"
+                android:text="搜索"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/mFbRadioStart"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="5"
+                android:background="@drawable/bt_search"
+                android:text="语音搜索"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="10dp">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="@color/主题色"
+                    app:tabTextAppearance="@style/TabLayoutTheme"
+                    app:tabTextColor="@color/主题色" />
+
+                <com.example.news.FontIconView
+                    android:id="@+id/mIvAdd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/menu"
+                    android:textColor="@color/black"
+                    android:textSize="100px" />
+
+            </LinearLayout>
+
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tab_layout"
+                tools:ignore="NotSibling" />
+
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/tab_layout"
-            tools:ignore="NotSibling" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/mFbRadioStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/主题色"
-            android:src="@drawable/radio"
-            app:layout_anchor="@id/view_pager" />
-
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-    </RelativeLayout>
 
 </LinearLayout>

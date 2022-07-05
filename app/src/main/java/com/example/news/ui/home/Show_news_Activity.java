@@ -78,9 +78,9 @@ public class Show_news_Activity extends AppCompatActivity {
     private void initView() {
         myTab=(TabLayout) findViewById(R.id.mTbPage);
         mVpPager=(ViewPager) findViewById(R.id.mVgPage);
-        mEtComment=(EditText) findViewById(R.id.mEtComment);
-        mIvCollection=(ImageView) findViewById(R.id.mIvCollection);
-        mIvComment=(ImageView) findViewById(R.id.mIvComment);
+//        mEtComment=(EditText) findViewById(R.id.mEtComment);
+//        mIvCollection=(ImageView) findViewById(R.id.mIvCollection);
+//        mIvComment=(ImageView) findViewById(R.id.mIvComment);
     }
 
     private void initTabViewpager(){

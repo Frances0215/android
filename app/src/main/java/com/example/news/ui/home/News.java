@@ -95,12 +95,13 @@ public class News implements Serializable {
                 temp.add(lines[i]);
                 int len = lines[i].length();
                 while(len<100){
+                    int a = len;
                     n++;
                     if((i+n)<lines.length)
                         len=lines[i+n].length()+len;
                     else break;
                     temp.add(lines[i+n]);
-                    if(len>200){
+                    if(len>200 && a!=0){
                         temp.remove(lines[i+n]);
                         n--;
                         break;

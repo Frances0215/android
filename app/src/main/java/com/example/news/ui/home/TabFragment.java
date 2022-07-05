@@ -2,6 +2,7 @@ package com.example.news.ui.home;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.news.DBUtils;
 import com.example.news.NewsAPP;
@@ -26,19 +28,25 @@ import com.example.news.NewsManager;
 import com.example.news.R;
 import com.example.news.UserData;
 import com.example.news.UserDataManager;
+import com.example.news.ui.MyListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //滑动页fragment
-public class TabFragment extends Fragment {
+public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private ListView mLvNews;
     private List<News> myNews = new ArrayList<>();
     private NewsManager mNewsManager;
+    private MyNewsListAdapter newsAdapter;
+    private SwipeRefreshLayout swipeLayout;
+    private boolean isRefresh = false;
+    private String lastNewsID = "";
+    private String label;
 
-    //private Handler handler;
     private Looper myLooper;
+    private NewsAPP mApp ;
 
     public static TabFragment newInstance(String label) {
         Bundle args = new Bundle();
@@ -63,12 +71,21 @@ public class TabFragment extends Fragment {
             mNewsManager = new NewsManager(getActivity());
         }
 
+        mApp= (NewsAPP) getActivity().getApplication();
+
         mLvNews = getView().findViewById(R.id.mLvNews);
+        swipeLayout = getView().findViewById(R.id.swipeRefreshLayout);
+
+        swipeLayout.setOnRefreshListener(this);
         //新闻类别
-        String label = getArguments().getString("label");
-        initNews(label);
+        label = getArguments().getString("label");
+        if(mApp.getMap().get(label)==null){
+            mApp.getMap().put(label,0);
+        }
+        initNews(label,0);
         ClickThread myThread = new ClickThread();
         myThread.start();
+
         mLvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -86,6 +103,8 @@ public class TabFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
     }
 
 
@@ -125,25 +144,33 @@ public class TabFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            MyNewsListAdapter newsAdapter;
+
             switch (msg.what) {
                 case 0:
-                    if(myNews.size()!=0){
-                        myNews.clear();
-                    }
-                    myNews = (List<News>)msg.obj;
+//                    if(myNews.size()!=0){
+//                        myNews.clear();
+//                    }
+//                    myNews = (List<News>)msg.obj;
+                    List<News> news_temp;
+                    news_temp=(List<News>)msg.obj;
+                    myNews.addAll(news_temp);
+                    if(myNews.size()!=0)
+                        lastNewsID = myNews.get(0).getID();
                     //设置新闻滑动页
                     newsAdapter = new MyNewsListAdapter(getActivity(),R.layout.fragment_news_item,myNews);
                     mLvNews.setAdapter(newsAdapter);
+
                     break;
                 case 1:
-                    if(myNews.size()!=0){
-                        myNews.clear();
-                    }
-                    myNews = (List<News>)msg.obj;
+                    List<News> news_temp2;
+                    news_temp2=(List<News>)msg.obj;
+                    myNews.addAll(news_temp2);
+                    if(myNews.size()!=0)
+                        lastNewsID = myNews.get(0).getID();
+                    lastNewsID = myNews.get(myNews.size()-1).getID();
                     //设置新闻滑动页
-                    newsAdapter = new MyNewsListAdapter(getActivity(),R.layout.fragment_news_item,myNews);
-                    mLvNews.setAdapter(newsAdapter);
+//                    newsAdapter = new MyNewsListAdapter(getActivity(),R.layout.fragment_news_item,myNews);
+//                    mLvNews.setAdapter(newsAdapter);
                     break;
                 default:
                     break;
@@ -153,7 +180,7 @@ public class TabFragment extends Fragment {
     };
 
 
-    private void initNews(String myType){
+    private void initNews(String myType,int flag){
         if(myType.equals("推荐")){
             new Thread(new Runnable() {
                 @Override
@@ -161,10 +188,10 @@ public class TabFragment extends Fragment {
                     List<News> mNews = new ArrayList<>();
                     NewsAPP mApp = (NewsAPP) getActivity().getApplication();
                     String id = mApp.getID();
-                    mNews = mNewsManager.getRecByUserId(id);
+                    mNews = mNewsManager.getRecByUserId(id,mApp.getMap().get(label));
                     Message message = new Message();
                     message.obj =mNews;
-                    message.what = 1;
+                    message.what = flag;
                     mHandler.sendMessage(message);
                 }
             }).start();
@@ -174,7 +201,7 @@ public class TabFragment extends Fragment {
                 @Override
                 public void run() {
                     List<News> mNews = new ArrayList<>();
-                    mNews = mNewsManager.getNewsByType(myType);
+                    mNews = mNewsManager.getNewsByType(myType,mApp.getMap().get(label));
                     Message message = new Message();
                     message.obj =mNews;
                     message.what = 0;
@@ -184,6 +211,25 @@ public class TabFragment extends Fragment {
         }
 
     }
+
+    public void onRefresh() {
+        if(!isRefresh){
+            isRefresh = true;
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                int a = mApp.getMap().remove(label);
+                a++;
+                mApp.getMap().put(label,a);
+                initNews(label,1);
+                swipeLayout.setRefreshing(false);
+                newsAdapter.setMyNews(myNews);
+                //list.add(new SoftwareClassificationInfo(2, "ass"));
+                newsAdapter.notifyDataSetChanged();
+                isRefresh= false;
+            }
+        }, 1000); }
+    }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
