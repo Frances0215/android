@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -157,8 +158,6 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                     List<News> news_temp;
                     news_temp=(List<News>)msg.obj;
                     myNews.addAll(news_temp);
-                    if(myNews.size()!=0)
-                        lastNewsID = myNews.get(0).getID();
                     //设置新闻滑动页
                     newsAdapter = new MyNewsListAdapter(getActivity(),R.layout.fragment_news_item,myNews);
                     mLvNews.setAdapter(newsAdapter);
@@ -168,9 +167,8 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                     List<News> news_temp2;
                     news_temp2=(List<News>)msg.obj;
                     myNews.addAll(news_temp2);
-                    if(myNews.size()!=0)
-                        lastNewsID = myNews.get(0).getID();
-                    lastNewsID = myNews.get(myNews.size()-1).getID();
+                    if(news_temp2.size()==0)
+
                     //设置新闻滑动页
 //                    newsAdapter = new MyNewsListAdapter(getActivity(),R.layout.fragment_news_item,myNews);
 //                    mLvNews.setAdapter(newsAdapter);
