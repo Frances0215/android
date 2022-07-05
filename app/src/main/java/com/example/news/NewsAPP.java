@@ -29,6 +29,7 @@ public class NewsAPP extends Application {
     }
 
     public String getID(){return myUser.getID();}
+
     public UserData getMyUser() {
         return myUser;
     }

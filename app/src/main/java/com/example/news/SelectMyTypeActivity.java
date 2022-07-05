@@ -52,8 +52,6 @@ public class SelectMyTypeActivity extends AppCompatActivity {
             });
         }
 
-
-
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
             //mUserDataManager.openDataBase();                              //建立本地数据库
@@ -77,7 +75,7 @@ public class SelectMyTypeActivity extends AppCompatActivity {
                     //将用户信息写入手机缓存中
                     login_sp = getSharedPreferences("userInfo", 0);
                     SharedPreferences.Editor editor =login_sp.edit();
-                    editor.putString("USER_ID", mUser.getName());
+                    editor.putString("USER_ID", mUser.getID());
                     editor.putString("PASSWORD", mUser.getPassword());
                     editor.putBoolean("mRememberCheck", true);
                     editor.commit();

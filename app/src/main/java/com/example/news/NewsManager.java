@@ -3,6 +3,7 @@ package com.example.news;
 import static com.example.news.DBUtils.getConn;
 
 import android.content.Context;
+import android.text.Editable;
 import android.util.Log;
 
 import com.example.news.ui.home.News;
@@ -117,13 +118,21 @@ public class NewsManager {
     //得到推荐的新闻
     public static List<News> getRecByUserId(String ID, Integer start) {
         List<News> myNews = new ArrayList<>();
+        List<String> recID = getRecID(ID, start);
         Connection connection = myDBUtil.getConn(DB_NAME);
         if (connection != null) {
-            int flag = start*10;
-            String  sql = "select * from itemcf_baseline where user_ID = '" + ID +"' limit "+flag+",10";
+            String id = "";
+            for(int i=0;i<recID.size();i++){
+                if(i==0)
+                    id = id+"'"+recID.get(i)+"'";
+                else
+                    id = id+",'"+recID.get(i)+"'";
+            }
+            String sql = "select * from news where news_id in ("+id+")";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
+
                 while (rSet.next()) {
                     //columnLabel是属性名
                     News myNew = new News(null, null, null, null, null, null);
@@ -136,6 +145,26 @@ public class NewsManager {
                     myNews.add(myNew);
                     Log.e(TAG, "数组组装成功");
                 }
+//                if(rSet.getFetchSize()<flag){
+//                    int b = flag - rSet.getFetchSize()+10;
+//                    String  sql2 = "select * from news limit "+rSet.getFetchSize()+","+b;
+//                    java.sql.Statement statement2 = connection.createStatement();
+//                    ResultSet rSet2 = statement.executeQuery(sql2);//得到数据库中的数据
+//
+//                    while (rSet.next()) {
+//                        //columnLabel是属性名
+//                        News myNew = new News(null, null, null, null, null, null);
+//                        myNew.setTitle(rSet.getString("title"));
+//                        //myNew.setPublisher(rSet.getString("publisher"));
+//                        myNew.setPublishTime(rSet.getString("publish_time"));
+//                        myNew.setID(rSet.getString("news_id"));
+//                        myNew.setContents(rSet.getString("contents"));
+//                        myNew.setType(rSet.getString("category"));
+//                        myNews.add(myNew);
+//                        Log.e(TAG, "数组组装成功");
+//                    }
+//
+//                }
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -143,6 +172,32 @@ public class NewsManager {
         }
         Log.e(TAG, "数组已返回");
         return myNews;
+    }
+
+    //得到推荐的新闻
+    public static List<String> getRecID(String ID, Integer start) {
+        List<String> recID = new ArrayList<>();
+        Connection connection = myDBUtil.getConn(DB_NAME);
+        if (connection != null) {
+            int flag = start*10;
+            String  sql = "select * from itemcf_baseline where user_id = '" + ID +"'";
+            try {
+                java.sql.Statement statement = connection.createStatement();
+                ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
+                while (rSet.next())
+                    for (int i =1;i<=50;i++) {
+                        //columnLabel是属性名
+                        String index = "article_"+i;
+                        recID.add(rSet.getString(index));
+                        Log.e(TAG, "数组组装成功");
+                    }
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.e(TAG, "数组已返回");
+        return recID;
     }
 
     public int newsClickEvent(String user_ID,String news_ID){
@@ -183,8 +238,38 @@ public class NewsManager {
             }
         }
 
-
-
     }
+
+    public List<News> searchByWord(Editable keyWord){
+        List<News> myNews = new ArrayList<>();
+        Connection connection = myDBUtil.getConn(DB_NAME);
+        String sql;
+        if (connection != null) {
+            sql = "select * from news where title likes '%"+keyWord+"%'";
+            try {
+                java.sql.Statement statement = connection.createStatement();
+                ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
+                while (rSet.next()) {
+                    //columnLabel是属性名
+                    News myNew = new News(null, null, null, null, null, null);
+                    myNew.setTitle(rSet.getString("title"));
+                    myNew.setPublishTime(rSet.getString("publish_time"));
+                    myNew.setID(rSet.getString("news_id"));
+                    myNew.setContents(rSet.getString("contents"));
+                    myNew.setType(rSet.getString("category"));
+                    myNews.add(myNew);
+                    Log.e(TAG, "数组组装成功");
+                }
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        ;
+        Log.e(TAG, "数组已返回");
+        return myNews;
+    }
+
+
 
 }

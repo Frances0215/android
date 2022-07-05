@@ -1,6 +1,7 @@
 package com.example.news.ui.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
     private SwipeRefreshLayout swipeLayout;
     private boolean isRefresh = false;
     private String lastNewsID = "";
+    private String user_id;
     private String label;
 
     private Looper myLooper;
@@ -72,7 +74,7 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         }
 
         mApp= (NewsAPP) getActivity().getApplication();
-
+        user_id = mApp.getID();
         mLvNews = getView().findViewById(R.id.mLvNews);
         swipeLayout = getView().findViewById(R.id.swipeRefreshLayout);
 
@@ -124,6 +126,7 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                     String news_id=n.getID();
                     NewsAPP mApp = (NewsAPP)getActivity().getApplication();
                     String user_id = mApp.getID();
+                    Log.e("用户id",user_id);
                     mNewsManager.newsClickEvent(user_id,news_id);
                 }
             };
@@ -186,9 +189,14 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                 @Override
                 public void run() {
                     List<News> mNews = new ArrayList<>();
-                    NewsAPP mApp = (NewsAPP) getActivity().getApplication();
-                    String id = mApp.getID();
-                    mNews = mNewsManager.getRecByUserId(id,mApp.getMap().get(label));
+//                    NewsAPP mApp2 = (NewsAPP)getActivity().getApplication();
+//                    UserData myUser = mApp2.getMyUser();
+//                    String user_id2 = myUser.getID();
+                    SharedPreferences login_sp;
+                    login_sp = getActivity().getSharedPreferences("userInfo", 0);
+                    String user_id2=login_sp.getString("USER_ID", "");
+
+                    mNews = mNewsManager.getRecByUserId(user_id2,mApp.getMap().get(label));
                     Message message = new Message();
                     message.obj =mNews;
                     message.what = flag;

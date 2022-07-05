@@ -5,25 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +22,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,18 +29,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.news.DBUtils;
 import com.example.news.FontIconView;
+import com.example.news.NewsManager;
 import com.example.news.R;
 import com.example.news.TypeManager;
-import com.example.news.UserData;
 import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
-import com.example.news.ui.user.PeopleInfoActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +49,8 @@ public class HomeFragment extends Fragment {
     private DBUtils myDb ;
     private FontIconView mIvAdd;
     private Button mFbRadioStart;
-    private Button mBtRefresh;
+    private Button mBtSearch;
+
     //private FloatingActionButton mFbRadioStop;
     //tab内容，这只是数据库中的type类型不包括推荐类型
     private ArrayList<String> myTypeTab = new ArrayList<>();
@@ -76,6 +62,7 @@ public class HomeFragment extends Fragment {
     private VoiceTrans myTrans = new VoiceTrans();
     private VoiceRecord myVoice = new VoiceRecord();
     //private Thread recordingThread;
+    private NewsManager mNewsManager;
 
 
     public HomeFragment() {
@@ -106,6 +93,10 @@ public class HomeFragment extends Fragment {
             myTypeManager.openDataBase();
         }
 
+        if(mNewsManager == null){
+            mNewsManager = new NewsManager(getActivity());
+        }
+
         myTypeTab = myTypeManager.getAllMyType();
 
         mTlNews = view.findViewById(R.id.tab_layout);
@@ -113,7 +104,7 @@ public class HomeFragment extends Fragment {
         mIvAdd = view.findViewById(R.id.mIvAdd);
         mFbRadioStart = view.findViewById(R.id.mFbRadioStart);
         mEtSearch = view.findViewById(R.id.mEtSearch);
-        mBtRefresh = view.findViewById(R.id.mBtRefresh);
+        mBtSearch = view.findViewById(R.id.mBtRefresh);
 
         initTab();
         initTabViewpager();
@@ -130,6 +121,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        mBtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Editable keyWord = mEtSearch.getText();
+                        mNewsManager.searchByWord(keyWord);
+
+                    }
+                }).start();
+            }
+        });
+
 
     }
 
@@ -141,7 +147,8 @@ public class HomeFragment extends Fragment {
             switch (msg.what) {
                 case 0:
                     String searchFor = (String) msg.obj;
-                    mEtSearch.setText(searchFor);
+                    String str=searchFor.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
+                    mEtSearch.setText(str);
                     break;
                 default:
                     break;
@@ -293,14 +300,14 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void initRefresh(){
-        mBtRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-    }
+//    private void initRefresh(){
+//        mBtRefresh.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//    }
 
     @Override
     public void onResume() {

@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.news.ui.home.News;
 
 public class SelectSexActivity extends AppCompatActivity {
-    private ImageView mIvBoy;
-    private ImageView mIvGirl;
+    private FontIconView mIvBoy;
+    private FontIconView mIvGirl;
     private Button mBtNext;
     private Button mBtCancel;
     private boolean isBoy = false;
