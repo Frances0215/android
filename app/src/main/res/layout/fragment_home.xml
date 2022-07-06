@@ -20,7 +20,7 @@
             android:fontFamily="cursive"
             android:text="听闻"
             android:textColor="@color/主题色"
-            android:textSize="27sp"
+            android:textSize="40sp"
             android:contentDescription="听闻app为您服务，双指下滑刷新新闻"/>
 
         <com.example.news.DropDownEditText
@@ -28,9 +28,10 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="3dp"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/bg_editsearch"
             android:drawableRight="@drawable/search3"
+
             android:hint="请输入搜索关键字" />
 
 

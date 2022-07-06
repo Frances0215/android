@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,7 @@ import com.example.news.R;
 import com.example.news.TypeManager;
 import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
+import com.example.news.ui.user.AppUsageActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.Serializable;
@@ -56,7 +58,7 @@ public class HomeFragment extends Fragment {
     private FontIconView mIvAdd;
     private Button mFbRadioStart;
     private Button mBtSearch;
-
+    private TextView mTvLogo;
     //private FloatingActionButton mFbRadioStop;
     //tab内容，这只是数据库中的type类型不包括推荐类型
     private ArrayList<String> myTypeTab = new ArrayList<>();
@@ -113,6 +115,11 @@ public class HomeFragment extends Fragment {
         mFbRadioStart = view.findViewById(R.id.mFbRadioStart);
         mEtSearch = view.findViewById(R.id.mEtSearch);
         mBtSearch = view.findViewById(R.id.mBtRefresh);
+        mTvLogo = view.findViewById(R.id.mTvLogo);
+
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"AaHouLangXingKai-2.ttf");
+
+        mTvLogo.setTypeface(typeface);
 
         initTab();
         initTabViewpager();
@@ -132,20 +139,8 @@ public class HomeFragment extends Fragment {
         mBtSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String keyWord = String.valueOf(mEtSearch.getText());
-                        //mNewsManager.searchByWord(keyWord);
-                        //跳转页面，并传递参数
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("keyWord", keyWord);
-                        Intent intent = new Intent(getActivity(), SearchResultActivity.class);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }).start();
+                Intent intent = new Intent(getActivity(), AppUsageActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -186,11 +181,15 @@ public class HomeFragment extends Fragment {
                     String searchFor = (String) msg.obj;
                     String str=searchFor.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
                     mEtSearch.setText(str);
-                    Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     View view2 = View.inflate(getContext(), R.layout.voice_input, null);
                     TextView mTvVoice = view2.findViewById(R.id.mTvVoice);
-                    mTvVoice.setText(str);
+                    if(str.equals("")){
+                        mTvVoice.setText("空");
+                    }else {
+                        mTvVoice.setText(str);
+                    }
                     builder.setView(view2).setPositiveButton("开始查询", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

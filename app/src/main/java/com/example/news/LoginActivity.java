@@ -37,7 +37,8 @@ public class LoginActivity extends Activity {
     private TextView mTvReset;
     private ImageView mIvEye;
     //private Boolean isValid[] = new Boolean[5];
-
+    private TextView mTvFace;
+    //private FaceIdentify mFace;
     private boolean isOpenEye = false;
     private SharedPreferences login_sp;
     private String userNameValue,passwordValue;
@@ -59,6 +60,11 @@ public class LoginActivity extends Activity {
         mTvEnroll = (TextView)findViewById(R.id.mTvEnroll);
         mTvReset = (TextView)findViewById(R.id.mTvReset);
         mIvEye = (ImageView)findViewById(R.id.mIvEye);
+
+
+        mTvFace = (TextView)findViewById(R.id.mTvFace);
+        //mFace = new FaceIdentify();
+
 
         login_sp = getSharedPreferences("userInfo", 0);
         String id=login_sp.getString("USER_ID", "");
@@ -124,6 +130,12 @@ public class LoginActivity extends Activity {
             }
         });
 
+        mTvFace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //mFace.testCreateFace();
+            }
+        });
 
     }
 

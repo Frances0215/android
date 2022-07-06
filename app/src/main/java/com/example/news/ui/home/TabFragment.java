@@ -221,6 +221,7 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
     public void onRefresh() {
         if(!isRefresh){
             isRefresh = true;
+            getView().announceForAccessibility("正在刷新");
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 int a = mApp.getMap().remove(label);
@@ -234,6 +235,7 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                 isRefresh= false;
             }
         }, 1000); }
+        getView().announceForAccessibility("刷新完毕");
     }
 
 
