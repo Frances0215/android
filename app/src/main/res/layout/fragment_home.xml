@@ -23,7 +23,7 @@
             android:textSize="27sp"
             android:contentDescription="听闻app为您服务，双指下滑刷新新闻"/>
 
-        <EditText
+        <com.example.news.DropDownEditText
             android:id="@+id/mEtSearch"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -32,6 +32,7 @@
             android:background="@drawable/bg_editsearch"
             android:drawableRight="@drawable/search3"
             android:hint="请输入搜索关键字" />
+
 
     </LinearLayout>
 
@@ -52,7 +53,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="5"
                 android:background="@drawable/bt_search"
-                android:text="搜索"
+                android:text="使用指南"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
 
@@ -63,7 +64,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:background="@drawable/bt_search"
-                android:text="语音搜索"
+                android:text="按住说话"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
 

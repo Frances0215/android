@@ -1,5 +1,6 @@
 package com.example.news.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -114,6 +115,7 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     final Handler mHandler = new Handler(){
+        @SuppressLint("HandlerLeak")
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

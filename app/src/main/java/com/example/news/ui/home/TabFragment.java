@@ -83,8 +83,12 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         swipeLayout.setOnRefreshListener(this);
         //新闻类别
         label = getArguments().getString("label");
-        if(mApp.getMap().get(label)==null){
-            mApp.getMap().put(label,0);
+        if(mApp.getMap().get(label)==null && label.equals("推荐")){
+            int startNum = (int) (Math.random() * (50));
+            mApp.getMap().put(label,startNum);
+        }else if(mApp.getMap().get(label)==null){
+            int startNum = (int) (Math.random() * (10));
+            mApp.getMap().put(label,startNum);
         }
         initNews(label,0);
 
@@ -154,10 +158,6 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
 
             switch (msg.what) {
                 case 0:
-//                    if(myNews.size()!=0){
-//                        myNews.clear();
-//                    }
-//                    myNews = (List<News>)msg.obj;
                     List<News> news_temp;
                     news_temp=(List<News>)msg.obj;
                     myNews.addAll(news_temp);
@@ -190,9 +190,6 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                 @Override
                 public void run() {
                     List<News> mNews = new ArrayList<>();
-//                    NewsAPP mApp2 = (NewsAPP)getActivity().getApplication();
-//                    UserData myUser = mApp2.getMyUser();
-//                    String user_id2 = myUser.getID();
                     SharedPreferences login_sp;
                     login_sp = getActivity().getSharedPreferences("userInfo", 0);
                     String user_id2=login_sp.getString("USER_ID", "");

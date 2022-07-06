@@ -68,8 +68,8 @@ public class NewsManager {
         Connection connection = myDBUtil.getConn(DB_NAME);
         String sql;
         if (connection != null) {
-            int flag = start*10;
-            sql = "select * from news where category = '" + type +"' order by news_id limit "+flag+",10";
+            int flag = start*4;
+            sql = "select * from news where category = '" + type +"' limit "+flag+",4";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
@@ -122,13 +122,20 @@ public class NewsManager {
         Connection connection = myDBUtil.getConn(DB_NAME);
         if (connection != null) {
             String id = "";
-            for(int i=0;i<recID.size();i++){
-                if(i==0)
-                    id = id+"'"+recID.get(i)+"'";
-                else
-                    id = id+",'"+recID.get(i)+"'";
+            String sql;
+            if(recID.size()==0){
+                int flag = start*4;
+                sql = "select * from news limit "+flag+",4";
+            }else{
+                for(int i=0;i<recID.size();i++){
+                    if(i==0)
+                        id = id+"'"+recID.get(i)+"'";
+                    else
+                        id = id+",'"+recID.get(i)+"'";
+                }
+                sql = "select * from news where news_id in ("+id+")";
             }
-            String sql = "select * from news where news_id in ("+id+")";
+
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
@@ -145,26 +152,6 @@ public class NewsManager {
                     myNews.add(myNew);
                     Log.e(TAG, "数组组装成功");
                 }
-//                if(rSet.getFetchSize()<flag){
-//                    int b = flag - rSet.getFetchSize()+10;
-//                    String  sql2 = "select * from news limit "+rSet.getFetchSize()+","+b;
-//                    java.sql.Statement statement2 = connection.createStatement();
-//                    ResultSet rSet2 = statement.executeQuery(sql2);//得到数据库中的数据
-//
-//                    while (rSet.next()) {
-//                        //columnLabel是属性名
-//                        News myNew = new News(null, null, null, null, null, null);
-//                        myNew.setTitle(rSet.getString("title"));
-//                        //myNew.setPublisher(rSet.getString("publisher"));
-//                        myNew.setPublishTime(rSet.getString("publish_time"));
-//                        myNew.setID(rSet.getString("news_id"));
-//                        myNew.setContents(rSet.getString("contents"));
-//                        myNew.setType(rSet.getString("category"));
-//                        myNews.add(myNew);
-//                        Log.e(TAG, "数组组装成功");
-//                    }
-//
-//                }
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -179,15 +166,16 @@ public class NewsManager {
         List<String> recID = new ArrayList<>();
         Connection connection = myDBUtil.getConn(DB_NAME);
         if (connection != null) {
-            int flag = start*10;
+            int flag = start*4;
             String  sql = "select * from itemcf_baseline where user_id = '" + ID +"'";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
                 while (rSet.next())
-                    for (int i =1;i<=50;i++) {
+                    for (int i =1;i<=4;i++) {
                         //columnLabel是属性名
-                        String index = "article_"+i;
+                        int j = (i+flag)%50;
+                        String index = "article_"+j;
                         recID.add(rSet.getString(index));
                         Log.e(TAG, "数组组装成功");
                     }

@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/mTvTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:text="北京房山韵达快递聚集性疫情已感染21人，疫情期间如何安全收发快递？"
         android:textSize="30sp"
         android:textColor="@color/black"

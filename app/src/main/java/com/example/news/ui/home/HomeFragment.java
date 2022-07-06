@@ -1,6 +1,7 @@
 package com.example.news.ui.home;
 
 import android.Manifest;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +32,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.news.DBUtils;
+import com.example.news.DropDownEditText;
 import com.example.news.FontIconView;
 import com.example.news.NewsManager;
 import com.example.news.R;
@@ -45,7 +49,7 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
-    private EditText mEtSearch;
+    private DropDownEditText mEtSearch;
     private TabLayout mTlNews;
     private ViewPager mVpNews;
     private DBUtils myDb ;
@@ -65,6 +69,8 @@ public class HomeFragment extends Fragment {
     private VoiceRecord myVoice = new VoiceRecord();
     //private Thread recordingThread;
     private NewsManager mNewsManager;
+
+    private int isLongClick=0;
 
 
     public HomeFragment() {
@@ -143,6 +149,30 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        //搜索按钮
+        mEtSearch.setOnDropArrowClickListener(new DropDownEditText.OnDropArrowClickListener() {
+            @Override
+            public void onDropArrowClick() {
+                mEtSearch.setFocusableInTouchMode(false);
+                mEtSearch.setFocusable(false);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String keyWord = String.valueOf(mEtSearch.getText());
+                        //mNewsManager.searchByWord(keyWord);
+                        //跳转页面，并传递参数
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("keyWord", keyWord);
+                        Intent intent = new Intent(getActivity(), SearchResultActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                }).start();
+
+            }
+        });
+
 
     }
 
@@ -157,6 +187,36 @@ public class HomeFragment extends Fragment {
                     String str=searchFor.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
                     mEtSearch.setText(str);
                     Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    View view2 = View.inflate(getContext(), R.layout.voice_input, null);
+                    TextView mTvVoice = view2.findViewById(R.id.mTvVoice);
+                    mTvVoice.setText(str);
+                    builder.setView(view2).setPositiveButton("开始查询", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String keyWord = String.valueOf(mEtSearch.getText());
+                                    //mNewsManager.searchByWord(keyWord);
+                                    //跳转页面，并传递参数
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("keyWord", keyWord);
+                                    Intent intent = new Intent(getActivity(), SearchResultActivity.class);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            }).start();
+                        }
+                    }).setNegativeButton("取消查询", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //不做处理
+                        }
+                    }).setTitle("语音输入结果为");
+
+                    builder.create().show();
+
                     break;
                 default:
                     break;
@@ -232,90 +292,50 @@ public class HomeFragment extends Fragment {
         }
 
         //语音输入开始
-        mFbRadioStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myVoice.startRecord(myVoice.getFileName());
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                View view2 = View.inflate(getContext(), R.layout.voice_input, null);
-                final LinearLayout mLlVoice = (LinearLayout) view2.findViewById(R.id.mLlVoice);
-                builder.setView(view2).setPositiveButton("结束语音输入", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        myVoice.stopRecord();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    String result = myTrans.voiceTrans(myVoice.getFileName());
-                                    //String result = "哈哈";
-                                    Message message = new Message();
-                                    message.obj =result;
-                                    message.what = 0;
-                                    mHandler.sendMessage(message);
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-                    }
-                });
-
-                builder.create();
-                AlertDialog dialog = builder.show();
-                dialog.getWindow().setLayout(1000,800);
-
-                //设置确定按钮的位置大小
-                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextSize(35);
-                positiveButton.setTextColor(Color.BLACK);
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
-                layoutParams.weight = 10;
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setLayoutParams(layoutParams);
-                //设置使点击空白处不能关闭
-                dialog.setCanceledOnTouchOutside(false);
-                mLlVoice.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-
-                    public void onClick(View v) {
-                        myVoice.stopRecord();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    String result = myTrans.voiceTrans(myVoice.getFileName());
-                                    //String result = myTrans.voiceTrans(FILE_NAME);
-                                    //String result="哈哈";
-                                    Message message = new Message();
-                                    message.obj =result;
-                                    message.what = 0;
-                                    mHandler.sendMessage(message);
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-                        dialog.dismiss();
-                    }
-                });
-
-            }
-        });
+        mFbRadioStart.setOnLongClickListener(new startRecordListener());
+        mFbRadioStart.setOnClickListener(new stopRecordListener());
 
     }
 
-//    private void initRefresh(){
-//        mBtRefresh.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//    }
+    //长按录音，松开后自动执行短按操作
+    class startRecordListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View v) {
+            isLongClick = 1;
+            Vibrator vib = (Vibrator)getActivity().getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+            vib.vibrate(20);//只震动一秒，一次
+            myVoice.startRecord(myVoice.getFileName());
+            return false; //KeyPoint：setOnLongClickListener中return的值决定是否在长按后再加一个短按动作，true为不加短按,false为加入短按
+        }
+    }
+    //短按停止录音，直接点击短按无效
+    class stopRecordListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if(isLongClick==1){
+                myVoice.stopRecord();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String result = myTrans.voiceTrans(myVoice.getFileName());
+                            //String result = "哈哈";
+                            Message message = new Message();
+                            message.obj =result;
+                            message.what = 0;
+                            mHandler.sendMessage(message);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+            isLongClick=0;
+
+        }
+    }
+
 
     @Override
     public void onResume() {
