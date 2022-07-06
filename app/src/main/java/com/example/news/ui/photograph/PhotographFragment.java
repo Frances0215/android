@@ -162,13 +162,19 @@ import java.util.HashMap;
                 UriPath=UriPath+"/"+"temp.png";
                 Log.v("OUTPUT",UriPath);
                 File file=new File(UriPath);
+                if(Build.VERSION.SDK_INT < 24){
+                    Uri photoUri=Uri.fromFile(new File(UriPath));
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
+                }
+                else {
 //                Uri photoUri=Uri.fromFile(new File(UriPath));
-                Uri photoUri = FileProvider.getUriForFile(getActivity().getApplicationContext(), "com.example.news.fileprovider", file);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+                    Uri photoUri = FileProvider.getUriForFile(getActivity().getApplicationContext(), "com.example.news.fileprovider", file);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 
 //                intent.putExtra(MediaStore,FileUtil.getSaveFile(getActivity().getApplicationContext()).getAbsolutePath());
-                startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
-
+                    startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
+                }
 //                Intent intent = new Intent(this, CameraActivity.class);
 //                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
 //                        FileUtil.getSaveFile(getApplicationContext()).getAbsolutePath());
