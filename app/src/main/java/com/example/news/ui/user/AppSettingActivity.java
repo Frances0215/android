@@ -1,6 +1,7 @@
 package com.example.news.ui.user;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -16,6 +17,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -54,6 +56,13 @@ public class AppSettingActivity extends BaseActivity {
 
         initView();
         setListeners();
+
+        //用于添加上方标题栏中的返回按钮
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void initView(){
@@ -189,6 +198,17 @@ public class AppSettingActivity extends BaseActivity {
             }
         }
 
+
+    }
+
+    //返回上一个界面
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -3,11 +3,13 @@ package com.example.news;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -101,6 +103,13 @@ public class SelectMyTypeActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        //用于添加上方标题栏中的返回按钮
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     public void init(){
@@ -127,28 +136,16 @@ public class SelectMyTypeActivity extends AppCompatActivity {
         mBtCancel = (Button) findViewById(R.id.mBtCancel);
     }
 
-//    class DBListener implements View.OnClickListener {
-//        private int position;
-//        public DBListener(int p){
-//            this.position = p;
-//        }
-//        public void onClick(View arg0) {
-//            if(!isCheck[position]){//之前没有选中
-//                isCheck[position] = true;
-//                btn[position].setSelected(isCheck[position]);
-//                //改变全局变量中的值
-//                if(!myType.contains(btn[position].getText()))
-//                    myType.add((String) btn[position].getText());
-//
-//            }else {//之前已经选中，再点击设为没选中状态
-//                isCheck[position] = false;
-//                btn[position].setSelected(isCheck[position]);
-//                //删掉全局变量中的值
-//                if(myType.contains(btn[position].getText()))
-//                    myType.remove((String) btn[position].getText());
-//            }
-//
-// }
+
+    //返回上一个界面
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onResume() {

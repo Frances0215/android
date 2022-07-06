@@ -240,12 +240,12 @@ public class NewsManager {
 
     }
 
-    public List<News> searchByWord(Editable keyWord){
+    public List<News> searchByWord(String keyWord){
         List<News> myNews = new ArrayList<>();
         Connection connection = myDBUtil.getConn(DB_NAME);
         String sql;
         if (connection != null) {
-            sql = "select * from news where title likes '%"+keyWord+"%'";
+            sql = "select * from news where title like '%"+keyWord+"%'";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据

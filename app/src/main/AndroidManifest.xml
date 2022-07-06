@@ -75,19 +75,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".EnrollActivity"/>
-        <activity android:name=".ResetPasswordActivity"/>
-        <activity android:name=".SelectBirthdayActivity"/>
-        <activity android:name=".SelectMyTypeActivity"/>
-        <activity android:name=".SelectSexActivity"/>
-        <activity android:name=".ui.user.AppSettingActivity"/>
-        <activity android:name=".ui.user.AppUsageActivity"/>
-        <activity android:name=".ui.user.ContactUsActivity"/>
-        <activity android:name=".ui.user.PeopleInfoActivity"/>
-        <activity android:name=".ui.user.QAAActivity"/>
-        <activity android:name=".ui.user.ThemeActivity"/>
-        <activity android:name=".ui.photograph.PhotoResultActivity"/>
+        <activity android:name=".LoginActivity"
+            android:label="登录"/>
+        <activity android:name=".EnrollActivity"
+            android:label="注册"/>
+        <activity android:name=".ResetPasswordActivity"
+            android:label="修改密码"/>
+        <activity android:name=".SelectBirthdayActivity"
+            android:label="输入生日"/>
+        <activity android:name=".SelectMyTypeActivity"
+            android:label="选择我的频道"/>
+        <activity android:name=".SelectSexActivity"
+            android:label="性别"/>
+        <activity android:name=".ui.user.AppSettingActivity"
+            android:label="应用设置"/>
+        <activity android:name=".ui.user.AppUsageActivity"
+            android:label="应用指南"/>
+        <activity android:name=".ui.user.ContactUsActivity"
+            android:label="联系我们"/>
+        <activity android:name=".ui.user.PeopleInfoActivity"
+            android:label="个人信息"/>
+        <activity android:name=".ui.user.QAAActivity"
+            android:label="问题与建议"/>
+        <activity android:name=".ui.user.ThemeActivity"
+            android:label="主题设置"/>
+        <activity android:name=".ui.photograph.PhotoResultActivity"
+            android:label="拍照识别结果"/>
+        <activity android:name=".ui.home.SearchResultActivity"
+            android:label="搜索结果"/>
 <!--        //一键登录-->
 <!--        <activity android:name="cn.jiguang.demo.jverification.MainActivity"-->
 <!--            tools:ignore="MissingClass" />-->

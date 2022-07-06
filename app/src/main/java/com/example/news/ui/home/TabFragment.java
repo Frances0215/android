@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.news.DBUtils;
+import com.example.news.LoginActivity;
 import com.example.news.NewsAPP;
 import com.example.news.NewsManager;
 import com.example.news.R;
@@ -86,6 +87,8 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
             mApp.getMap().put(label,0);
         }
         initNews(label,0);
+
+
         ClickThread myThread = new ClickThread();
         myThread.start();
 
@@ -168,7 +171,7 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                     news_temp2=(List<News>)msg.obj;
                     myNews.addAll(news_temp2);
                     if(news_temp2.size()==0)
-
+                        Toast.makeText(getActivity(), "已经是最新数据啦",Toast.LENGTH_SHORT).show();
                     //设置新闻滑动页
 //                    newsAdapter = new MyNewsListAdapter(getActivity(),R.layout.fragment_news_item,myNews);
 //                    mLvNews.setAdapter(newsAdapter);

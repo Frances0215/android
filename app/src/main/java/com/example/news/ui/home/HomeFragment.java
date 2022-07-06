@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +37,7 @@ import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,9 +130,14 @@ public class HomeFragment extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Editable keyWord = mEtSearch.getText();
-                        mNewsManager.searchByWord(keyWord);
-
+                        String keyWord = String.valueOf(mEtSearch.getText());
+                        //mNewsManager.searchByWord(keyWord);
+                        //跳转页面，并传递参数
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("keyWord", keyWord);
+                        Intent intent = new Intent(getActivity(), SearchResultActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
                 }).start();
             }
@@ -149,6 +156,7 @@ public class HomeFragment extends Fragment {
                     String searchFor = (String) msg.obj;
                     String str=searchFor.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
                     mEtSearch.setText(str);
+                    Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;

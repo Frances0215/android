@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class QAAActivity extends Activity {
+public class QAAActivity extends BaseActivity {
     private Button BtnSend;
     private EditText InputBox;
     private List<Message> mData;
