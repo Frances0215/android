@@ -95,6 +95,7 @@ import java.util.HashMap;
 
 
         private static final int REQUEST_CODE_GENERAL_BASIC = 106;
+        private static String UriPath;
         public static String user_ak;
         private static String user_sk;
 //        private static ECloudDefaultClient client;
@@ -120,6 +121,7 @@ import java.util.HashMap;
             public void onChanged(@Nullable String s){
             }
         });
+
         return root;
     }
 
@@ -156,7 +158,23 @@ import java.util.HashMap;
             //执行拍照
             if(hasGotToken){
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                UriPath=Environment.getExternalStorageDirectory().getPath();
+                UriPath=UriPath+"/"+"temp.png";
+                Log.v("OUTPUT",UriPath);
+                File file=new File(UriPath);
+//                Uri photoUri=Uri.fromFile(new File(UriPath));
+                Uri photoUri = FileProvider.getUriForFile(getActivity().getApplicationContext(), "com.example.news.fileprovider", file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+
+//                intent.putExtra(MediaStore,FileUtil.getSaveFile(getActivity().getApplicationContext()).getAbsolutePath());
                 startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
+
+//                Intent intent = new Intent(this, CameraActivity.class);
+//                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+//                        FileUtil.getSaveFile(getApplicationContext()).getAbsolutePath());
+//                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
+//                        CameraActivity.CONTENT_TYPE_GENERAL);
+//                startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
             }
             else {
                 Log.v("ERROR","NO LIENCE");
@@ -185,74 +203,98 @@ import java.util.HashMap;
                 }
 
 
-                String name = "photo.jpg";
-
-                Bundle bundle = data.getExtras();
-                Bitmap bitmap = (Bitmap) bundle.get("data");
-                Log.v("bitmap",bitmap.toString());
-                File dir=new File(getActivity().getExternalFilesDir(null).getPath()+"/");
-                Log.v("",dir.getAbsolutePath());
-                if (!dir.exists()){
-                    dir.mkdir();
-                }
-                //创建文件
-                File file = new File(dir+name);
-                if (!file.exists()){
-                    try {
-                        file.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                String name = "photo.jpg";
+//                Bundle bundle = data.getExtras();
+//                Bitmap bitmap = (Bitmap) bundle.get("data");
+//                Log.v("bitmap",bitmap.toString());
+//                File dir=new File(getActivity().getExternalFilesDir(null).getPath()+"/");
+//                Log.v("",dir.getAbsolutePath());
+//                if (!dir.exists()){
+//                    dir.mkdir();
+//                }
+//                //创建文件
+//                File file = new File(dir+name);
+//                if (!file.exists()){
+//                    try {
+//                        file.createNewFile();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
 //            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/");
 //            file.mkdirs(); //创建文件夹
 //            String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+name;
                 //String fileName = "sdcard"+"/"+name;
-                FileOutputStream fos =null;
+//                FileOutputStream fos =null;
+                FileInputStream fis=null;
+                RecognizeService.recAccurateBasic(getActivity().getApplicationContext(),UriPath,
+                        new RecognizeService.ServiceListener() {
+                            @Override
+                            public void onResult(String result) {
+                                String d = "";
+                                String[] tempa = result.split("]");
+                                String[] temp = tempa[0].split("\"words\":");
+                                if (temp.length > 1) {
 
-                try {
-//                    System.out.println(fileName);
-                    Log.v("out",file.getAbsolutePath());
-                    fos = new FileOutputStream(file);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
-                    if (requestCode == REQUEST_CODE_GENERAL_BASIC && resultCode == Activity.RESULT_OK) {
-                        RecognizeService.recAccurateBasic(getActivity().getApplicationContext(), file.getAbsolutePath(),
-                                new RecognizeService.ServiceListener() {
-                                    @Override
-                                    public void onResult(String result) {
-                                        String d="";
-                                        String[] tempa=result.split("]");
-                                        String[] temp=tempa[0].split("\"words\":");
-                                        if(temp.length>1){
-
-                                            for(int i=1;i<temp.length;i++){
-                                                d=d+temp[i];
-                                            }
-                                            d=d.replace("\"","");
-                                            d=d.replace("{","");
-                                            d=d.replace(",","");
-                                        }
-                                        else{
-                                            d="无结果";
-                                        }
-
-                                    infoPopText(d);
+                                    for (int i = 1; i < temp.length; i++) {
+                                        d = d + temp[i];
                                     }
-                                });
-                    }
-                } catch (FileNotFoundException e) {
-                    Log.v("NNOOOOOOOO","no photo");
-                    e.printStackTrace();
-                }finally {
-                    try {
-                        fos.flush();
-                        fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                                    d = d.replace("\"", "");
+                                    d = d.replace("{", "");
+                                    d = d.replace(",", "");
+                                    d = d.replace("}", "");
+                                } else {
+                                    d = "无结果";
+                                }
 
-                }
+                                infoPopText(d);
+                            }
+                        });
+
+
+//                try {
+////                    System.out.println(fileName);
+//                    Log.v("out",file.getAbsolutePath());
+//                    fos = new FileOutputStream(file);
+//                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+//                    if (requestCode == REQUEST_CODE_GENERAL_BASIC && resultCode == Activity.RESULT_OK) {
+//                        RecognizeService.recAccurateBasic(getActivity().getApplicationContext(),file.getAbsolutePath(),
+//                                new RecognizeService.ServiceListener() {
+//                                    @Override
+//                                    public void onResult(String result) {
+//                                        String d="";
+//                                        String[] tempa=result.split("]");
+//                                        String[] temp=tempa[0].split("\"words\":");
+//                                        if(temp.length>1){
+//
+//                                            for(int i=1;i<temp.length;i++){
+//                                                d=d+temp[i];
+//                                            }
+//                                            d=d.replace("\"","");
+//                                            d=d.replace("{","");
+//                                            d=d.replace(",","");
+//                                        }
+//                                        else{
+//                                            d="无结果";
+//                                        }
+//
+//                                    infoPopText(result);
+//                                    }
+//                                });
+//                    }
+//                } catch (FileNotFoundException e) {
+//                    Log.v("NNOOOOOOOO","no photo");
+//                    e.printStackTrace();
+//                }finally {
+//                    try {
+//                        fos.flush();
+//                        fos.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
 //                textGeneral(file.getAbsolutePath());
             }
 

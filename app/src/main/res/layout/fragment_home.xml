@@ -20,7 +20,8 @@
             android:fontFamily="cursive"
             android:text="听闻"
             android:textColor="@color/主题色"
-            android:textSize="27sp" />
+            android:textSize="27sp"
+            android:contentDescription="听闻app为您服务，双指下滑刷新新闻"/>
 
         <EditText
             android:id="@+id/mEtSearch"
@@ -100,7 +101,8 @@
                     android:layout_weight="1"
                     android:text="@string/menu"
                     android:textColor="@color/black"
-                    android:textSize="100px" />
+                    android:textSize="100px"
+                    android:contentDescription="自定义频道内容"/>
 
             </LinearLayout>
 

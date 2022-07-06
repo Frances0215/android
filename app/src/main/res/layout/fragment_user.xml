@@ -35,14 +35,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20px"
-        android:layout_marginTop="40px">
+        android:layout_marginTop="40px"
+        >
 
         <LinearLayout
             android:id="@+id/mLlComment"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="0.25">
+            android:layout_weight="0.25"
+            android:importantForAccessibility="no"
+            >
             <com.example.news.FontIconView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,6 +53,8 @@
                 android:textSize="50dp"
                 android:textColor="#7091f3"
                 android:layout_gravity="center_horizontal"
+                android:importantForAccessibility="no"
+
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -57,7 +62,9 @@
                 android:text="评论"
                 android:textSize="18sp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10px"/>
+                android:layout_marginTop="10px"
+                android:importantForAccessibility="no"
+                 />
         </LinearLayout>
 
         <LinearLayout

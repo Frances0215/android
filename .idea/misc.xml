@@ -3,6 +3,45 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/News/app/src/main/res/layout/activity_app_setting.xml" value="0.26683291770573564" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_app_usage.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_birthday.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_contact_us.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_enroll.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_login.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_main.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_mine_item.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_people_information.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_photo_result.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_qaa.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_reset_password.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_search_result.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_select_my_type.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_select_sex.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_select_type.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_set_item.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_show_news.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_theme.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/edit_dialog.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_choose.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_home.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_news_item.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_page.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_photograph.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_select_type.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_tab.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/fragment_user.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/from_layout.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/lv_header.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/menu_nav_home.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/menu_nav_photograph.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/menu_nav_user.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/message_time_layout.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/tab_button.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/to_layout.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/voice_input.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/menu/bottom_nav_menu.xml" value="0.23802083333333332" />
+        <entry key="..\:/News/app/src/main/res/xml/provider_paths.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/drawable-v24/icon_eye.xml" value="0.1285" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/drawable/bg_button_camera.xml" value="0.1" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/drawable/bg_editsearch.xml" value="0.1" />
@@ -38,7 +77,6 @@
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/layout/activity_photo_result.xml" value="0.10208333333333333" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/layout/activity_qaa.xml" value="0.13229166666666667" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/layout/activity_reset_password.xml" value="0.12681159420289856" />
-        <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/layout/activity_search_result.xml" value="0.13179347826086957" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/layout/activity_select_my_type.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/layout/activity_select_sex.xml" value="0.11141304347826086" />
         <entry key="..\:/Users/Frances/AndroidStudioProjects/News/app/src/main/res/layout/activity_select_type.xml" value="0.11956521739130435" />
