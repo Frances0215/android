@@ -128,17 +128,8 @@ import java.util.HashMap;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
-
                 initAccessToken();
 
-
-//                user_ak = "c5215af31af34b4dbea82ac010f8cdfe";
-//                user_sk = "83f6ffb0f1c84604935acd23905c640e";
-//                Credential credential = new Credential(user_ak, user_sk);
-//                client = new ECloudDefaultClient(credential, Region.POOL_SZ);
                 mFlCamera=view.findViewById(R.id.mFlCamera);
                 mFlCamera.setOnClickListener(new View.OnClickListener() {
                     @Override

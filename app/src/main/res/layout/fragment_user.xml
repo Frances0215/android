@@ -152,7 +152,7 @@
         >
 
         <TextView
-            android:id="@+id/tv_birthday"
+            android:id="@+id/mTvSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
@@ -161,13 +161,13 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/mTvSet"
+            android:id="@+id/mTvSet2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_birthday"
+            android:layout_marginLeft="-2dp"
+            android:layout_toRightOf="@id/mTvSet"
             android:drawableRight="@drawable/ic_arrow_right"
-            android:gravity="right"
-            />
+            android:gravity="right" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/mRlUse"
@@ -180,8 +180,9 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="2dp"
         >
+
         <TextView
-            android:id="@+id/tv_gender"
+            android:id="@+id/mTvUse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
@@ -190,13 +191,12 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/mTvUse"
+            android:id="@+id/mTvUse2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_gender"
+            android:layout_toRightOf="@id/mTvUse"
             android:drawableRight="@drawable/ic_arrow_right"
-            android:gravity="right"
-            />
+            android:gravity="right" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/mRlAnswer"
@@ -211,7 +211,7 @@
         >
 
         <TextView
-            android:id="@+id/tv_phone"
+            android:id="@+id/mTvAnswer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
@@ -220,10 +220,10 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/mTvAnswer"
+            android:id="@+id/mTvAnswer2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_phone"
+            android:layout_toRightOf="@id/mTvAnswer"
             android:drawableRight="@drawable/ic_arrow_right"
             android:gravity="right"
             />
@@ -241,7 +241,7 @@
         >
 
         <TextView
-            android:id="@+id/tv_workplace"
+            android:id="@+id/mTvSuggest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
@@ -250,14 +250,13 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/mTvSuggest"
+            android:id="@+id/mTvSuggest2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
-            android:layout_toRightOf="@id/tv_workplace"
+            android:layout_toRightOf="@id/mTvSuggest"
             android:drawableRight="@drawable/ic_arrow_right"
-            android:gravity="right"
-            />
+            android:gravity="right" />
     </RelativeLayout>
 
 

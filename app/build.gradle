@@ -13,13 +13,7 @@ android {
 
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-    useLibrary 'org.apache.http.legacy'
-//    极光配置，一键登录
-//    sourceSets{
-//        main{
-//            jniLibs.srcDirs = ['libs']
-//        }
-//    }
+
     defaultConfig {
         applicationId "com.example.news"
         minSdkVersion 26
@@ -29,31 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
-//        ndk {
-//            //兼容的 cpu 类型
-//            abiFilters 'armeabi'
-//        }
-//
-//        manifestPlaceholders = [
-//                JPUSH_PKGNAME : applicationId,
-//                JPUSH_APPKEY : "1faeb1cb23ceb192df0fa2ce", //极光开发平台上注册的包名对应的appkey.
-//                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
-//        ]
-
     }
-
-    //极光，一键登录
-//    ndk {
-//        //选择要添加的对应 cpu 类型的 .so 库。
-//        abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-//        // 还可以添加 'x86', 'x86_64'
-//    }
-
-//    ndk {
-//        //选择要添加的对应 cpu 类型的 .so 库。
-//        abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-//        // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-//    }
 
 
     buildTypes {
@@ -69,8 +39,6 @@ android {
     buildFeatures {
         viewBinding true
     }
-
-    //banner组件需要
 
 
 }
@@ -88,36 +56,15 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    //noinspection DuplicatePlatformClasses
-//    implementation 'cz.msebera.android:httpclient:4.5.8'
-
     implementation files('libs\\mysql-connector-java-5.1.46-bin.jar')
     implementation files('libs\\Online_SDK.aar')
-//    implementation files('libs\\fastjson-2.0.3.android.jar')
-//    implementation files('libs\\httpclient-4.3.1.wso2v1.jar')
     implementation files('libs\\fastjson-1.2.79.jar')
     implementation files('libs\\httpclient-4.5.8.jar')
-//    implementation files('libs\\org.apache.http.legacy.jar')
-//    api files('libs\\ecloud-sdk-ocr-1.5.3-jar-with-dependencies.jar')
-//    implementation files('libs\\ecloud-sdk-ocr-1.5.3-jar-with-dependencies.jar')
     implementation(name: 'ocrsdk', ext: 'aar')
-
-
-//    implementation files('libs\\org.apache.http.legacy.jar')
-//    implementation group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
-//    implementation 'org.apache.httpcomponents:httpcore:4.4.10'
-//    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-   // implementation (name:'Online_SDK',ext:'aar')
-
-
-//    implementation project(':jiguang')
-
-//    compile 'cn.jiguang.sdk:jverification:2.7.1'  // 此处以2.7.1 版本为例。
-//    compile 'cn.jiguang.sdk:jcore:3.1.0'  // 此处以JCore 3.1.0 版本为例。
 }
 
 

@@ -63,6 +63,11 @@ public class UserFragment extends Fragment {
     private LinearLayout mLlHistory;
     private LinearLayout mLlMessage;
 
+    private TextView mTvSet2;
+    private TextView mTvUse2;
+    private TextView mTvAnswer2;
+    private TextView mTvSuggest2;
+
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -113,6 +118,12 @@ public class UserFragment extends Fragment {
         mLlComment = getActivity().findViewById(R.id.mLlComment);
         mLlHistory = getActivity().findViewById(R.id.mLlHistory);
         mLlMessage = getActivity().findViewById(R.id.mLlMessage);
+
+        mTvSuggest2 = getActivity().findViewById(R.id.mTvSuggest2);
+        mTvAnswer2 = getActivity().findViewById(R.id.mTvAnswer2);
+        mTvSet2 = getActivity().findViewById(R.id.mTvSet2);
+        mTvUse2 = getActivity().findViewById(R.id.mTvUse2);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -168,6 +179,11 @@ public class UserFragment extends Fragment {
         mLlCollect.setOnClickListener(onClick);
         mLlHistory.setOnClickListener(onClick);
         mLlMessage.setOnClickListener(onClick);
+
+        mTvUse2.setOnClickListener(onClick);
+        mTvAnswer2.setOnClickListener(onClick);
+        mTvSuggest2.setOnClickListener(onClick);
+        mTvSet2.setOnClickListener(onClick);
     }
 
     //重写一个类
@@ -197,6 +213,26 @@ public class UserFragment extends Fragment {
                     break;
 
                 case R.id.mTvSuggest:
+                    intent = new Intent(getActivity(), QAAActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.mTvSet2:
+                    intent = new Intent(getActivity(), AppSettingActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.mTvUse2:
+                    intent = new Intent(getActivity(), AppUsageActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.mTvAnswer2:
+                    intent = new Intent(getActivity(), ContactUsActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.mTvSuggest2:
                     intent = new Intent(getActivity(), QAAActivity.class);
                     startActivity(intent);
                     break;
