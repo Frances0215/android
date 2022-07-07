@@ -13,6 +13,27 @@ android {
 
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
+    signingConfigs{
+        def alias = "key0"
+        def password = "123456"
+        def filepath = "D:\\News\\app.jks"
+
+        debug{
+            storeFile file(filepath)
+            storePassword password
+            keyAlias alias
+            keyPassword password
+        }
+
+        release{
+            storeFile file(filepath)
+            storePassword password
+            keyAlias alias
+            keyPassword password
+        }
+    }
+
+
 
     defaultConfig {
         applicationId "com.example.news"
