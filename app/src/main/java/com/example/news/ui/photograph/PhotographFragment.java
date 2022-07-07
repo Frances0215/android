@@ -96,9 +96,6 @@ import java.util.HashMap;
 
         private static final int REQUEST_CODE_GENERAL_BASIC = 106;
         private static String UriPath;
-        public static String user_ak;
-        private static String user_sk;
-//        private static ECloudDefaultClient client;
         private boolean hasGotToken = false;
 
     private PhotographViewModel photographViewModel;

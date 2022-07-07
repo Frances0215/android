@@ -21,7 +21,8 @@
             android:text="听闻"
             android:textColor="@color/主题色"
             android:textSize="40sp"
-            android:contentDescription="听闻app为您服务，双指下滑刷新新闻"/>
+            android:contentDescription="听闻app为您服务，双指下滑刷新新闻"
+            android:importantForAccessibility="no"/>
 
         <com.example.news.DropDownEditText
             android:id="@+id/mEtSearch"

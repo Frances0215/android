@@ -9,7 +9,7 @@
         <entry key="..\:/News/app/src/main/res/layout/activity_contact_us.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/activity_enroll.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/activity_login.xml" value="0.22644927536231885" />
-        <entry key="..\:/News/app/src/main/res/layout/activity_main.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/News/app/src/main/res/layout/activity_mine_item.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/activity_people_information.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/activity_photo_result.xml" value="0.22644927536231885" />
@@ -22,6 +22,7 @@
         <entry key="..\:/News/app/src/main/res/layout/activity_set_item.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/activity_show_news.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/activity_theme.xml" value="0.22644927536231885" />
+        <entry key="..\:/News/app/src/main/res/layout/edit_choose.xml" value="0.21354166666666666" />
         <entry key="..\:/News/app/src/main/res/layout/edit_dialog.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/fragment_choose.xml" value="0.22644927536231885" />
         <entry key="..\:/News/app/src/main/res/layout/fragment_home.xml" value="0.22644927536231885" />
