@@ -17,7 +17,8 @@
     <uses-permission android:name="android.permission.READ_SMS" /> <!-- 从短信中读取验证码接口（非必须） -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
     <!--摄像 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
@@ -47,8 +48,6 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -70,7 +69,8 @@
         <activity android:name=".ui.home.SelectTypeActivity"/>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -105,31 +105,39 @@
             android:label="拍照识别结果"/>
         <activity android:name=".ui.home.SearchResultActivity"
             android:label="搜索结果"/>
+        <activity android:name=".VerifyActivity"
+            android:label="登录"/>
 <!--        //一键登录-->
-<!--        <activity android:name="cn.jiguang.demo.jverification.MainActivity"-->
-<!--            tools:ignore="MissingClass" />-->
+        <!-- Required -->
+        <activity
+            android:name="com.cmic.soo.sdk.activity.LoginAuthActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified"
+            android:theme="@style/ActivityDialogStyle" />
+        <!-- Required -->
+        <activity
+            android:name="cn.jiguang.verifysdk.CtLoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified"
+            android:theme="@style/ActivityDialogStyle"/>
 
-<!--        &lt;!&ndash; Required &ndash;&gt;-->
-<!--        <activity-->
-<!--            android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"-->
-<!--            android:configChanges="orientation|keyboardHidden|screenSize"-->
-<!--            android:launchMode="singleTop"-->
-<!--            android:screenOrientation="unspecified"-->
-<!--            android:theme="@style/ActivityDialogStyle" />-->
-<!--        &lt;!&ndash; Required &ndash;&gt;-->
-<!--        <activity-->
-<!--            android:name="cn.jiguang.verifysdk.CtLoginActivity"-->
-<!--            android:configChanges="orientation|keyboardHidden|screenSize"-->
-<!--            android:launchMode="singleTop"-->
-<!--            android:screenOrientation="unspecified"-->
-<!--            android:theme="@style/ActivityDialogStyle"/>-->
-<!--        &lt;!&ndash; Required &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="JPUSH_APPKEY"-->
-<!--            android:value="${JPUSH_APPKEY}" /> &lt;!&ndash; </>值来自开发者平台取得的AppKey &ndash;&gt;-->
-<!--        <meta-data-->
-<!--            android:name="JPUSH_CHANNEL"-->
-<!--            android:value="${JPUSH_CHANNEL}" />-->
+        <activity
+            android:name="com.cmic.gen.sdk.view.GenLoginAuthActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified"
+            android:theme="@style/ActivityDialogStyle"/>
+
+        <!-- Required -->
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="${JPUSH_APPKEY}" /> <!-- </>值来自开发者平台取得的AppKey -->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="${JPUSH_CHANNEL}" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -139,6 +147,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
     </application>
 
 </manifest>

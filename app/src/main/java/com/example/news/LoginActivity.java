@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -22,8 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import java.sql.Connection;
-
 public class LoginActivity extends Activity {
     public int pwdResetFlag=0;
 
@@ -37,7 +34,6 @@ public class LoginActivity extends Activity {
     private TextView mTvReset;
     private ImageView mIvEye;
     //private Boolean isValid[] = new Boolean[5];
-    private TextView mTvFace;
     //private FaceIdentify mFace;
     private boolean isOpenEye = false;
     private SharedPreferences login_sp;
@@ -60,9 +56,6 @@ public class LoginActivity extends Activity {
         mTvEnroll = (TextView)findViewById(R.id.mTvEnroll);
         mTvReset = (TextView)findViewById(R.id.mTvReset);
         mIvEye = (ImageView)findViewById(R.id.mIvEye);
-
-
-        mTvFace = (TextView)findViewById(R.id.mTvFace);
         //mFace = new FaceIdentify();
 
 
@@ -90,6 +83,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 //                NewsAPP mUser = (NewsAPP)getApplicationContext();
 //                mUser.setmUserId(mUserDataManager.findUserIdByName(name));
+                Log.e("这里","1");
                 Intent intent_Login_to_Register = new Intent(LoginActivity.this,EnrollActivity.class) ;    //切换Login Activity至User Activity
                 startActivity(intent_Login_to_Register);
                 finish();
@@ -130,14 +124,11 @@ public class LoginActivity extends Activity {
             }
         });
 
-        mTvFace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //mFace.testCreateFace();
-            }
-        });
-
     }
+
+//    public void announce(){
+//        View.announceForAccessibility("正在刷新");
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void login() {

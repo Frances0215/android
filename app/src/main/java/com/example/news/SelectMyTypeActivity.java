@@ -23,12 +23,19 @@ public class SelectMyTypeActivity extends AppCompatActivity {
 
     private UserDataManager mUserDataManager;         //用户数据管理类
     private SharedPreferences login_sp;
+    private TypeManager myTypeManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_my_type);
         init();
+
+        //初始化数据库
+        if(myTypeManager == null){
+            myTypeManager = new TypeManager(this);
+            myTypeManager.openDataBase();
+        }
 
         for(int i=0;i< btn.length;i++){
             btn[i].setTag(i);
@@ -70,6 +77,9 @@ public class SelectMyTypeActivity extends AppCompatActivity {
                     NewsAPP mApp = (NewsAPP) getApplication();
                     mApp.setMy_news_type(myType);
 
+//                    for(int i=0;i<myType.size();i++){
+//                        myTypeManager.insertType(myType.get(i));
+//                    }
                     //然后将用户信息写入数据库中
                     UserData mUser = mApp.getMyUser();
                     mUserDataManager.insertUserData(mUser);
@@ -83,7 +93,7 @@ public class SelectMyTypeActivity extends AppCompatActivity {
                     editor.commit();
 
                     //跳转页面至主页面
-                    Intent intent = new Intent(SelectMyTypeActivity.this, MainActivity.class) ;    //切换Login Activity至User Activity
+                    Intent intent = new Intent(SelectMyTypeActivity.this, MainActivity.class);    //切换Login Activity至User Activity
                     startActivity(intent);
                     finish();
                 }

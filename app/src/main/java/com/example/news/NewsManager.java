@@ -233,7 +233,7 @@ public class NewsManager {
         Connection connection = myDBUtil.getConn(DB_NAME);
         String sql;
         if (connection != null) {
-            sql = "select * from news where title like '%"+keyWord+"%'";
+            sql = "select * from news where title like '%"+keyWord+"%' or category = '"+keyWord+"'";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据

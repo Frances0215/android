@@ -347,24 +347,6 @@ public class PeopleInfoActivity extends BaseActivity {
 
                     break;
 
-//                case R.id.tv_phone_text:
-//                    AlertDialog.Builder builder4 = new AlertDialog.Builder(PeopleInfoActivity.this);
-//                    View v3 = LayoutInflater.from(PeopleInfoActivity.this).inflate(R.layout.edit_dialog, null);
-//                    EditText etPhone = v3.findViewById(R.id.et_text);
-//                    builder4.setTitle("修改手机号").setView(v3).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            Toast.makeText(PeopleInfoActivity.this, "修改成功", Toast.LENGTH_SHORT);
-//                            mPhoneNumber.setText(etPhone.getText());
-//                        }
-//                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            //取消修改
-//                        }
-//                    }).show();
-//                    break;
-
                 case R.id.tv_birthday_text:
                     new DatePickerDialog(PeopleInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -377,6 +359,8 @@ public class PeopleInfoActivity extends BaseActivity {
                     break;
 
                 case R.id.tv_password_text:
+                    //首先判断是否是自动登录的用户
+
                     //直接切换到修改密码页面，之后跳转到登录界面再登录一次
                     Intent intent_Login_to_Reset = new Intent(PeopleInfoActivity.this, ResetPasswordActivity.class) ;
                     startActivity(intent_Login_to_Reset);

@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class EnrollActivity extends AppCompatActivity {
@@ -31,7 +33,7 @@ public class EnrollActivity extends AppCompatActivity {
     private EditText mEtAccount;
     private EditText mEtPass;
     private EditText mEtSure;
-    private Button mBtCancel;                     //取消按钮
+    private TextView mBtCancel;                     //取消按钮
     private ImageView mIvEye;
     private ImageView mIvReEye;
     private EditText mEtName;
@@ -48,7 +50,7 @@ public class EnrollActivity extends AppCompatActivity {
         mEtName = (EditText)findViewById(R.id.mEtName);
         mEtAccount=(EditText)findViewById(R.id.mEtAccount);
         mEtSure = (EditText)findViewById(R.id.mEtSure);
-        mBtCancel = (Button)findViewById(R.id.mBtCancel);
+        mBtCancel = (TextView)findViewById(R.id.mBtCancel);
         mIvEye = (ImageView)findViewById(R.id.mIvEye);
         mIvReEye = (ImageView)findViewById(R.id.mIvReEye);
         if (mUserDataManager == null) {
@@ -149,9 +151,26 @@ public class EnrollActivity extends AppCompatActivity {
                         mApp.setUserID(userAccount);
                         mApp.setPwd(userPwd);
                         mApp.setName(userName);
+                        mApp.getMyUser().setSex("女");
+                        mApp.getMyUser().setBirthday("2000-02-07");
+                        SharedPreferences login_sp;
+                        login_sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+                        SharedPreferences.Editor editor =login_sp.edit();
+
+                        //然后将用户信息写入数据库中
+                        UserData mUser = mApp.getMyUser();
+                        mUserDataManager.insertUserData(mUser);
+
+                        //将用户信息写入手机缓存中
+                        editor.putString("USER_ID", userAccount);
+                        editor.putString("PASSWORD", userPwd);
+                        editor.putBoolean("mRememberCheck", true);
+                        editor.putBoolean("mAutologinCheck", false);
+                        editor.commit();
+
 
                         //跳转到性别选择页面
-                        Intent intent_Register_to_Login = new Intent(EnrollActivity.this,SelectSexActivity.class) ;    //切换User Activity至Login Activity
+                        Intent intent_Register_to_Login = new Intent(EnrollActivity.this,MainActivity.class) ;    //切换User Activity至Login Activity
                         startActivity(intent_Register_to_Login);
                         finish();
 

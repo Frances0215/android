@@ -2,8 +2,11 @@ package com.example.news.ui.home;
 
 import android.Manifest;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +46,8 @@ import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
 import com.example.news.ui.user.AppUsageActivity;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -133,6 +139,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SelectTypeActivity.class);
                 startActivity(intent);
+                //getActivity().finish();
             }
         });
 
@@ -180,41 +187,60 @@ public class HomeFragment extends Fragment {
                 case 0:
                     String searchFor = (String) msg.obj;
                     String str=searchFor.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
-                    mEtSearch.setText(str);
-                    //Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    View view2 = View.inflate(getContext(), R.layout.voice_input, null);
-                    TextView mTvVoice = view2.findViewById(R.id.mTvVoice);
-                    if(str.equals("")){
-                        mTvVoice.setText("空");
-                    }else {
-                        mTvVoice.setText(str);
-                    }
-                    builder.setView(view2).setPositiveButton("开始查询", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String keyWord = String.valueOf(mEtSearch.getText());
-                                    //mNewsManager.searchByWord(keyWord);
-                                    //跳转页面，并传递参数
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("keyWord", keyWord);
-                                    Intent intent = new Intent(getActivity(), SearchResultActivity.class);
-                                    intent.putExtras(bundle);
-                                    startActivity(intent);
-                                }
-                            }).start();
-                        }
-                    }).setNegativeButton("取消查询", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //不做处理
-                        }
-                    }).setTitle("语音输入结果为");
 
-                    builder.create().show();
+                    if(str.contains("我想看")){
+                        String newType=str.substring(3);
+                        Log.e("新的频道",newType);
+                        boolean isHave = myTypeTab.contains(newType);
+                        if(isHave){
+                            getView().announceForAccessibility(newType+"频道已经存在");
+                        }else {
+                            myTypeManager.insertType(newType);
+                            myTypeTab.add(newType);
+                            mTlNews.removeAllTabs();
+                            initTab();
+                            mVpNews.getAdapter().notifyDataSetChanged();
+                            getView().announceForAccessibility(newType+"频道添加成功");
+                        }
+
+                    }else{
+                        mEtSearch.setText(str);
+                        //Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        View view2 = View.inflate(getContext(), R.layout.voice_input, null);
+                        TextView mTvVoice = view2.findViewById(R.id.mTvVoice);
+                        if(str.equals("")){
+                            mTvVoice.setText("空");
+                        }else {
+                            mTvVoice.setText(str);
+                        }
+                        builder.setView(view2).setPositiveButton("开始查询", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String keyWord = String.valueOf(mEtSearch.getText());
+                                        //mNewsManager.searchByWord(keyWord);
+                                        //跳转页面，并传递参数
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("keyWord", keyWord);
+                                        Intent intent = new Intent(getActivity(), SearchResultActivity.class);
+                                        intent.putExtras(bundle);
+                                        startActivity(intent);
+                                    }
+                                }).start();
+                            }
+                        }).setNegativeButton("取消查询", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //不做处理
+                            }
+                        }).setTitle("语音输入结果为");
+
+                        builder.create().show();
+                    }
+
 
                     break;
                 default:
@@ -344,7 +370,10 @@ public class HomeFragment extends Fragment {
         }
 
         super.onResume();
-        mVpNews.getAdapter().notifyDataSetChanged();
+//        myTypeTab = myTypeManager.getAllMyType();
+//        //mVpNews.getAdapter().notifyDataSetChanged();
+//        initTab();
+//        initTabViewpager();
 
     }
 
@@ -368,5 +397,31 @@ public class HomeFragment extends Fragment {
 
         }
         super.onHiddenChanged(hidden);
+    }
+
+    //fragment重新刷新的方法
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.intent.action.CART_BROADCAST");
+        BroadcastReceiver mItemViewListClickReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent){
+                String msg = intent.getStringExtra("data");
+                if("refresh".equals(msg)){
+                    refresh();
+                }
+            }
+        };
+        broadcastManager.registerReceiver(mItemViewListClickReceiver, intentFilter);
+    }
+
+    private void refresh() {
+        myTypeTab = myTypeManager.getAllMyType();
+        initTab();
+        //initTabViewpager();
+        mVpNews.getAdapter().notifyDataSetChanged();
     }
 }

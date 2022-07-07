@@ -2,19 +2,23 @@ package com.example.news.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.news.FontIconView;
 import com.example.news.MyDataBaseHelper;
 import com.example.news.NewsAPP;
 import com.example.news.NewsType;
@@ -58,12 +62,33 @@ public class SelectTypeActivity extends Activity {
         ArrayList<String> otherType = op.getOtherType();
         RelativeLayout layout = new RelativeLayout(this);
 
+        //返回按钮
+        ImageView mTvReturn = new ImageView(this);
+        mTvReturn.setImageResource(R.drawable.d_back_icon);
+        mTvReturn.setId(1000);
+        RelativeLayout.LayoutParams tvParams_r = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        tvParams_r.topMargin = 40;
+        tvParams_r.leftMargin = 20;
+        layout.addView(mTvReturn, tvParams_r);
+
+        TextView mTvReturn2 = new TextView(this);
+        mTvReturn2.setText("返回");
+        mTvReturn2.setTextSize(20);
+        mTvReturn2.setId(1010);
+        RelativeLayout.LayoutParams tvParams_r2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        tvParams_r2.topMargin = 40;
+        tvParams_r2.leftMargin = 100;
+        layout.addView(mTvReturn2, tvParams_r2);
+
+
         TextView mTvMyType = new TextView(this);
         mTvMyType.setText("我的频道");
         mTvMyType.setId(1001);
-        mTvMyType.setTextSize(20);//单位是sp
+        mTvMyType.setTextSize(30);//单位是sp
+        int blue = getResources().getColor(R.color.主题色);
+        //mTvMyType.setTextColor(blue);
         RelativeLayout.LayoutParams tvParams_m = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        tvParams_m.topMargin = 20;
+        tvParams_m.topMargin = 130;
         tvParams_m.leftMargin = 20;
 
         layout.addView(mTvMyType, tvParams_m);
@@ -77,12 +102,16 @@ public class SelectTypeActivity extends Activity {
                 String ButtonName = myType.get(i);
                 Btn[i].setText(ButtonName);
                 Btn[i].setTextSize(20);
+//                int white = getResources().getColor(R.color.white);
+//                Btn[i].setTextColor(white);
+//                int blue = getResources().getColor(R.color.主题色);
+//                Btn[i].setBackgroundColor(blue);
                 RelativeLayout.LayoutParams btParams = new RelativeLayout.LayoutParams((width - 70) / 2, 200);
                 if (i % 2 == 0) {
                     j++;
                 }
                 btParams.leftMargin = 20 + ((width - 60) / 2 + 20) * (i % 2);   //横坐标定位
-                btParams.topMargin = 110 + 205 * j;   //纵坐标定位
+                btParams.topMargin = 230 + 210 * j;   //纵坐标定位
                 layout.addView(Btn[i], btParams);   //将按钮放入layout组件
             }
         }
@@ -94,9 +123,11 @@ public class SelectTypeActivity extends Activity {
                 TextView mTvOtherType = new TextView(this);
                 mTvOtherType.setText("添加其他频道");
                 mTvOtherType.setId(1002);
-                mTvOtherType.setTextSize(20);//单位是sp
+                mTvOtherType.setTextSize(30);//单位是sp
+                //int blue = getResources().getColor(R.color.主题色);
+                //mTvOtherType.setTextColor(blue);
                 RelativeLayout.LayoutParams tvParams_a = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                tvParams_a.topMargin = im_topmargin + 150;
+                tvParams_a.topMargin = im_topmargin + 220;
                 tvParams_a.leftMargin = 20;
                 layout.addView(mTvOtherType, tvParams_a);
                 int l = -1;
@@ -111,7 +142,7 @@ public class SelectTypeActivity extends Activity {
                         l++;
                     }
                     btParams2.leftMargin = 20 + ((width - 60) / 2 + 20) * (i % 2);   //横坐标定位
-                    btParams2.topMargin = im_topmargin + 250 + 205 * l;   //纵坐标定位
+                    btParams2.topMargin = im_topmargin + 300 + 205 * l;   //纵坐标定位
                     layout.addView(Btn2[i], btParams2);   //将按钮放入layout组件
                 }
             }
@@ -159,6 +190,16 @@ public class SelectTypeActivity extends Activity {
                     });
             }
 
+        mTvReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("android.intent.action.CART_BROADCAST");
+                intent.putExtra("data","refresh");
+                LocalBroadcastManager.getInstance(SelectTypeActivity.this).sendBroadcast(intent);
+                sendBroadcast(intent);
+
+            }
+        });
 //        //用于添加上方标题栏中的返回按钮
 //        ActionBar actionBar = getSupportActionBar();
 //        if (actionBar != null) {
@@ -205,5 +246,9 @@ public class SelectTypeActivity extends Activity {
             myTypeManager=null;
         }
         super.onPause();
+//        Intent intent = new Intent("android.intent.action.CART_BROADCAST");
+//        intent.putExtra("data","refresh");
+//        LocalBroadcastManager.getInstance(SelectTypeActivity.this).sendBroadcast(intent);
+//        sendBroadcast(intent);
     }
 }

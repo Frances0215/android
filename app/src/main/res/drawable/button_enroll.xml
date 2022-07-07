@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 圆角的半径 -->
-    <corners android:radius="100dp"/>
+    <corners android:radius="30dp"/>
 
     <!-- 填充颜色 -->
     <solid android:color="@color/主题色"/>

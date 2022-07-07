@@ -11,12 +11,16 @@ repositories {
 
 android {
 
-    compileSdkVersion 30
+    compileSdk 32
     buildToolsVersion "30.0.3"
+
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
     signingConfigs{
         def alias = "key0"
         def password = "123456"
-        def filepath = "D:\\News\\app.jks"
+        def filepath = "..\\a.jks"
 
         debug{
             storeFile file(filepath)
@@ -33,15 +37,25 @@ android {
         }
     }
 
-
-
     defaultConfig {
         applicationId "com.example.news"
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdk 32
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "645acd519f6f9efea7ff130e", //极光开发平台上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
 
 
     }
@@ -82,9 +96,13 @@ dependencies {
     implementation files('libs\\fastjson-1.2.79.jar')
     implementation files('libs\\httpclient-4.5.8.jar')
     implementation(name: 'ocrsdk', ext: 'aar')
+    implementation files('libs\\jcore-android-3.3.0.jar')
+    implementation files('libs\\MiPush_SDK_Client_5_0_5-C.jar')
+    implementation files('libs\\jverification-android-not_support_dynamic-release-2.9.0.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation files('libs\\localbroadcastmanager-1.1.0.aar')
 
 }
 

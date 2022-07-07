@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.news.LoginActivity;
+import com.example.news.MainActivity;
 import com.example.news.NewsAPP;
 import com.example.news.UserDataManager;
 import com.example.news.R;
@@ -167,6 +168,7 @@ public class AppSettingActivity extends BaseActivity {
                                     mApp.clearUser();
                                     Intent intent = new Intent(AppSettingActivity.this, LoginActivity.class);
                                     startActivity(intent);
+                                    finish();
                                     //清除数据库中的账户数据
                                 }
                             }).setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -184,8 +186,17 @@ public class AppSettingActivity extends BaseActivity {
                             .setPositiveButton("是", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(AppSettingActivity.this, LoginActivity.class);
+                                    SharedPreferences login_sp;
+                                    login_sp = getSharedPreferences("userInfo", 0);
+                                    SharedPreferences.Editor editor =login_sp.edit();
+                                    editor.putString("USER_ID", null);
+                                    editor.putString("PASSWORD", null);
+                                    editor.putBoolean("mAutologinCheck", false);
+                                    editor.putBoolean("mRememberCheck", false);
+                                    editor.commit();
+                                    Intent intent = new Intent(AppSettingActivity.this, MainActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 }
                             }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                                 @Override

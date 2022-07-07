@@ -1,5 +1,6 @@
 package com.example.news;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -53,7 +54,7 @@ public class TypeManager {
         Cursor mCursor = mSQLiteDatabase.query(TABLE_NAME,null,null,null,null,null,null);
         ArrayList<String> myType = new ArrayList<>();
         while (mCursor.moveToNext()){
-            String type = mCursor.getString(mCursor.getColumnIndex(TYPE_NAME));
+            @SuppressLint("Range") String type = mCursor.getString(mCursor.getColumnIndex(TYPE_NAME));
             myType.add(type);
         }
         return myType;
