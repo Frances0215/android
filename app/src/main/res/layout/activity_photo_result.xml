@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_grey">
+    android:background="@color/white">
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +26,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/mTvPhotoResult"

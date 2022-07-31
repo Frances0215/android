@@ -39,7 +39,7 @@ public class EnrollActivity extends AppCompatActivity {
     private EditText mEtName;
     private boolean isOpenEye = false;
     private boolean isOpenEye2 = false;
-
+    private TypeManager myTypeManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,10 @@ public class EnrollActivity extends AppCompatActivity {
             mUserDataManager = new UserDataManager(this);
             //mUserDataManager.openDataBase();                              //建立本地数据库
         }
-
+        if (myTypeManager == null) {
+            myTypeManager = new TypeManager(this);
+            myTypeManager.openDataBase();                              //建立本地数据库
+        }
         mBtCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +170,6 @@ public class EnrollActivity extends AppCompatActivity {
                         editor.putBoolean("mRememberCheck", true);
                         editor.putBoolean("mAutologinCheck", false);
                         editor.commit();
-
 
                         //跳转到性别选择页面
                         Intent intent_Register_to_Login = new Intent(EnrollActivity.this,MainActivity.class) ;    //切换User Activity至Login Activity

@@ -104,8 +104,8 @@ public class AppUsageActivity extends BaseActivity {
                     case 4:
                         AlertDialog.Builder builder_type = new AlertDialog.Builder(AppUsageActivity.this);
                         builder_type
-                                .setMessage("新闻类型又称为频道，新闻的默认分类为用户注册时选择的频道，可在新闻区通过左右滑动选择新闻类型，" +
-                                        "如果想要更改类型集合，可以点击菜单按钮进行更改。")
+                                .setMessage("新闻类型又称为频道，新闻的默认分类为推荐、财经和股票，可通过语音输入”添加频道“" +
+                                        "来进行添加，例如语音输入”添加娱乐“，即可添加娱乐频道,也可通过语音输入”删除频道“进行删除")
                                 .setPositiveButton("好的", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

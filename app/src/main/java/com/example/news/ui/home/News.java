@@ -116,7 +116,7 @@ public class News implements Serializable {
                 i=i+n+1;
 
             }
-
+            list.add("已经是最后一页啦，返回新闻主页面阅读下一条新闻吧");
             setContent_f(list);
         }else {
             ArrayList<String> list = new ArrayList<>();

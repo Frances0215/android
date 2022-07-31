@@ -77,6 +77,7 @@ public class SearchResultActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeActionContentDescription("点击返回新闻主页面");
         }
 
     }
@@ -127,6 +128,7 @@ public class SearchResultActivity extends AppCompatActivity {
                     myNews.addAll(news_temp);
                     if(news_temp.size()==0){
                         Toast.makeText(SearchResultActivity.this, "抱歉没有找到你需要的新闻",Toast.LENGTH_SHORT).show();
+                        finish();
                     }else {
                         //设置新闻滑动页
                         newsAdapter = new MyNewsListAdapter(SearchResultActivity.this,R.layout.fragment_news_item,myNews);

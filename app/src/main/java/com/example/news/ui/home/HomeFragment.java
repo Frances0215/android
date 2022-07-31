@@ -3,6 +3,7 @@ package com.example.news.ui.home;
 import android.Manifest;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +14,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.UserHandle;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +43,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.news.DBUtils;
 import com.example.news.DropDownEditText;
 import com.example.news.FontIconView;
+import com.example.news.NewsAPP;
 import com.example.news.NewsManager;
 import com.example.news.R;
 import com.example.news.TypeManager;
@@ -51,7 +56,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class HomeFragment extends Fragment {
 
@@ -137,9 +146,49 @@ public class HomeFragment extends Fragment {
         mIvAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SelectTypeActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), SelectTypeActivity.class);
+//                startActivity(intent);
                 //getActivity().finish();
+//                    getView().announceForAccessibility("可以通过语音输入增加频道，说出“我想要娱乐“，即可添加娱乐频道" +
+//                            "一共包含\"财经\",\"彩票\",\"房产\",\"股票\",\"家居\",\"教育\",\"科技\",\"社会\",\"时尚\",\"时政\",\"体育\",\"星座\",\"游戏\",\"娱乐\"" +
+//                            "14个频道，按住语音按钮添加我的频道吧");
+                    AlertDialog.Builder builder2_1 = new AlertDialog.Builder(getActivity());
+                    View v1_1 = LayoutInflater.from(getContext()).inflate(R.layout.edit_talkback, null);
+                    Button mBtYes = v1_1.findViewById(R.id.mBtYes);
+                    Button mBtNo = v1_1.findViewById(R.id.mBtNo);
+                    builder2_1.setTitle("是否在talkback模式下").setView(v1_1);
+                    AlertDialog dialog2 = builder2_1.show();
+
+                    mBtYes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog2.dismiss();
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                            View view3 = View.inflate(getContext(), R.layout.voice_input2, null);
+                            TextView mTvVoice = view3.findViewById(R.id.mTvType);
+                            mTvVoice.setText("可以通过语音输入增加频道，说出“添加娱乐“，即可添加娱乐频道，" +
+                                    "一共包含\"财经\",\"彩票\",\"房产\",\"股票\",\"家居\",\"教育\",\"科技\",\"社会\",\"时尚\",\"时政\",\"体育\",\"星座\",\"游戏\",\"娱乐\"" +
+                                    "14个频道，同时也可输入”删除娱乐“，进行删除，按住左下方语音按钮设置我的频道吧");
+                            builder1.setView(view3).setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).setTitle("添加频道");
+                            builder1.create().show();
+                        }
+                    });//语音输入借宿
+
+                    mBtNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog2.dismiss();
+                            Intent intent = new Intent(getActivity(), SelectTypeActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+
             }
         });
 
@@ -188,22 +237,49 @@ public class HomeFragment extends Fragment {
                     String searchFor = (String) msg.obj;
                     String str=searchFor.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
 
-                    if(str.contains("我想看")){
-                        String newType=str.substring(3);
+                    if(str.contains("添加")){
+                        String newType=str.substring(2);
                         Log.e("新的频道",newType);
+                        NewsAPP myApp = new NewsAPP();
+                        String[] allType = myApp.getNews_type();
+                        List<String> list = Arrays.asList(allType);
+                        boolean isHave2 = list.contains(newType);
                         boolean isHave = myTypeTab.contains(newType);
-                        if(isHave){
+                        if(isHave && isHave2){
                             getView().announceForAccessibility(newType+"频道已经存在");
+                        }else if(!isHave2){
+                            getView().announceForAccessibility(newType+"频道不存在" +
+                                    "请从\"财经\",\"彩票\",\"房产\",\"股票\",\"家居\",\"教育\",\"科技\",\"社会\",\"时尚\",\"时政\",\"体育\",\"星座\",\"游戏\",\"娱乐\"" +
+                                    "中选择");
                         }else {
                             myTypeManager.insertType(newType);
                             myTypeTab.add(newType);
                             mTlNews.removeAllTabs();
                             initTab();
+                            initTabViewpager();
                             mVpNews.getAdapter().notifyDataSetChanged();
                             getView().announceForAccessibility(newType+"频道添加成功");
                         }
 
-                    }else{
+                    }else if(str.contains("删除")){
+                        String oldType=str.substring(2);
+                        Log.e("旧的频道",oldType);
+                        NewsAPP myApp = new NewsAPP();
+                        String[] allType = myApp.getNews_type();
+                        boolean isHave = myTypeTab.contains(oldType);
+                        if(!isHave){
+                            getView().announceForAccessibility(oldType+"频道不存在");
+                        }else {
+                            myTypeManager.deleteMyType(oldType);
+                            myTypeTab.remove(oldType);
+                            mTlNews.removeAllTabs();
+                            initTab();
+                            mVpNews.getAdapter().notifyDataSetChanged();
+                            getView().announceForAccessibility(oldType+"频道已删除");
+                        }
+
+                    }
+                    else{
                         mEtSearch.setText(str);
                         //Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -343,6 +419,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void run() {
                         try {
+                            getView().announceForAccessibility("正在分析语音");
                             String result = myTrans.voiceTrans(myVoice.getFileName());
                             //String result = "哈哈";
                             Message message = new Message();
@@ -360,6 +437,40 @@ public class HomeFragment extends Fragment {
 
         }
     }
+
+//    public static boolean getTalkBackState(Context context) {
+//        String TalkBackpackageName = "com.google.android.marvin.talkback";
+//        String TalkBackServiceName = "com.google.android.marvin.talkback.TalkBackService";
+//        final boolean accessibilityEnabled = Settings.Secure.getInt(context.getContentResolver(),
+//                Settings.Secure.ACCESSIBILITY_ENABLED, 0) == 1;
+//        Set<ComponentName> enabledServices = getEnabledServicesFromSettings(context, UserHandle.getUserId());
+//        boolean talkBackState = accessibilityEnabled && enabledServices.contains(new ComponentName(TalkBackpackageName, TalkBackServiceName));
+//        return talkBackState;
+//    }
+//
+//    public static Set<ComponentName> getEnabledServicesFromSettings(Context context, int userId) {
+//        final String enabledServicesSetting = Settings.Secure.getStringForUser(
+//                context.getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
+//                userId);
+//        if (enabledServicesSetting == null) {
+//            return Collections.emptySet();
+//        }
+//
+//        final Set<ComponentName> enabledServices = new HashSet<>();
+//        final TextUtils.SimpleStringSplitter colonSplitter = new TextUtils.SimpleStringSplitter(':');
+//        colonSplitter.setString(enabledServicesSetting);
+//
+//        while (colonSplitter.hasNext()) {
+//            final String componentNameString = colonSplitter.next();
+//            final ComponentName enabledService = ComponentName.unflattenFromString(
+//                    componentNameString);
+//            if (enabledService != null) {
+//                enabledServices.add(enabledService);
+//            }
+//        }
+//        return enabledServices;
+//    }
+
 
 
     @Override

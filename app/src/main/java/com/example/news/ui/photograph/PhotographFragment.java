@@ -84,11 +84,6 @@ import android.widget.Button;
 import java.io.File;
 import java.util.HashMap;
 
-
-
-
-
-
     public class PhotographFragment extends Fragment  {
 
         Activity context;
@@ -126,11 +121,11 @@ import java.util.HashMap;
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
                 initAccessToken();
-
                 mFlCamera=view.findViewById(R.id.mFlCamera);
                 mFlCamera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        getView().announceForAccessibility("请折叠您的图书，让我们一页页慢慢看吧");
                         takePhoto(view);
                     }
                 });

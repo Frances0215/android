@@ -61,6 +61,7 @@ public class Show_news_Activity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeActionContentDescription("返回新闻主页面");
         }
 
     }

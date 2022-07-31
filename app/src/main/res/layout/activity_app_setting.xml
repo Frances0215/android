@@ -91,7 +91,7 @@
             android:drawableStart="@drawable/arrow"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="修改手机号"
+            android:text="修改用户名"
             android:textColor="@color/black"
             android:textSize="20sp" />
     </RelativeLayout>

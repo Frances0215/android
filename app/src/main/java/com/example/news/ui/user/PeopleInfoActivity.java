@@ -239,112 +239,128 @@ public class PeopleInfoActivity extends BaseActivity {
                     break;
 
                 case R.id.tv_username_text:
-                    AlertDialog.Builder builder2_1 = new AlertDialog.Builder(PeopleInfoActivity.this);
-                    View v1_1 = LayoutInflater.from(PeopleInfoActivity.this).inflate(R.layout.edit_choose, null);
-                    Button mBtVoice = v1_1.findViewById(R.id.mBtVoice);
-                    Button mBtKey = v1_1.findViewById(R.id.mBtKey);
-                    builder2_1.setTitle("选择输入方式").setView(v1_1);
-                    AlertDialog dialog2 = builder2_1.show();
 
-                    mBtVoice.setOnClickListener(new View.OnClickListener() {
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(PeopleInfoActivity.this);
+                    View v1 = LayoutInflater.from(PeopleInfoActivity.this).inflate(R.layout.edit_dialog, null);
+                    EditText etUsername = v1.findViewById(R.id.et_text);
+                    builder2.setTitle("修改昵称").setView(v1).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            dialog2.dismiss();
-                            myVoice.startRecord(myVoice.getFileName());
-                            AlertDialog.Builder builder = new AlertDialog.Builder(PeopleInfoActivity.this);
-
-                            View view2 = View.inflate(PeopleInfoActivity.this, R.layout.voice_input, null);
-                            final LinearLayout mLlVoice = (LinearLayout) view2.findViewById(R.id.mLlVoice);
-                            builder.setView(view2).setPositiveButton("结束语音输入", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    myVoice.stopRecord();
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
-                                                String result = myTrans.voiceTrans(myVoice.getFileName());
-                                                //String result = "哈哈";
-                                                Message message = new Message();
-                                                message.obj =result;
-                                                message.what = 1;
-                                                mHandler.sendMessage(message);
-
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }).start();
-                                }
-                            });
-
-                            builder.create();
-                            AlertDialog dialog = builder.show();
-                            dialog.getWindow().setLayout(1000,800);
-
-                            //设置确定按钮的位置大小
-                            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                            positiveButton.setTextSize(35);
-                            positiveButton.setTextColor(Color.BLACK);
-                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
-                            layoutParams.weight = 10;
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setLayoutParams(layoutParams);
-                            //设置使点击空白处不能关闭
-                            dialog.setCanceledOnTouchOutside(false);
-                            mLlVoice.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-
-                                public void onClick(View v) {
-                                    myVoice.stopRecord();
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
-                                                String result = myTrans.voiceTrans(myVoice.getFileName());
-                                                //String result = myTrans.voiceTrans(FILE_NAME);
-                                                //String result="哈哈";
-                                                Message message = new Message();
-                                                message.obj =result;
-                                                message.what = 2;
-                                                mHandler.sendMessage(message);
-
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }).start();
-                                    dialog.dismiss();
-                                }
-                            });
-
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(PeopleInfoActivity.this, "修改成功", Toast.LENGTH_SHORT);
+                            mName.setText(etUsername.getText());
                         }
-                    });//语音输入借宿
-
-                    mBtKey.setOnClickListener(new View.OnClickListener() {
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            dialog2.dismiss();
-                            AlertDialog.Builder builder2 = new AlertDialog.Builder(PeopleInfoActivity.this);
-                            View v1 = LayoutInflater.from(PeopleInfoActivity.this).inflate(R.layout.edit_dialog, null);
-                            EditText etUsername = v1.findViewById(R.id.et_text);
-                            builder2.setTitle("修改昵称").setView(v1).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Toast.makeText(PeopleInfoActivity.this, "修改成功", Toast.LENGTH_SHORT);
-                                    mName.setText(etUsername.getText());
-                                }
-                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    //取消修改
-                                }
-                            }).show();
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //取消修改
                         }
-                    });
+                    }).show();
+                    
+//                    AlertDialog.Builder builder2_1 = new AlertDialog.Builder(PeopleInfoActivity.this);
+//                    View v1_1 = LayoutInflater.from(PeopleInfoActivity.this).inflate(R.layout.edit_choose, null);
+//                    Button mBtVoice = v1_1.findViewById(R.id.mBtVoice);
+//                    Button mBtKey = v1_1.findViewById(R.id.mBtKey);
+//                    builder2_1.setTitle("选择输入方式").setView(v1_1);
+//                    AlertDialog dialog2 = builder2_1.show();
 
 
+//                    mBtVoice.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            dialog2.dismiss();
+//                            myVoice.startRecord(myVoice.getFileName());
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(PeopleInfoActivity.this);
+//
+//                            View view2 = View.inflate(PeopleInfoActivity.this, R.layout.voice_input, null);
+//                            final LinearLayout mLlVoice = (LinearLayout) view2.findViewById(R.id.mLlVoice);
+//                            builder.setView(view2).setPositiveButton("结束语音输入", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    myVoice.stopRecord();
+//                                    new Thread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            try {
+//                                                String result = myTrans.voiceTrans(myVoice.getFileName());
+//                                                //String result = "哈哈";
+//                                                Message message = new Message();
+//                                                message.obj =result;
+//                                                message.what = 1;
+//                                                mHandler.sendMessage(message);
+//
+//                                            } catch (Exception e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                    }).start();
+//                                }
+//                            });
+//
+//                            builder.create();
+//                            AlertDialog dialog = builder.show();
+//                            dialog.getWindow().setLayout(1000,800);
+//
+//                            //设置确定按钮的位置大小
+//                            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                            positiveButton.setTextSize(35);
+//                            positiveButton.setTextColor(Color.BLACK);
+//                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+//                            layoutParams.weight = 10;
+//                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setLayoutParams(layoutParams);
+//                            //设置使点击空白处不能关闭
+//                            dialog.setCanceledOnTouchOutside(false);
+//                            mLlVoice.setOnClickListener(new View.OnClickListener() {
+//
+//                                @Override
+//
+//                                public void onClick(View v) {
+//                                    myVoice.stopRecord();
+//                                    new Thread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            try {
+//                                                String result = myTrans.voiceTrans(myVoice.getFileName());
+//                                                //String result = myTrans.voiceTrans(FILE_NAME);
+//                                                //String result="哈哈";
+//                                                Message message = new Message();
+//                                                message.obj =result;
+//                                                message.what = 2;
+//                                                mHandler.sendMessage(message);
+//
+//                                            } catch (Exception e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                    }).start();
+//                                    dialog.dismiss();
+//                                }
+//                            });
+//
+//                        }
+//                    });//语音输入借宿
 
+//                    mBtKey.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            dialog2.dismiss();
+//                            AlertDialog.Builder builder2 = new AlertDialog.Builder(PeopleInfoActivity.this);
+//                            View v1 = LayoutInflater.from(PeopleInfoActivity.this).inflate(R.layout.edit_dialog, null);
+//                            EditText etUsername = v1.findViewById(R.id.et_text);
+//                            builder2.setTitle("修改昵称").setView(v1).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    Toast.makeText(PeopleInfoActivity.this, "修改成功", Toast.LENGTH_SHORT);
+//                                    mName.setText(etUsername.getText());
+//                                }
+//                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    //取消修改
+//                                }
+//                            }).show();
+//                        }
+//                    });
+//
                     break;
 
                 case R.id.tv_birthday_text:

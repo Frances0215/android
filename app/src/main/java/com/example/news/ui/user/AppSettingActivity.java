@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.news.LoginActivity;
 import com.example.news.MainActivity;
 import com.example.news.NewsAPP;
+import com.example.news.TypeManager;
 import com.example.news.UserDataManager;
 import com.example.news.R;
 
@@ -194,6 +195,12 @@ public class AppSettingActivity extends BaseActivity {
                                     editor.putBoolean("mAutologinCheck", false);
                                     editor.putBoolean("mRememberCheck", false);
                                     editor.commit();
+
+                                    TypeManager myTypeManager = new TypeManager(getApplicationContext());
+                                    myTypeManager.openDataBase();
+                                    myTypeManager.delectAllType();
+                                    myTypeManager.closeDataBase();
+
                                     Intent intent = new Intent(AppSettingActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();

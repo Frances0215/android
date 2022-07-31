@@ -194,6 +194,7 @@ public class UserFragment extends Fragment {
             Intent intent = null;
             switch (view.getId()) {
                 case R.id.mTvUser:
+                    getView().announceForAccessibility("建议在亲人帮助下修改个人信息");
                     intent = new Intent(getActivity(), PeopleInfoActivity.class);
                     startActivity(intent);
                     break;

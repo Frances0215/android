@@ -97,8 +97,7 @@
             android:label="联系我们"/>
         <activity android:name=".ui.user.PeopleInfoActivity"
             android:label="个人信息"/>
-        <activity android:name=".ui.user.QAAActivity"
-            android:label="问题与建议"/>
+        <activity android:name=".ui.user.QAAActivity" />
         <activity android:name=".ui.user.ThemeActivity"
             android:label="主题设置"/>
         <activity android:name=".ui.photograph.PhotoResultActivity"

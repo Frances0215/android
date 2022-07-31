@@ -26,9 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.news.ui.home.News;
+import com.example.news.ui.home.SelectTypeActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -69,11 +71,25 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences login_sp;
     //在手机缓存中只存入用户名、密码、手机号码以及是否记住密码
     private UserDataManager mUserDataManager;
+    private TypeManager myTypeManager;
     private List<News> myNews = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        if (myTypeManager == null) {
+            myTypeManager = new TypeManager(this);
+            myTypeManager.openDataBase();                              //建立本地数据库
+        }
+        ArrayList<String> myType= myTypeManager.getAllMyType();
+        if(myType.size()==0){
+            //设置默认新闻类型
+            myTypeManager.insertType("财经");
+            myTypeManager.insertType("彩票");
+        }
+
 
         //去掉标题栏
         this.getSupportActionBar().hide();//注意是在 setContentView(R.layout.activity_main)后
@@ -90,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
             mUserDataManager = new UserDataManager(this);
             //mUserDataManager.openDataBase();                              //建立本地数据库
         }
+
+
 
 //        ArrayList<UserData> userData = mUserDataManager.fetchAllUserDatas();
 //        UserData myUser = new UserData("18778939300","123456");
@@ -699,11 +717,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        if(myTypeManager == null){
+            myTypeManager = new TypeManager(this);
+            myTypeManager.openDataBase();
+        }
+        super.onResume();
+    }
 
     @Override
     protected void onRestart() {
+        if(myTypeManager != null){
+            myTypeManager.closeDataBase();
+            myTypeManager=null;
+        }
         super.onRestart();
+
     }
 
-
+    @Override
+    protected void onPause() {
+        if(myTypeManager != null){
+            myTypeManager.closeDataBase();
+            myTypeManager=null;
+        }
+        super.onPause();
+//        Intent intent = new Intent("android.intent.action.CART_BROADCAST");
+//        intent.putExtra("data","refresh");
+//        LocalBroadcastManager.getInstance(SelectTypeActivity.this).sendBroadcast(intent);
+//        sendBroadcast(intent);
+    }
 }

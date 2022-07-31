@@ -66,6 +66,7 @@ public class SelectTypeActivity extends Activity {
         ImageView mTvReturn = new ImageView(this);
         mTvReturn.setImageResource(R.drawable.d_back_icon);
         mTvReturn.setId(1000);
+        mTvReturn.setContentDescription("返回新闻页面");
         RelativeLayout.LayoutParams tvParams_r = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tvParams_r.topMargin = 40;
         tvParams_r.leftMargin = 20;
