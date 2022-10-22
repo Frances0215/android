@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             winWidth = point.x;
         }
 
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 login_sp = getSharedPreferences("userInfo", MODE_PRIVATE);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
+*/
 
 
     }

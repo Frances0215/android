@@ -3,11 +3,7 @@ plugins {
     id 'com.android.application'
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
+
 
 android {
 
@@ -36,20 +32,27 @@ android {
             keyPassword password
         }
     }
-
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            version "3.10.2"
+            path file('src/main/jni/CMakeLists.txt')
+        }
+    }
     defaultConfig {
         applicationId "com.example.news"
+        archivesBaseName = "$applicationId"
         minSdkVersion 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        ndk {
-            //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-        }
+
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME : applicationId,
@@ -90,7 +93,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-
     implementation files('libs\\mysql-connector-java-5.1.46-bin.jar')
     implementation files('libs\\Online_SDK.aar')
     implementation files('libs\\fastjson-1.2.79.jar')

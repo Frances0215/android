@@ -194,6 +194,7 @@ public class PhotoResultActivity extends AppCompatActivity {
             }
         }, this.getApplicationContext());
     }
-
-
 }
+
+
+
