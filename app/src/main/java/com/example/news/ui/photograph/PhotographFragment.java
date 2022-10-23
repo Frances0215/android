@@ -42,6 +42,8 @@ import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
+import com.example.news.EnrollActivity;
+import com.example.news.MainActivity;
 import com.example.news.R;
 import com.example.news.ui.user.AppUsageActivity;
 
@@ -96,6 +98,7 @@ import java.util.HashMap;
     private PhotographViewModel photographViewModel;
 
     private FrameLayout mFlCamera;
+        private FrameLayout mFlRecognize;
 
     private static final int REQUEST_CODE_TAKE = 1;
     private static final int REQUEST_CODE_CHOOSE = 0;
@@ -122,6 +125,7 @@ import java.util.HashMap;
         super.onViewCreated(view, savedInstanceState);
                 initAccessToken();
                 mFlCamera=view.findViewById(R.id.mFlCamera);
+                mFlRecognize = view.findViewById(R.id.mFlRecognize);
                 mFlCamera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -129,7 +133,13 @@ import java.util.HashMap;
                         takePhoto(view);
                     }
                 });
-
+                mFlRecognize.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent_Register_to_Login = new Intent(getActivity(), RecognizeActivity.class) ;
+                        startActivity(intent_Register_to_Login);
+                    }
+                });
 
 
     }
@@ -181,7 +191,7 @@ import java.util.HashMap;
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
 
-            Log.v("phtograph","enterFile");
+            Log.v("photograph","enterFile");
 
             if (resultCode == Activity.RESULT_OK){
                 String sdStatus = Environment.getExternalStorageState();

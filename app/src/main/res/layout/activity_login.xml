@@ -18,8 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-
-
     <com.example.news.FontIconView
         android:id="@+id/imageView_wode"
         android:layout_width="40dp"

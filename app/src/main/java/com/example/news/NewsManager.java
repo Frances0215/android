@@ -25,7 +25,7 @@ public class NewsManager {
     public static final String PUBLISH_TIME = "publish_time";
     public static final String CONTENT="contents";
     private static final String DB_NAME = "newsRec";
-    private static DBUtils myDBUtil=new DBUtils();;
+    private static DBUtils myDBUtil=new DBUtils();
     private Context mContext = null;
 
     public NewsManager(Context context){

@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:paddingLeft="10dp">
+        android:paddingLeft="10dp"
+        android:gravity="right">
 
 
         <TextView
@@ -33,7 +34,8 @@
             android:textSize="20sp"
             android:text="2022-05-21"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            />
 
     </LinearLayout>
 </LinearLayout>

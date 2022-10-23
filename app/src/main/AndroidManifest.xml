@@ -129,6 +129,8 @@
             android:screenOrientation="unspecified"
             android:theme="@style/ActivityDialogStyle"/>
 
+        <activity android:name=".ui.photograph.RecognizeActivity"
+            android:label="实时识别"/>
         <!-- Required -->
         <meta-data
             android:name="JPUSH_APPKEY"

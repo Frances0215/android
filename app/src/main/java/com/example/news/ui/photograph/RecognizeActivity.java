@@ -34,7 +34,7 @@ import android.widget.Spinner;
 
 import com.example.news.R;
 
-public class MainActivity extends Activity implements SurfaceHolder.Callback
+public class RecognizeActivity extends Activity implements SurfaceHolder.Callback
 {
     public static final int REQUEST_CAMERA = 100;
 
@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_recognize);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
