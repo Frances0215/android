@@ -107,6 +107,7 @@ dependencies {
     implementation files('libs\\jcore-android-3.3.0.jar')
     implementation files('libs\\MiPush_SDK_Client_5_0_5-C.jar')
     implementation files('libs\\jverification-android-not_support_dynamic-release-2.9.0.jar')
+    implementation files('libs\\Msc.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
