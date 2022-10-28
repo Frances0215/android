@@ -15,8 +15,8 @@ public class TypeManager {
     private static final String TAG = "TypeManager";
     private static final String TABLE_NAME = "Type";
     private static final String TYPE_NAME = "name";
-    private static final int DB_VERSION = 2;
-    private static final String DB_NAME = "Data2.dp";
+    private static final int DB_VERSION = 3;
+    private static final String DB_NAME = "Data3.dp";
     private Context mContext = null;
 
     private MyDataBaseHelper mDatabaseHelper;

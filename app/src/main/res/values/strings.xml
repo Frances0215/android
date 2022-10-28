@@ -55,6 +55,8 @@
     <string name="psw">&#xe619;</string>
     <string name="repsw">&#xe60a;</string>
     <string name="voice">&#xe8f7;</string>
+    <string name="recognize">&#xe6d7;</string>
+    <string name="rollback">&#xe601;</string>
     <string-array name="cpugpu_array">
         <item>CPU</item>
         <item>GPU</item>

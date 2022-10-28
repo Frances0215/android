@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -89,8 +90,6 @@ import java.util.HashMap;
     public class PhotographFragment extends Fragment  {
 
         Activity context;
-
-
         private static final int REQUEST_CODE_GENERAL_BASIC = 106;
         private static String UriPath;
         private boolean hasGotToken = false;
@@ -98,7 +97,9 @@ import java.util.HashMap;
     private PhotographViewModel photographViewModel;
 
     private FrameLayout mFlCamera;
-        private FrameLayout mFlRecognize;
+    private FrameLayout mFlRecognize;
+    private TextView mTvCamera;
+    private TextView mTvRecognize;
 
     private static final int REQUEST_CODE_TAKE = 1;
     private static final int REQUEST_CODE_CHOOSE = 0;
@@ -141,7 +142,11 @@ import java.util.HashMap;
                     }
                 });
 
-
+//                mTvCamera = (TextView) view.findViewById(R.id.mTvCamera);
+//                mTvRecognize = (TextView) view.findViewById(R.id.mTvRecognize);
+//                Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"AaHouLangXingKai-2.ttf");
+//                mTvCamera.setTypeface(typeface);
+//                mTvRecognize.setTypeface(typeface);
     }
 
 

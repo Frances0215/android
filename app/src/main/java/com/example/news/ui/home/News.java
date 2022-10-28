@@ -94,14 +94,14 @@ public class News implements Serializable {
                 ArrayList<String> temp = new ArrayList<>();
                 temp.add(lines[i]);
                 int len = lines[i].length();
-                while(len<100){
+                while(len<200){
                     int a = len;
                     n++;
                     if((i+n)<lines.length)
                         len=lines[i+n].length()+len;
                     else break;
                     temp.add(lines[i+n]);
-                    if(len>200 && a!=0){
+                    if(len>300 && a!=0){
                         temp.remove(lines[i+n]);
                         n--;
                         break;

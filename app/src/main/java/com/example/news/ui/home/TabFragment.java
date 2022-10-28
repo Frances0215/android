@@ -134,7 +134,6 @@ public class TabFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                     String news_id=n.getID();
                     NewsAPP mApp = (NewsAPP)getActivity().getApplication();
                     String user_id = mApp.getID();
-                    Log.e("用户id",user_id);
                     mNewsManager.newsClickEvent(user_id,news_id);
                 }
             };

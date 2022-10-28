@@ -24,6 +24,7 @@ public class NewsManager {
     public static final String TYPE = "category";
     public static final String PUBLISH_TIME = "publish_time";
     public static final String CONTENT="contents";
+    public static final int NEWS_NUM=5;
     private static final String DB_NAME = "newsRec";
     private static DBUtils myDBUtil=new DBUtils();
     private Context mContext = null;
@@ -68,8 +69,8 @@ public class NewsManager {
         Connection connection = myDBUtil.getConn(DB_NAME);
         String sql;
         if (connection != null) {
-            int flag = start*4;
-            sql = "select * from news where category = '" + type +"' limit "+flag+",4";
+            int flag = start*6;
+            sql = "select * from news where category = '" + type +"' limit "+flag+",6";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
@@ -124,8 +125,8 @@ public class NewsManager {
             String id = "";
             String sql;
             if(recID.size()==0){
-                int flag = start*4;
-                sql = "select * from news limit "+flag+",4";
+                int flag = start*6;
+                sql = "select * from news limit "+flag+",6";
             }else{
                 for(int i=0;i<recID.size();i++){
                     if(i==0)
@@ -166,13 +167,13 @@ public class NewsManager {
         List<String> recID = new ArrayList<>();
         Connection connection = myDBUtil.getConn(DB_NAME);
         if (connection != null) {
-            int flag = start*4;
+            int flag = start*6;
             String  sql = "select * from itemcf_baseline where user_id = '" + ID +"'";
             try {
                 java.sql.Statement statement = connection.createStatement();
                 ResultSet rSet = statement.executeQuery(sql);//得到数据库中的数据
                 while (rSet.next())
-                    for (int i =1;i<=4;i++) {
+                    for (int i =1;i<=6;i++) {
                         //columnLabel是属性名
                         int j = (i+flag)%50;
                         String index = "article_"+j;

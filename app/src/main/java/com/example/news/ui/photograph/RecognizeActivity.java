@@ -77,41 +77,43 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
             }
         });
 
-        spinnerModel = (Spinner) findViewById(R.id.spinnerModel);
-        spinnerModel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id)
-            {
-                if (position != current_model)
-                {
-                    current_model = position;
-                    reload();
-                }
-            }
+        //选择模式
+//        spinnerModel = (Spinner) findViewById(R.id.spinnerModel);
+//        spinnerModel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id)
+//            {
+//                if (position != current_model)
+//                {
+//                    current_model = position;
+//                    reload();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> arg0)
+//            {
+//            }
+//        });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0)
-            {
-            }
-        });
-
-        spinnerCPUGPU = (Spinner) findViewById(R.id.spinnerCPUGPU);
-        spinnerCPUGPU.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id)
-            {
-                if (position != current_cpugpu)
-                {
-                    current_cpugpu = position;
-                    reload();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0)
-            {
-            }
-        });
+        //选择CPU模式
+//        spinnerCPUGPU = (Spinner) findViewById(R.id.spinnerCPUGPU);
+//        spinnerCPUGPU.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id)
+//            {
+//                if (position != current_cpugpu)
+//                {
+//                    current_cpugpu = position;
+//                    reload();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> arg0)
+//            {
+//            }
+//        });
 
         reload();
     }
