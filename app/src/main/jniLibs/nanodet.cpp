@@ -449,6 +449,25 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
     for(size_t j = 0; j < objects.size(); j++){
         char a[20];
         strcpy(a,class_names[objects[j].label]);
+        float xp=(objects[j].rect.x+objects[j].rect.width/2)/rgb.cols;
+        float yp=(objects[j].rect.y+objects[j].rect.height/2)/rgb.rows;
+        if(xp<0.5f){
+            if(yp<0.5f){
+                strcat(a,"1");//左上
+            }
+            else{
+                strcat(a,"2");//左下
+            }
+        }
+        else{
+            if(yp<0.5f){
+                strcat(a,"3");//右上
+            }
+            else{
+                strcat(a,"4");//右下
+            }
+        }
+
         strcat(a,",");
         strcat(Str,a);
     }

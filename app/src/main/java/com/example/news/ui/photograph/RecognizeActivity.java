@@ -167,7 +167,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
         new Thread(new Runnable() {
 
             public void run() {
-
+                String[] strpos={"左上方有","左下方有","右上方有","右下方有"};
                 while (true) {
 
                     if(isexit){
@@ -178,15 +178,22 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                         int flag = 0;
                         returnTag = "";
                         try {
-                            Thread.sleep(2 * 1000);
+                            Thread.sleep(5 * 1000);
                             returnTag = nanodetncnn.getTag();
                             if (returnTag != "") {
-                                if (returnTag.indexOf("person") != -1) {
-                                    texts += "前方有人";
-                                    onPlay();
-                                    Log.v("Tag", returnTag);
+                                String[] tag=returnTag.split(",");
+                                for(int i=0;i<tag.length;i++){
+                                    if(tag[i].indexOf("person")!=-1){
+                                        char position=tag[i].charAt(tag[i].length() - 1);
+                                        int p=Integer.parseInt(String.valueOf(position));
+                                        texts+=strpos[p-1];
+                                        texts += "人";
+                                    }
                                 }
-
+                                if(texts!="") {
+                                    onPlay();
+                                }
+                                Log.v("Tag", returnTag);
                             }
 
 
