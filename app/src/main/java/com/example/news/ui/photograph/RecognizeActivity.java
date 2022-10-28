@@ -70,6 +70,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
     boolean ispause=false;
     private SurfaceView cameraView;
     private String returnTag="";
+    private Boolean flag=true;
     //xunfei
     private SpeechSynthesizer mTts;
     private static String TAG = RecognizeActivity.class.getSimpleName();
@@ -79,7 +80,6 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
     private String[] mCloudVoicersEntries;
     private String[] mCloudVoicersValue;
     private String texts = "";
-
     // 缓冲进度
     private int mPercentForBuffering = 0;
     // 播放进度
@@ -175,12 +175,12 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                     if(isexit){
                         break;
                     }
-                    if(!ispause){
+                    if(!ispause&&flag){
                         texts = "";
-                        int flag = 0;
+                        flag=false;
                         returnTag = "";
                         try {
-                            Thread.sleep(5 * 1000);
+                            Thread.sleep(10 * 1000);
                             returnTag = nanodetncnn.getTag();
                             if (returnTag != "") {
                                 String[] tag=returnTag.split(",");
@@ -357,6 +357,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
         @Override
         public void onCompleted(SpeechError error) {
             showTip("播放完成");
+            flag=true;
             if (error != null) {
                 showTip(error.getPlainDescription(true));
                 return;
