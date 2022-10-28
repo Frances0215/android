@@ -407,7 +407,7 @@ int NanoDet::detect(const cv::Mat& rgb, std::vector<Object>& objects, float prob
     return 0;
 }
 
-int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects)
+int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
 {
     static const char* class_names[] = {
         "person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat", "traffic light",
@@ -420,6 +420,7 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects)
         "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear",
         "hair drier", "toothbrush"
     };
+
 
     static const unsigned char colors[19][3] = {
         { 54,  67, 244},
@@ -444,6 +445,20 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects)
     };
 
     int color_index = 0;
+    char Str[200];
+    for(size_t j = 0; j < objects.size(); j++){
+        char a[20];
+        strcpy(a,class_names[objects[j].label]);
+        strcat(a,",");
+        strcat(Str,a);
+    }
+    if(objects.size()>0){
+        if(strcmp(tag,Str)!=0){
+            strcpy(tag,Str);
+            //__android_log_print(ANDROID_LOG_WARN, "tag","%s", tag );
+        }
+    }
+
 
     for (size_t i = 0; i < objects.size(); i++)
     {
@@ -477,7 +492,9 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects)
         cv::Scalar textcc = (color[0] + color[1] + color[2] >= 381) ? cv::Scalar(0, 0, 0) : cv::Scalar(255, 255, 255);
 
         cv::putText(rgb, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.5, textcc, 1);
+
     }
+
 
     return 0;
 }

@@ -112,7 +112,7 @@ static int draw_fps(cv::Mat& rgb)
 
 static NanoDet* g_nanodet = 0;
 static ncnn::Mutex lock;
-
+static char tag[200];
 class MyNdkCamera : public NdkCameraWindow
 {
 public:
@@ -130,7 +130,7 @@ void MyNdkCamera::on_image_render(cv::Mat& rgb) const
             std::vector<Object> objects;
             g_nanodet->detect(rgb, objects);
 
-            g_nanodet->draw(rgb, objects);
+            g_nanodet->draw(rgb, objects,tag);
         }
         else
         {
@@ -249,7 +249,10 @@ JNIEXPORT jboolean JNICALL Java_com_example_news_ui_photograph_NanoDetNcnn_loadM
 
     return JNI_TRUE;
 }
-
+jstring charsToJstring(JNIEnv* pEnv,const char* pData)
+{
+    return pEnv->NewStringUTF(pData);
+}
 // public native boolean openCamera(int facing);
 JNIEXPORT jboolean JNICALL Java_com_example_news_ui_photograph_NanoDetNcnn_openCamera(JNIEnv* env, jobject thiz, jint facing)
 {
@@ -261,6 +264,12 @@ JNIEXPORT jboolean JNICALL Java_com_example_news_ui_photograph_NanoDetNcnn_openC
     g_camera->open((int)facing);
 
     return JNI_TRUE;
+}
+
+JNIEXPORT jstring JNICALL Java_com_example_news_ui_photograph_NanoDetNcnn_getTag(JNIEnv* env, jobject thiz)
+{
+    jstring returnTag= charsToJstring(env,tag);
+    return returnTag;
 }
 
 // public native boolean closeCamera();
@@ -284,6 +293,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_news_ui_photograph_NanoDetNcnn_setOu
 
     return JNI_TRUE;
 }
+
 
 }
 
