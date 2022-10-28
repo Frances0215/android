@@ -7,7 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="主题色">#0E4AFF</color>
+    <color name="主题色">#437bb6</color>
+    <color name="主题色1">#0E4AFF</color>
+    <color name="背景浅蓝">#f0f8ff</color>
     <color name="bg_grey">#f5f5f5</color>
     <color name="bg_green">#99BDBA</color>
     <color name="light_green">#84B2C3</color>
@@ -36,5 +38,9 @@
 
 
     <color name="white_e">#FFEEEEEE</color>
+    <color name="color_grey">#f1f2f4</color>
+
+    <!--floatingactionbutton's coclor-->
+    <color name="text_color">#000000</color>
 
 </resources>

@@ -7,5 +7,5 @@
          android:bottomLeftRadius="30dp"/>
 <!--     <corners android:bottomLeftRadius="30dp"/>-->
     <!-- 填充颜色 -->
-    <solid android:color="@color/主题色"/>
+    <solid android:color="#3986DC"/>
 </shape>

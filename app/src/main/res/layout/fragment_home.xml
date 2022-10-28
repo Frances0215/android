@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment"
-    android:id="@+id/fragment_home">
+    android:id="@+id/fragment_home"
+    android:background="@color/white"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,15 +51,15 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <Button
-                android:id="@+id/mBtRefresh"
-                android:layout_width="50dp"
-                android:layout_height="0dp"
-                android:layout_weight="5"
-                android:background="@drawable/bt_search"
-                android:text="使用指南"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
+<!--            <Button-->
+<!--                android:id="@+id/mBtRefresh"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="5"-->
+<!--                android:background="@drawable/bt_search"-->
+<!--                android:text="使用指南"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="30sp" />-->
 
             <Button
                 android:id="@+id/mFbRadioStart"
@@ -71,7 +73,6 @@
                 android:textSize="30sp" />
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -94,7 +95,8 @@
                     app:tabMode="scrollable"
                     app:tabSelectedTextColor="@color/主题色"
                     app:tabTextAppearance="@style/TabLayoutTheme"
-                    app:tabTextColor="@color/主题色" />
+                    app:tabTextColor="@color/主题色"
+                    />
 
                 <com.example.news.FontIconView
                     android:id="@+id/mIvAdd"
@@ -109,18 +111,15 @@
 
             </LinearLayout>
 
-
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/tab_layout"
-                tools:ignore="NotSibling" />
-
+                >
+            </androidx.viewpager.widget.ViewPager>
 
         </LinearLayout>
-
-
 
     </LinearLayout>
 

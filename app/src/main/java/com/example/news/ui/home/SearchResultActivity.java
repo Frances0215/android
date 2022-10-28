@@ -3,6 +3,7 @@ package com.example.news.ui.home;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,7 +13,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.news.FontIconView;
 import com.example.news.LoginActivity;
 import com.example.news.NewsAPP;
 import com.example.news.NewsManager;
@@ -33,6 +37,8 @@ public class SearchResultActivity extends AppCompatActivity {
     private MyNewsListAdapter newsAdapter;
     private NewsManager mNewsManager;
     private List<News> myNews = new ArrayList<>();
+    private FontIconView mIvReturn;
+    private TextView mTvLogo;
     private String keyWord;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +46,7 @@ public class SearchResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_result);
         Intent intent=this.getIntent();
         Bundle bundle = intent.getExtras();
+        this.getSupportActionBar().hide();
         keyWord = (String) bundle.getSerializable("keyWord");
 
         mLvSearch = (ListView) findViewById(R.id.mLvNews);
@@ -50,7 +57,11 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         initNews(0);
+        mTvLogo = findViewById(R.id.mTvLogo);
 
+        Typeface typeface = Typeface.createFromAsset(this.getAssets(),"AaHouLangXingKai-2.ttf");
+
+        mTvLogo.setTypeface(typeface);
         ClickThread myThread = new ClickThread();
         myThread.start();
 
@@ -80,6 +91,13 @@ public class SearchResultActivity extends AppCompatActivity {
             actionBar.setHomeActionContentDescription("点击返回新闻主页面");
         }
 
+        mIvReturn = (FontIconView)findViewById(R.id.mIvReturn);
+        mIvReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchResultActivity.this.finish();
+            }
+        });
     }
     //返回上一个界面
     public boolean onOptionsItemSelected(MenuItem item) {

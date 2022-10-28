@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
             //设置默认新闻类型
             myTypeManager.insertType("财经");
             myTypeManager.insertType("彩票");
+            myTypeManager.insertType("娱乐");
+            myTypeManager.insertType("财经");
         }
 
 

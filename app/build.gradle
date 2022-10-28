@@ -53,7 +53,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
-
         manifestPlaceholders = [
                 JPUSH_PKGNAME : applicationId,
                 JPUSH_APPKEY : "645acd519f6f9efea7ff130e", //极光开发平台上注册的包名对应的appkey.
@@ -78,11 +77,11 @@ android {
         viewBinding true
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
+//    sourceSets {
+//        main {
+//            jniLibs.srcDirs = ['libs']
+//        }
+//    }
 
 
 }
@@ -97,6 +96,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    //圆形悬浮按钮
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation files('libs\\mysql-connector-java-5.1.46-bin.jar')

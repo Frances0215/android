@@ -4,18 +4,16 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/buttonSwitchCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="切换摄像头" />
-
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonSwitchCamera"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="切换摄像头"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:background="@drawable/bt_search"
+                />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -41,6 +39,27 @@
     <SurfaceView
         android:id="@+id/cameraview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="0.9"/>
+
+
+<!--    <LinearLayout-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_width="fill_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="0.1"-->
+<!--        android:gravity="center">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/buttonSwitchCamera"-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="切换摄像头"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="20sp"-->
+<!--            android:background="@drawable/bt_search"-->
+<!--            />-->
+
+<!--    </LinearLayout>-->
 
 </LinearLayout>

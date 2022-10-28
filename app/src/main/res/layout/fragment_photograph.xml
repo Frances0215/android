@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.photograph.PhotographFragment">
+    tools:context=".ui.photograph.PhotographFragment"
+    android:background="@color/white">
 
 
     <FrameLayout
         android:id="@+id/mFlCamera"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="250dp"
         android:background="@drawable/bg_button_camera"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,17 +27,18 @@
             android:layout_marginTop="30dp"
             android:text="@string/camera"
             android:textSize="150dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             />
 
         <TextView
             android:id="@+id/mTvCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="拍照识物"
+            android:text="拍照识字"
             android:fontFamily="casual"
+            android:textStyle="bold"
             android:textSize="35sp"
-            android:textColor="#ffffff"
+            android:textColor="#000000"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="175dp"/>
 
@@ -44,7 +46,7 @@
 
     <FrameLayout
         android:id="@+id/mFlRecognize"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="250dp"
         android:background="@drawable/bg_button_camera"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,9 +61,9 @@
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:text="@string/camera"
+            android:text="@string/recognize"
             android:textSize="150dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             />
 
         <TextView
@@ -71,9 +73,10 @@
             android:text="实时识物"
             android:fontFamily="casual"
             android:textSize="35sp"
-            android:textColor="#ffffff"
+            android:textColor="#000000"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="175dp"/>
+            android:layout_marginTop="175dp"
+            android:textStyle="bold"/>
 
     </FrameLayout>
 

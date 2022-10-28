@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
         mIvAdd = view.findViewById(R.id.mIvAdd);
         mFbRadioStart = view.findViewById(R.id.mFbRadioStart);
         mEtSearch = view.findViewById(R.id.mEtSearch);
-        mBtSearch = view.findViewById(R.id.mBtRefresh);
+        //mBtSearch = view.findViewById(R.id.mBtRefresh);
         mTvLogo = view.findViewById(R.id.mTvLogo);
 
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"AaHouLangXingKai-2.ttf");
@@ -192,13 +192,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mBtSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AppUsageActivity.class);
-                startActivity(intent);
-            }
-        });
+        //使用指南
+//        mBtSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), AppUsageActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         //搜索按钮
         mEtSearch.setOnDropArrowClickListener(new DropDownEditText.OnDropArrowClickListener() {

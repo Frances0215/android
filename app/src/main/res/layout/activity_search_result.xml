@@ -7,6 +7,59 @@
     tools:ignore="MissingDefaultResource"
     android:orientation="vertical">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        >
+
+        <com.example.news.FontIconView
+            android:id="@+id/mIvReturn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rollback"
+            android:textSize="30dp"
+            android:contentDescription="返回新闻页面"
+            android:onClick="back_to_mine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.02"
+            />
+
+        <TextView
+            android:id="@+id/mTvLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:importantForAccessibility="no"
+            android:text="听闻"
+            android:textColor="@color/主题色"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/mEtSearch"
+            app:layout_constraintStart_toStartOf="@+id/mIvReturn"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintHorizontal_bias="0.8"/>
+
+        <com.example.news.DropDownEditText
+            android:id="@+id/mEtSearch"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_editsearch"
+            android:drawableRight="@drawable/search3"
+            android:hint="请输入搜索关键字"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintVertical_bias="0.4"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ListView
         android:id="@+id/mLvNews"
         android:layout_width="match_parent"
