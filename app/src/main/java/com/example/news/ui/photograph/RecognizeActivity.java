@@ -351,17 +351,17 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
 
         @Override
         public void onSpeakBegin() {
-            showTip("开始播放");
+            //showTip("开始播放");
         }
 
         @Override
         public void onSpeakPaused() {
-            showTip("暂停播放");
+            //showTip("暂停播放");
         }
 
         @Override
         public void onSpeakResumed() {
-            showTip("继续播放");
+            //showTip("继续播放");
         }
 
         @Override
@@ -388,7 +388,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
 
         @Override
         public void onCompleted(SpeechError error) {
-            showTip("播放完成");
+            //showTip("播放完成");
             flag=true;
             if (error != null) {
                 showTip(error.getPlainDescription(true));
