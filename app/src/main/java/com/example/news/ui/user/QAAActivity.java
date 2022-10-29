@@ -1,11 +1,13 @@
 package com.example.news.ui.user;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +32,13 @@ public class QAAActivity extends AppCompatActivity {
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_qaa);
+
+        //改变通知栏的颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+
         this.getSupportActionBar().hide();
         final ListView mListView=(ListView)findViewById(R.id.MainList);
         mData=LoadData();

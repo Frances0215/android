@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.news.R;
+import com.example.news.Utility;
 
 public class AppUsageActivity extends BaseActivity {
 
@@ -31,6 +34,10 @@ public class AppUsageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_usage);
+
+        //改变通知栏的颜色（不去标题栏时用）
+        Utility uni = new Utility();
+        uni.setActionBar(this);
 
         questionList = findViewById(R.id.lv_question);
         questionList.setAdapter(new QuestionAdapter());

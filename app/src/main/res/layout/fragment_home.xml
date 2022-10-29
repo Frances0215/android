@@ -8,11 +8,13 @@
     tools:context=".ui.home.HomeFragment"
     android:id="@+id/fragment_home"
     android:background="@color/white"
+    android:layout_marginTop="25dp"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/mTvLogo"
@@ -40,39 +42,11 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal">-->
 
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-<!--            <Button-->
-<!--                android:id="@+id/mBtRefresh"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_weight="5"-->
-<!--                android:background="@drawable/bt_search"-->
-<!--                android:text="使用指南"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="30sp" />-->
-
-            <Button
-                android:id="@+id/mFbRadioStart"
-                android:layout_width="50dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="5"
-                android:background="@drawable/bt_search"
-                android:text="按住说话"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +57,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
@@ -111,17 +86,38 @@
 
             </LinearLayout>
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tab_layout"
-                >
-            </androidx.viewpager.widget.ViewPager>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="9.3"
+                    app:layout_constraintTop_toBottomOf="@+id/tab_layout"
+                    >
+                </androidx.viewpager.widget.ViewPager>
+
+                <Button
+                    android:id="@+id/mFbRadioStart"
+                    android:layout_width="300dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/bt_search"
+                    android:text="按住说话"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 
 </LinearLayout>

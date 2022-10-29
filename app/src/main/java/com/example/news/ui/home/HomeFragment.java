@@ -1,6 +1,8 @@
 package com.example.news.ui.home;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -11,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,6 +26,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -46,6 +51,7 @@ import com.example.news.FontIconView;
 import com.example.news.NewsAPP;
 import com.example.news.NewsManager;
 import com.example.news.R;
+import com.example.news.SystemBarTintManager;
 import com.example.news.TypeManager;
 import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
@@ -536,4 +542,6 @@ public class HomeFragment extends Fragment {
         //initTabViewpager();
         mVpNews.getAdapter().notifyDataSetChanged();
     }
+
+
 }

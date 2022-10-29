@@ -39,6 +39,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -53,8 +55,10 @@ import com.example.news.LoginActivity;
 import com.example.news.NewsAPP;
 import com.example.news.R;
 import com.example.news.ResetPasswordActivity;
+import com.example.news.SystemBarTintManager;
 import com.example.news.UserData;
 import com.example.news.UserDataManager;
+import com.example.news.Utility;
 import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
 import com.example.news.ui.photograph.ImageUtil;
@@ -95,11 +99,20 @@ public class PeopleInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utility uni = new Utility();
+        uni.setActionBar(this);
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
             //.openDataBase();                              //建立本地数据库
         }
         setContentView(R.layout.activity_people_information);
+
+//        //改变通知栏的颜色
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        }
+
         initView();
         initData();
         setListeners();
@@ -403,6 +416,34 @@ public class PeopleInfoActivity extends BaseActivity {
         }
 
     }
+
+//    public static class Utility {
+//        /**
+//         * 改变通知栏颜色
+//         */
+//        public static void setActionBar(Context context){
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                setTranslucentStatus(context, true);
+//            }
+//            SystemBarTintManager tintManager = new SystemBarTintManager((Activity) context);
+//            tintManager.setStatusBarTintEnabled(true);
+//            tintManager.setStatusBarTintResource(R.color.主题色);
+//        }
+//
+//        @TargetApi(19)
+//        public static void setTranslucentStatus(Context context, boolean on) {
+//            Window win = ((Activity)context).getWindow();
+//            WindowManager.LayoutParams winParams = win.getAttributes();
+//            final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+//            if (on) {
+//                winParams.flags |= bits;
+//            } else {
+//                winParams.flags &= ~bits;
+//            }
+//            win.setAttributes(winParams);
+//        }
+//    }
+
 
     @Override
     protected void onPause() {

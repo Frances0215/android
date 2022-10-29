@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.Show_news_Activity"
     android:orientation="vertical"
-    android:background="@color/背景浅蓝">
+    android:background="@color/背景浅蓝"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true" >
 
     <LinearLayout
         android:layout_width="match_parent"

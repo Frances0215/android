@@ -21,7 +21,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.ActivityCompat;
 //import android.support.v4.app.ActivityCompat;
@@ -30,6 +33,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -102,6 +106,12 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recognize);
+
+        //改变通知栏的颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -206,6 +216,13 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                 }
             }
         }).start();
+
+        //用于添加上方标题栏中的返回按钮1
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setHomeButtonEnabled(true);
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
     }
 
     private void reload()
@@ -216,6 +233,17 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
             Log.e("MainActivity", "nanodetncnn loadModel failed");
         }
     }
+
+    //用于添加上方标题栏中的返回按钮2
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)

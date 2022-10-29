@@ -1,8 +1,10 @@
 package com.example.news.ui.home;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.example.news.Utility;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -43,6 +46,10 @@ public class Show_news_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_news);
+        //改变通知栏的颜色（不去标题栏时用）
+        Utility uni = new Utility();
+        uni.setActionBar(this);
+
         Intent intent=this.getIntent();
         Bundle bundle = intent.getExtras();
         news_this = (News)bundle.getSerializable("news");

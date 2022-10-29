@@ -1,65 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-
-
-            <Button
-                android:id="@+id/buttonSwitchCamera"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:text="切换摄像头"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:background="@drawable/bt_search"
-                />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-    <Spinner
-        android:id="@+id/spinnerModel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:entries="@array/model_array" />
-
-    <Spinner
-        android:id="@+id/spinnerCPUGPU"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:entries="@array/cpugpu_array" />
-
-    </LinearLayout>
-
-    <SurfaceView
-        android:id="@+id/cameraview"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.9"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="25dp">
 
 
 <!--    <LinearLayout-->
 <!--        android:orientation="horizontal"-->
 <!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="0.1"-->
-<!--        android:gravity="center">-->
+<!--        android:layout_height="wrap_content">-->
 
-<!--        <Button-->
-<!--            android:id="@+id/buttonSwitchCamera"-->
-<!--            android:layout_width="250dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="切换摄像头"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="20sp"-->
-<!--            android:background="@drawable/bt_search"-->
-<!--            />-->
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerModel"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:drawSelectorOnTop="true"-->
+<!--        android:entries="@array/model_array" />-->
+
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerCPUGPU"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:drawSelectorOnTop="true"-->
+<!--        android:entries="@array/cpugpu_array" />-->
 
 <!--    </LinearLayout>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:background="@color/背景浅蓝"
+        >
+
+        <com.example.news.FontIconView
+            android:id="@+id/mIvReturn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rollback"
+            android:textSize="30dp"
+
+            android:contentDescription="返回拍照页面"
+            android:onClick="back_to_mine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.02"
+            />
+
+        <TextView
+            android:id="@+id/mTvLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:importantForAccessibility="no"
+            android:text="实时识别"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/mIvReturn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <SurfaceView
+        android:id="@+id/cameraview"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9">
+    </SurfaceView>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonSwitchCamera"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="切换摄像头"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:background="@drawable/bt_search"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

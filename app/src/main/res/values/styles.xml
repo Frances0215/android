@@ -23,4 +23,11 @@
         <item name="android:backgroundDimEnabled">true</item> <!-- 屏幕背景变暗 -->
         <!--        <item name="android:windowAnimationStyle">@style/BottomInAndOutStyle</item>-->
     </style>
+
+<!--    <style name="AppTheme.FitsSystemWidows" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">-->
+<!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+<!--        -->
+<!--    </style>-->
+
 </resources>

@@ -9,13 +9,16 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 
 import com.example.news.R;
+import com.example.news.Utility;
 import com.example.news.ui.user.DataClass.StatcClass;
 import com.example.news.ui.user.ToolClass.DataAccess;
 import com.example.news.ui.user.ToolClass.L;
@@ -29,6 +32,10 @@ public class ThemeActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
+
+        //改变通知栏的颜色（不去标题栏时用）
+        Utility uni = new Utility();
+        uni.setActionBar(this);
 
         //获取手机震动的服务
         mVibrator=(Vibrator)getApplication().getSystemService(Service.VIBRATOR_SERVICE);

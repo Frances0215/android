@@ -3,11 +3,13 @@ package com.example.news.ui.home;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,7 +38,11 @@ public class SelectTypeActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_type);
-
+        //改变通知栏的颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         //初始化数据库
         if(myTypeManager == null){
             myTypeManager = new TypeManager(this);
@@ -48,8 +54,11 @@ public class SelectTypeActivity extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         RelativeLayout.LayoutParams layoutParamsroot = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,RelativeLayout.LayoutParams.FILL_PARENT);
+
         RelativeLayout layoutroot = new RelativeLayout(this);
+
         layoutroot.setLayoutParams(layoutParamsroot);
+
 
         //得到一些全局变量,得到所有的type和我的type
         NewsAPP myAPP = (NewsAPP) getApplicationContext();
@@ -150,7 +159,7 @@ public class SelectTypeActivity extends Activity {
 
             //按钮布局在大布局中的位置，把上面的布局放到根布局中
             RelativeLayout.LayoutParams layoutParamsButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            layoutParamsButton.topMargin = 0;
+            layoutParamsButton.topMargin = 45;
             layoutParamsButton.leftMargin = 0;
             layoutroot.addView(layout, layoutParamsButton);
 

@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -31,6 +32,7 @@ import com.example.news.NewsAPP;
 import com.example.news.TypeManager;
 import com.example.news.UserDataManager;
 import com.example.news.R;
+import com.example.news.Utility;
 
 public class AppSettingActivity extends BaseActivity {
 
@@ -50,6 +52,9 @@ public class AppSettingActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_setting);
+        //改变通知栏的颜色（不去标题栏时用）
+        Utility uni = new Utility();
+        uni.setActionBar(this);
 
         if (mUserDataManager == null) {
             mUserDataManager = new UserDataManager(this);
