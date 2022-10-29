@@ -451,13 +451,13 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
         int area=(int)(objects[j].rect.width*objects[j].rect.height);
         if(flag==0){
 
-            number[0][0]=objects[j].label;
+            number[0][0]=j;
             number[0][1]=area;
             flag=1;
         }
         else{
             if(flag<3){
-                number[flag][0]=objects[j].label;
+                number[flag][0]=j;
                 number[flag][1]=area;
                 int pos=flag;
                 while(pos>0){
@@ -479,7 +479,7 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
             }
             else{
                 if(number[2][1]<area){
-                    number[2][0]=objects[j].label;
+                    number[2][0]=j;
                     number[2][1]=area;
                     int pos=2;
                     while(pos>0){
@@ -508,12 +508,13 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
         int j=number[k][0];
 
         char s[10];
-        sprintf(s,"%d",j);
-        //__android_log_print(ANDROID_LOG_WARN, "tag","%s", s);
+        sprintf(s,"%d",objects[j].label);
+
         strcpy(a,s);
         strcat(a,",");
         float xp=(objects[j].rect.x+objects[j].rect.width/2)/rgb.cols;
         float yp=(objects[j].rect.y+objects[j].rect.height/2)/rgb.rows;
+        __android_log_print(ANDROID_LOG_WARN, "rows","%f\n%f\n%d", objects[j].rect.height,objects[j].rect.y,rgb.rows);
         if(xp<0.5f){
             if(yp<0.5f){
                 strcat(a,"1");//左上

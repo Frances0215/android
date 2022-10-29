@@ -64,7 +64,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
     public static final int REQUEST_CAMERA = 100;
 
     private NanoDetNcnn nanodetncnn = new NanoDetNcnn();
-    private int facing = 0;
+    private int facing = 1;
 
     private Spinner spinnerModel;
     private Spinner spinnerCPUGPU;
@@ -202,8 +202,8 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                                     int a=Integer.parseInt(tag[i*2]);
                                     String temp=tagArray[a];
                                     int b=Integer.parseInt(tag[i*2+1]);
-                                    Log.v("caiqi", String.valueOf(a));
-                                    Log.v("caiqi", String.valueOf(b));
+                                    //Log.v("caiqi", String.valueOf(a));
+                                    //Log.v("caiqi", String.valueOf(b));
                                     texts+=strpos[b-1];
                                     texts+=temp;
                                 }

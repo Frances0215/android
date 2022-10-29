@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             winWidth = point.x;
         }
 
-        /*new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 login_sp = getSharedPreferences("userInfo", MODE_PRIVATE);
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-*/
+
 
 
     }
@@ -198,7 +198,8 @@ public class MainActivity extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             result = checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
             if (result != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "[2016],msg = 当前缺少权限", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "[2016],msg = 当前缺少权限", Toast.LENGTH_SHORT).show();
+                Log.v("ERROR_JIGUANG","没有权限");
                 return;
             }
         }
