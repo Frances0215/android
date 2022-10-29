@@ -74,6 +74,8 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
     boolean ispause=false;
     private SurfaceView cameraView;
     private String returnTag="";
+    private String[] tagArray={"人","自行车","汽车","摩托车","飞机","公共汽车","火车","卡车","船","红绿灯", "消防栓","停车标志","泊车表","长椅","鸟","猫","狗","马","羊","牛", "大象","熊","斑马","长颈鹿","背包","雨伞","手提包","领带","行李箱","飞盘", "滑雪板","雪橇","运动球","风筝","棒球棒","手套","滑板","冲浪板", "网球拍","瓶子","酒杯","杯子","叉","刀","勺子","碗","香蕉","苹果", "三明治","橙子","西兰花","胡萝卜","热狗","披萨","甜甜圈","蛋糕","椅子","沙发", "盆栽","床","餐桌","厕所","电视","笔记本电脑","鼠标","遥控器","键盘","手机", "微波炉","烤箱","烤面包机","水槽","冰箱","书","钟","花瓶","剪刀","泰迪熊","吹风机","牙刷"};
+    private Boolean flag=true;
     //xunfei
     private SpeechSynthesizer mTts;
     private static String TAG = RecognizeActivity.class.getSimpleName();
@@ -83,7 +85,6 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
     private String[] mCloudVoicersEntries;
     private String[] mCloudVoicersValue;
     private String texts = "";
-
     // 缓冲进度
     private int mPercentForBuffering = 0;
     // 播放进度
@@ -185,27 +186,31 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                     if(isexit){
                         break;
                     }
-                    if(!ispause){
+                    if(!ispause&&flag){
                         texts = "";
-                        int flag = 0;
-                        returnTag = "";
+                        flag=false;
+
                         try {
-                            Thread.sleep(5 * 1000);
+                            Thread.sleep(10 * 1000);
                             returnTag = nanodetncnn.getTag();
+//                            Log.v("tag", returnTag);
+
                             if (returnTag != "") {
                                 String[] tag=returnTag.split(",");
-                                for(int i=0;i<tag.length;i++){
-                                    if(tag[i].indexOf("person")!=-1){
-                                        char position=tag[i].charAt(tag[i].length() - 1);
-                                        int p=Integer.parseInt(String.valueOf(position));
-                                        texts+=strpos[p-1];
-                                        texts += "人";
-                                    }
+                                Log.v("caiqi",returnTag);
+                                for(int i=0;i<tag.length/2;i++){
+                                    int a=Integer.parseInt(tag[i*2]);
+                                    String temp=tagArray[a];
+                                    int b=Integer.parseInt(tag[i*2+1]);
+                                    Log.v("caiqi", String.valueOf(a));
+                                    Log.v("caiqi", String.valueOf(b));
+                                    texts+=strpos[b-1];
+                                    texts+=temp;
                                 }
                                 if(texts!="") {
                                     onPlay();
                                 }
-                                Log.v("Tag", returnTag);
+                                Log.v("caiqi", texts);
                             }
 
 
@@ -385,6 +390,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
         @Override
         public void onCompleted(SpeechError error) {
             showTip("播放完成");
+            flag=true;
             if (error != null) {
                 showTip(error.getPlainDescription(true));
                 return;

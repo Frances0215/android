@@ -13,7 +13,6 @@
 // specific language governing permissions and limitations under the License.
 
 #include "nanodet.h"
-
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -446,9 +445,73 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
 
     int color_index = 0;
     char Str[200];
+    int flag=0;
+    int number[3][2];
     for(size_t j = 0; j < objects.size(); j++){
+        int area=(int)(objects[j].rect.width*objects[j].rect.height);
+        if(flag==0){
+
+            number[0][0]=objects[j].label;
+            number[0][1]=area;
+            flag=1;
+        }
+        else{
+            if(flag<3){
+                number[flag][0]=objects[j].label;
+                number[flag][1]=area;
+                int pos=flag;
+                while(pos>0){
+                    if(number[pos][1]<number[pos-1][1]){
+                        break;
+                    }
+                    else{
+                        int temp[2];
+                        temp[0]=number[pos][0];
+                        temp[1]=number[pos][1];
+                        number[pos][0]=number[pos-1][0];
+                        number[pos][1]=number[pos-1][1];
+                        number[pos-1][0]=temp[0];
+                        number[pos-1][1]=temp[1];
+                        pos--;
+                    }
+                }
+                flag++;
+            }
+            else{
+                if(number[2][1]<area){
+                    number[2][0]=objects[j].label;
+                    number[2][1]=area;
+                    int pos=2;
+                    while(pos>0){
+                        if(number[pos][1]<number[pos-1][1]){
+                            break;
+                        }
+                        else{
+                            int temp[2];
+                            temp[0]=number[pos][0];
+                            temp[1]=number[pos][1];
+                            number[pos][0]=number[pos-1][0];
+                            number[pos][1]=number[pos-1][1];
+                            number[pos-1][0]=temp[0];
+                            number[pos-1][1]=temp[1];
+                            pos--;
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+    for(int k=0;k<flag;k++){
         char a[20];
-        strcpy(a,class_names[objects[j].label]);
+        int j=number[k][0];
+
+        char s[10];
+        sprintf(s,"%d",j);
+        //__android_log_print(ANDROID_LOG_WARN, "tag","%s", s);
+        strcpy(a,s);
+        strcat(a,",");
         float xp=(objects[j].rect.x+objects[j].rect.width/2)/rgb.cols;
         float yp=(objects[j].rect.y+objects[j].rect.height/2)/rgb.rows;
         if(xp<0.5f){
@@ -474,7 +537,7 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
     if(objects.size()>0){
         if(strcmp(tag,Str)!=0){
             strcpy(tag,Str);
-            //__android_log_print(ANDROID_LOG_WARN, "tag","%s", tag );
+
         }
     }
 
@@ -490,11 +553,12 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
         color_index++;
 
         cv::Scalar cc(color[0], color[1], color[2]);
-
-        cv::rectangle(rgb, obj.rect, cc, 2);
+        cv::Mat overlay=rgb.clone();
+        cv::rectangle(overlay, obj.rect, cc, -1);
+        cv::rectangle(rgb, obj.rect, cc, 1);
 
         char text[256];
-        sprintf(text, "%s %.1f%%", class_names[obj.label], obj.prob * 100);
+        sprintf(text, "%s", class_names[obj.label]);
 
         int baseLine = 0;
         cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
@@ -506,12 +570,12 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
         if (x + label_size.width > rgb.cols)
             x = rgb.cols - label_size.width;
 
-        cv::rectangle(rgb, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)), cc, -1);
+        //cv::rectangle(overlay, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)), cc, -1);
 
-        cv::Scalar textcc = (color[0] + color[1] + color[2] >= 381) ? cv::Scalar(0, 0, 0) : cv::Scalar(255, 255, 255);
+        //cv::Scalar textcc = (color[0] + color[1] + color[2] >= 381) ? cv::Scalar(0, 0, 0) : cv::Scalar(255, 255, 255);
 
-        cv::putText(rgb, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.5, textcc, 1);
-
+        //cv::putText(overlay, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.5, textcc, 1);
+        cv::addWeighted(overlay,0.3,rgb,0.7,0,rgb);
     }
 
 
