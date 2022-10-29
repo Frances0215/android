@@ -213,7 +213,6 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                                 Log.v("caiqi", texts);
                             }
 
-
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
