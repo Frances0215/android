@@ -52,6 +52,9 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.navi.model.AMapNaviPath;
+import com.amap.api.navi.model.AMapNaviRouteGuideGroup;
+import com.amap.api.navi.model.AMapNaviToViaInfo;
 import com.example.news.R;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -108,6 +111,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class RecognizeActivity extends Activity implements AMapNaviListener,SurfaceHolder.Callback, PoiSearch.OnPoiSearchListener
 {
@@ -155,7 +160,7 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
     protected NaviLatLng end = new NaviLatLng(30.547663,104.005386);
 
 
-    protected NaviPoi startPoi=new NaviPoi("湖夹滩村",new LatLng(30.551793,103.992363),null);
+    protected NaviPoi startPoi=new NaviPoi("湖夹滩村",new LatLng(30.551793,103.992363),"B0FFF4NFLF");
     // 构造终点POI
     protected NaviPoi endPoi = new NaviPoi("文星(地铁站)", null, "BV10856189");
     protected AMapNavi mAMapNavi;
@@ -346,8 +351,8 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
             mAMapNavi = AMapNavi.getInstance(getApplicationContext());
             mAMapNavi.addAMapNaviListener(this);
 
-            mAMapNavi.setUseInnerVoice(true, true);
-            mAMapNavi.setEmulatorNaviSpeed(10);
+            //mAMapNavi.setUseInnerVoice(true, true);
+            //mAMapNavi.setEmulatorNaviSpeed(10);
 
 
 
@@ -613,8 +618,8 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
     @Override
     public void onInitNaviSuccess() {
         Log.v("InitNaviSuccess","InitNaviSuccess");
-        //mAMapNavi.calculateWalkRoute(startPoi, endPoi,TravelStrategy.SINGLE);
-        mAMapNavi.calculateWalkRoute(start, end);
+        mAMapNavi.calculateWalkRoute(startPoi, endPoi,TravelStrategy.MULTIPLE);
+        //mAMapNavi.calculateWalkRoute(start, end);
     }
 
     @Override
@@ -634,7 +639,7 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
 
     @Override
     public void onGetNavigationText(int i, String s) {
-
+        Log.v("NavigationText",s);
     }
 
     @Override
@@ -679,7 +684,9 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
 
     @Override
     public void onNaviInfoUpdate(NaviInfo naviInfo) {
-
+        String CurrentRoadName=naviInfo.getCurrentRoadName();
+        //AMapNaviToViaInfo[] info= naviInfo.getToViaInfo();
+        //Log.v("NaviInfo", String.valueOf(info[0].getDistance()));
     }
 
     @Override
@@ -773,7 +780,10 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
         // 开启导航
         Log.v("Successb","Successb");
         try {
-            AMapNavi.getInstance(this).startNavi(NaviType.GPS);
+            AMapNaviPath naviPaths = AMapNavi.getInstance(this).getNaviPath();
+            List<AMapNaviRouteGuideGroup> naviPath=naviPaths.getNaviGuideList();
+            AMapNaviRouteGuideGroup first=naviPath.get(0);
+            AMapNavi.getInstance(this).startNavi(NaviType.EMULATOR);
         } catch (AMapException e) {
             e.printStackTrace();
         }

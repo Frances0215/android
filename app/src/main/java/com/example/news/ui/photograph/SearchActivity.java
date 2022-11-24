@@ -166,19 +166,9 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
         initLocation();//初始化定位
         checkingAndroidVersion();//获取权限
 
-
-
-        try {
-            PoiSearch.Query query = new PoiSearch.Query("四川大学", "", city);//("搜索关键字"，“不填”，“城市,不填为全国范围”)
-            mSearch = new PoiSearch(getApplicationContext(), query);//创建搜索对象
-            //设置异步监听，在onPoiSearched()函数中处理结果
-            mSearch.setOnPoiSearchListener(this);
-            //查询POI异步接口
-            mSearch.searchPOIAsyn();
-        } catch (com.amap.api.services.core.AMapException e) {
-            e.printStackTrace();
-            Log.i("SearchERROR","SearchERROR");
-        }
+        //输入关键词
+        //开始搜索
+        initSearch();
 
 
     }
@@ -216,8 +206,19 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
 
 
 
-
-
+    private void initSearch(){
+        try {
+            PoiSearch.Query query = new PoiSearch.Query("四川大学", "", city);//("搜索关键字"，“不填”，“城市,不填为全国范围”)
+            mSearch = new PoiSearch(getApplicationContext(), query);//创建搜索对象
+            //设置异步监听，在onPoiSearched()函数中处理结果
+            mSearch.setOnPoiSearchListener(this);
+            //查询POI异步接口
+            mSearch.searchPOIAsyn();
+        } catch (com.amap.api.services.core.AMapException e) {
+            e.printStackTrace();
+            Log.i("SearchERROR","SearchERROR");
+        }
+    }
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int rCode) {
