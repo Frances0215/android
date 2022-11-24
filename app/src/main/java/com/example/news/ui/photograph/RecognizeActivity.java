@@ -191,7 +191,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                         flag=false;
 
                         try {
-                            Thread.sleep(10 * 1000);
+                            Thread.sleep(5 * 1000);
                             returnTag = nanodetncnn.getTag();
 //                            Log.v("tag", returnTag);
 

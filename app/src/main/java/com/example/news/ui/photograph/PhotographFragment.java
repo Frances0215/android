@@ -98,6 +98,7 @@ import java.util.HashMap;
 
     private FrameLayout mFlCamera;
     private FrameLayout mFlRecognize;
+    private FrameLayout mFlGuide;
     private TextView mTvCamera;
     private TextView mTvRecognize;
 
@@ -127,6 +128,7 @@ import java.util.HashMap;
                 initAccessToken();
                 mFlCamera=view.findViewById(R.id.mFlCamera);
                 mFlRecognize = view.findViewById(R.id.mFlRecognize);
+                mFlGuide = view.findViewById(R.id.mFlGuide);
                 mFlCamera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
