@@ -14,6 +14,8 @@
 
 package com.example.news.ui.photograph;
 
+import static cn.com.chinatelecom.account.api.CtAuth.mContext;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -45,6 +47,11 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.example.news.R;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -55,11 +62,54 @@ import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.cloud.SynthesizerListener;
 
+
+
+import com.amap.api.maps.AMapException;
+import com.amap.api.navi.AMapNavi;
+import com.amap.api.navi.AMapNaviListener;
+import com.amap.api.navi.AMapNaviView;
+import com.amap.api.navi.AMapNaviViewListener;
+import com.amap.api.navi.ParallelRoadListener;
+import com.amap.api.navi.enums.AMapNaviParallelRoadStatus;
+import com.amap.api.navi.model.AMapCalcRouteResult;
+import com.amap.api.navi.model.AMapLaneInfo;
+import com.amap.api.navi.model.AMapModelCross;
+import com.amap.api.navi.model.AMapNaviCameraInfo;
+import com.amap.api.navi.model.AMapNaviCross;
+import com.amap.api.navi.model.AMapNaviLocation;
+import com.amap.api.navi.model.AMapNaviRouteNotifyData;
+import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
+import com.amap.api.navi.model.AMapServiceAreaInfo;
+import com.amap.api.navi.model.AimLessModeCongestionInfo;
+import com.amap.api.navi.model.AimLessModeStat;
+import com.amap.api.navi.model.NaviInfo;
+import com.amap.api.navi.model.NaviLatLng;
+import com.example.news.util.TTSController;
+import com.amap.api.maps.AMapException;
+import com.amap.api.navi.AMapNavi;
+import com.amap.api.navi.NaviSetting;
+import com.amap.api.navi.enums.NaviType;
+import com.amap.api.navi.enums.TravelStrategy;
+import com.amap.api.navi.model.AMapCalcRouteResult;
+import com.amap.api.navi.model.NaviLatLng;
+import com.amap.api.navi.model.NaviPoi;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Poi;
+import com.amap.api.navi.view.PoiInputItemWidget;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.help.Inputtips;
+import com.amap.api.services.help.InputtipsQuery;
+import com.amap.api.services.help.Tip;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 
-public class RecognizeActivity extends Activity implements SurfaceHolder.Callback
+public class RecognizeActivity extends Activity implements AMapNaviListener,SurfaceHolder.Callback, PoiSearch.OnPoiSearchListener
 {
     public static final int REQUEST_CAMERA = 100;
 
@@ -100,7 +150,55 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
     private File pcmFile;
 
 
+    protected NaviLatLng start=new NaviLatLng(30.551793,103.992363);
+    // 终点信息
+    protected NaviLatLng end = new NaviLatLng(30.547663,104.005386);
 
+
+    protected NaviPoi startPoi=new NaviPoi("湖夹滩村",new LatLng(30.551793,103.992363),null);
+    // 构造终点POI
+    protected NaviPoi endPoi = new NaviPoi("文星(地铁站)", null, "BV10856189");
+    protected AMapNavi mAMapNavi;
+
+
+
+    private Poi selectedPoi;
+    private String city = "成都市";
+    private int pointType;
+    private PoiSearch mSearch;
+
+    //声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+    //声明定位回调监听器
+    public AMapLocationClientOption mLocationOption = null;
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        /**
+         * 接收异步返回的定位结果
+         *
+         * @param aMapLocation
+         */
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    //地址
+
+                    String city=aMapLocation.getCity();//获取城市名
+                    String Poiname=aMapLocation.getPoiName();//获取Poi名
+                    double lat=aMapLocation.getLatitude();//获取纬度
+                    double lon=aMapLocation.getLongitude();//获取经度
+                    String Id=aMapLocation.getAdCode();
+
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                }
+            }
+        }
+
+    };
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -177,6 +275,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
 //        });
 
         reload();
+        /*
         new Thread(new Runnable() {
 
             public void run() {
@@ -220,13 +319,46 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
                 }
             }
         }).start();
-
+        */
         //用于添加上方标题栏中的返回按钮1
 //        ActionBar actionBar = getSupportActionBar();
 //        if (actionBar != null) {
 //            actionBar.setHomeButtonEnabled(true);
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
+        initLocation();
+        mLocationClient.startLocation();
+        try {
+            PoiSearch.Query query = new PoiSearch.Query("四川大学", "", city);
+            mSearch = new PoiSearch(getApplicationContext(), query);
+            //设置异步监听
+            mSearch.setOnPoiSearchListener(this);
+            //查询POI异步接口
+            mSearch.searchPOIAsyn();
+        } catch (com.amap.api.services.core.AMapException e) {
+            e.printStackTrace();
+            Log.i("SearchERROR","SearchERROR");
+        }
+
+        try {
+            NaviSetting.updatePrivacyShow(getApplicationContext(), true, true);
+            NaviSetting.updatePrivacyAgree(getApplicationContext(), true);
+            mAMapNavi = AMapNavi.getInstance(getApplicationContext());
+            mAMapNavi.addAMapNaviListener(this);
+
+            mAMapNavi.setUseInnerVoice(true, true);
+            mAMapNavi.setEmulatorNaviSpeed(10);
+
+
+
+
+
+
+
+        } catch (AMapException e) {
+            e.printStackTrace();
+            Log.e("ERROR","calculateERROR");
+        }
     }
 
     private void reload()
@@ -451,7 +583,7 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
         //设置播放器音频流类型
         mTts.setParameter(SpeechConstant.STREAM_TYPE, "3");
         // 设置播放合成音频打断音乐播放，默认为true
-        mTts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "false");
+        mTts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "true");
 
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         mTts.setParameter(SpeechConstant.AUDIO_FORMAT, "pcm");
@@ -472,4 +604,254 @@ public class RecognizeActivity extends Activity implements SurfaceHolder.Callbac
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onInitNaviFailure() {
+        Log.i("InitNaviFailure","InitNaviFailure");
+    }
+
+    @Override
+    public void onInitNaviSuccess() {
+        Log.v("InitNaviSuccess","InitNaviSuccess");
+        //mAMapNavi.calculateWalkRoute(startPoi, endPoi,TravelStrategy.SINGLE);
+        mAMapNavi.calculateWalkRoute(start, end);
+    }
+
+    @Override
+    public void onStartNavi(int i) {
+
+    }
+
+    @Override
+    public void onTrafficStatusUpdate() {
+
+    }
+
+    @Override
+    public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
+
+    }
+
+    @Override
+    public void onGetNavigationText(int i, String s) {
+
+    }
+
+    @Override
+    public void onGetNavigationText(String s) {
+
+    }
+
+    @Override
+    public void onEndEmulatorNavi() {
+
+    }
+
+    @Override
+    public void onArriveDestination() {
+
+    }
+
+    @Override
+    public void onCalculateRouteFailure(int i) {
+
+    }
+
+    @Override
+    public void onReCalculateRouteForYaw() {
+
+    }
+
+    @Override
+    public void onReCalculateRouteForTrafficJam() {
+
+    }
+
+    @Override
+    public void onArrivedWayPoint(int i) {
+
+    }
+
+    @Override
+    public void onGpsOpenStatus(boolean b) {
+
+    }
+
+    @Override
+    public void onNaviInfoUpdate(NaviInfo naviInfo) {
+
+    }
+
+    @Override
+    public void updateCameraInfo(AMapNaviCameraInfo[] aMapNaviCameraInfos) {
+
+    }
+
+    @Override
+    public void updateIntervalCameraInfo(AMapNaviCameraInfo aMapNaviCameraInfo, AMapNaviCameraInfo aMapNaviCameraInfo1, int i) {
+
+    }
+
+    @Override
+    public void onServiceAreaUpdate(AMapServiceAreaInfo[] aMapServiceAreaInfos) {
+
+    }
+
+    @Override
+    public void showCross(AMapNaviCross aMapNaviCross) {
+
+    }
+
+    @Override
+    public void hideCross() {
+
+    }
+
+    @Override
+    public void showModeCross(AMapModelCross aMapModelCross) {
+
+    }
+
+    @Override
+    public void hideModeCross() {
+
+    }
+
+    @Override
+    public void showLaneInfo(AMapLaneInfo[] aMapLaneInfos, byte[] bytes, byte[] bytes1) {
+
+    }
+
+    @Override
+    public void showLaneInfo(AMapLaneInfo aMapLaneInfo) {
+
+    }
+
+    @Override
+    public void hideLaneInfo() {
+
+    }
+
+    @Override
+    public void onCalculateRouteSuccess(int[] ints) {
+
+        Log.v("Successa","Successa");
+    }
+
+    @Override
+    public void notifyParallelRoad(int i) {
+
+    }
+
+    @Override
+    public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo[] aMapNaviTrafficFacilityInfos) {
+
+    }
+
+    @Override
+    public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo aMapNaviTrafficFacilityInfo) {
+
+    }
+
+    @Override
+    public void updateAimlessModeStatistics(AimLessModeStat aimLessModeStat) {
+
+    }
+
+    @Override
+    public void updateAimlessModeCongestionInfo(AimLessModeCongestionInfo aimLessModeCongestionInfo) {
+
+    }
+
+    @Override
+    public void onPlayRing(int i) {
+
+    }
+
+    @Override
+    public void onCalculateRouteSuccess(AMapCalcRouteResult routeResult) {
+        // 开启导航
+        Log.v("Successb","Successb");
+        try {
+            AMapNavi.getInstance(this).startNavi(NaviType.GPS);
+        } catch (AMapException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onCalculateRouteFailure(AMapCalcRouteResult aMapCalcRouteResult) {
+        Log.i("Failureb","Failureb");
+    }
+
+    @Override
+    public void onNaviRouteNotify(AMapNaviRouteNotifyData aMapNaviRouteNotifyData) {
+
+    }
+
+    @Override
+    public void onGpsSignalWeak(boolean b) {
+
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult poiResult, int rCode) {
+        Log.v("onPoiSearched","onPoiSearched");
+
+        if(poiResult != null){
+            ArrayList<AddressBean> data = new ArrayList<AddressBean>();
+            ArrayList<PoiItem> items = poiResult.getPois();
+            for(PoiItem item : items){
+                //获取经纬度对象
+                LatLonPoint llp = item.getLatLonPoint();
+                double lon = llp.getLongitude();
+                double lat = llp.getLatitude();
+                //获取标题
+                String title = item.getTitle();
+                //获取内容
+                String text = item.getSnippet();
+                //获取Poi ID
+                String Poi=item.getPoiId();
+                data.add(new AddressBean(lon, lat, title, text,Poi));
+            }
+
+        }
+
+    }
+
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
+    }
+
+
+
+    private void initLocation() {
+        //初始化定位
+        try {
+            mLocationClient = new AMapLocationClient(getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        //获取一次定位结果：
+        mLocationOption.setOnceLocation(true);
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        mLocationOption.setOnceLocationLatest(true);
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+        //设置定位请求超时时间，单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        mLocationOption.setHttpTimeOut(20000);
+        //关闭缓存机制，高精度定位会产生缓存。
+        mLocationOption.setLocationCacheEnable(false);
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+    }
+
 }

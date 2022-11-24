@@ -110,11 +110,13 @@ dependencies {
     implementation files('libs\\MiPush_SDK_Client_5_0_5-C.jar')
     implementation files('libs\\jverification-android-not_support_dynamic-release-2.9.0.jar')
     implementation files('libs\\Msc.jar')
-    implementation files('libs\\Msc.jar')
+    implementation files('libs\\AMap3DMap_9.5.0_AMapNavi_9.5.0_AMapSearch_9.4.5_AMapLocation_6.2.0_20221026.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation files('libs\\localbroadcastmanager-1.1.0.aar')
+    //Google推荐的EasyPermission库
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
 }
 

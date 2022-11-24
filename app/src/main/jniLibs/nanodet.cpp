@@ -514,7 +514,7 @@ int NanoDet::draw(cv::Mat& rgb, const std::vector<Object>& objects,char* tag)
         strcat(a,",");
         float xp=(objects[j].rect.x+objects[j].rect.width/2)/rgb.cols;
         float yp=(objects[j].rect.y+objects[j].rect.height/2)/rgb.rows;
-        __android_log_print(ANDROID_LOG_WARN, "rows","%f\n%f\n%d", objects[j].rect.height,objects[j].rect.y,rgb.rows);
+        //__android_log_print(ANDROID_LOG_WARN, "rows","%f\n%f\n%d", objects[j].rect.height,objects[j].rect.y,rgb.rows);
         if(xp<0.5f){
             if(yp<0.5f){
                 strcat(a,"1");//左上
