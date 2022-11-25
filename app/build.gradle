@@ -111,6 +111,7 @@ dependencies {
     implementation files('libs\\jverification-android-not_support_dynamic-release-2.9.0.jar')
     implementation files('libs\\Msc.jar')
     implementation files('libs\\AMap3DMap_9.5.0_AMapNavi_9.5.0_AMapSearch_9.4.5_AMapLocation_6.2.0_20221026.jar')
+    implementation files('libs\\AMap3DMap_9.5.0_AMapNavi_9.5.0_AMapSearch_9.4.5_AMapLocation_6.2.0_20221026.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -2,10 +2,13 @@
 
 package com.example.news.ui.photograph;
 
+import static com.amap.api.maps.model.BitmapDescriptorFactory.getContext;
 import static cn.com.chinatelecom.account.api.CtAuth.mContext;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,10 +19,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.ActivityCompat;
 //import android.support.v4.app.ActivityCompat;
 //import android.support.v4.content.ContextCompat;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Vibrator;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
@@ -32,8 +39,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -41,7 +50,15 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.example.news.DropDownEditText;
+import com.example.news.FontIconView;
+import com.example.news.NewsAPP;
 import com.example.news.R;
+import com.example.news.VoiceRecord;
+import com.example.news.VoiceTrans;
+import com.example.news.ui.home.HomeFragment;
+import com.example.news.ui.home.MyNewsListAdapter;
+import com.example.news.ui.home.SearchResultActivity;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -97,6 +114,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -127,6 +146,16 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
 
     protected NaviPoi startPoi;
     protected NaviLatLng start;
+
+    private ListView mLvGuide;
+    private FontIconView mFiVoice;
+    private DropDownEditText mEtSearch;
+
+    private VoiceTrans myTrans = new VoiceTrans();
+    private VoiceRecord myVoice = new VoiceRecord();
+
+    private MyGuideListAdapter guideListAdapter;
+    private int isLongClick=0;
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
         /**
          * 接收异步返回的定位结果
@@ -163,52 +192,145 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        //改变通知栏的颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+
+        setContentView(R.layout.activity_guide);
         initLocation();//初始化定位
         checkingAndroidVersion();//获取权限
 
+        //初始化变量
+        mLvGuide = (ListView)findViewById(R.id.mLvGuide);
+        mFiVoice = (FontIconView)findViewById(R.id.mFiVoice);
+        mEtSearch = (DropDownEditText)findViewById(R.id.mEtSearch);
         //输入关键词
-        //开始搜索
-        initSearch();
+        //初始化语音输入,语音输入完之后直接进行搜索
+        initVoice();
 
-
-    }
-
-
-
-    //用于添加上方标题栏中的返回按钮2
-
-
-
-
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
+        //搜索按钮
+        mEtSearch.setOnDropArrowClickListener(new DropDownEditText.OnDropArrowClickListener() {
+            @Override
+            public void onDropArrowClick() {
+                mEtSearch.setFocusableInTouchMode(false);
+                mEtSearch.setFocusable(false);
+                String str = String.valueOf(mEtSearch.getText());
+                initSearch(str);
+                initListGuide();
+            }
+        });
 
     }
 
-    @Override
-    public void onPause()
-    {
-        super.onPause();
+    //语音输入结果分析
+    //用于将语音输入，写入到搜索框
+    final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    String searchFor = (String) msg.obj;
+                    String str=searchFor.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
+
+
+                        mEtSearch.setText(str);
+                        //Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        View view2 = View.inflate(getContext(), R.layout.voice_input, null);
+                        TextView mTvVoice = view2.findViewById(R.id.mTvVoice);
+                        if(str.equals("")){
+                            mTvVoice.setText("空");
+                        }else {
+                            mTvVoice.setText(str);
+                        }
+
+                        //弹窗显示
+                    builder.setView(view2).setPositiveButton("开始查询", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //用户点击开始查询之后，才开始查询
+                            initSearch(str);
+                            initListGuide();
+                        }
+                    }).setNegativeButton("取消查询", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //不做处理
+                        }
+                    }).setTitle("语音输入结果为");
+
+                    builder.create().show();
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
+
+    //语音输入
+    private void initVoice(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 2000);
+        }
+
+        //语音输入开始
+        mFiVoice.setOnLongClickListener(new startRecordListener());
+        mFiVoice.setOnClickListener(new stopRecordListener());
 
     }
 
-    @Override
+    //长按录音，松开后自动执行短按操作
+    class startRecordListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View v) {
+            isLongClick = 1;
+            Vibrator vib = (Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
+            vib.vibrate(20);//只震动一秒，一次
+            myVoice.startRecord(myVoice.getFileName());
+            return false; //KeyPoint：setOnLongClickListener中return的值决定是否在长按后再加一个短按动作，true为不加短按,false为加入短按
+        }
+    }
+    //短按停止录音，直接点击短按无效
+    class stopRecordListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if(isLongClick==1){
+                myVoice.stopRecord();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            v.announceForAccessibility("正在分析语音");
+                            String result = myTrans.voiceTrans(myVoice.getFileName());
+                            //String result = "哈哈";
+                            Message message = new Message();
+                            message.obj =result;
+                            message.what = 0;
+                            mHandler.sendMessage(message);
 
-    protected void onDestroy() {
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+            isLongClick=0;
 
-        super.onDestroy();
-        mLocationClient.onDestroy();////销毁定位客户端，同时销毁本地定位服务。
-
+        }
     }
 
-
-
-    private void initSearch(){
+    private void initSearch(String voiceResult){
         try {
-            PoiSearch.Query query = new PoiSearch.Query("四川大学", "", city);//("搜索关键字"，“不填”，“城市,不填为全国范围”)
+            PoiSearch.Query query = new PoiSearch.Query(voiceResult, "", city);//("搜索关键字"，“不填”，“城市,不填为全国范围”)
             mSearch = new PoiSearch(getApplicationContext(), query);//创建搜索对象
             //设置异步监听，在onPoiSearched()函数中处理结果
             mSearch.setOnPoiSearchListener(this);
@@ -243,6 +365,11 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
 
         }
 
+    }
+
+    private void initListGuide(){
+        guideListAdapter = new MyGuideListAdapter(this,R.layout.activity_guidelist_item,data);
+        mLvGuide.setAdapter(guideListAdapter);
     }
 
     @Override
@@ -327,6 +454,29 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
         mLocationOption.setLocationCacheEnable(false);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+
+    }
+
+    @Override
+
+    protected void onDestroy() {
+
+        super.onDestroy();
+        mLocationClient.onDestroy();////销毁定位客户端，同时销毁本地定位服务。
+
     }
 
 }
