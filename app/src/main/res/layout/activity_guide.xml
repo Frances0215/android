@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.home.HomeFragment"
+    android:id="@+id/fragment_home"
+    android:background="@color/white"
+    android:layout_marginTop="25dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/mTvLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="cursive"
+            android:text="听闻"
+            android:textColor="@color/主题色"
+            android:textSize="40sp"
+            android:contentDescription="听闻app为您服务，双指下滑刷新新闻"
+            android:importantForAccessibility="no"/>
+
+        <com.example.news.DropDownEditText
+            android:id="@+id/mEtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_editsearch"
+            android:drawableRight="@drawable/search3"
+
+            android:hint="请输入搜索关键字" />
+
+
+    </LinearLayout>
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:orientation="horizontal">-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/mLvGuide"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2">
+
+                <com.example.news.FontIconView
+                    android:id="@+id/mFiVoice"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_guide_voice"
+                    android:text="@string/voice"
+                    android:textColor="@color/white"
+                    android:textSize="80sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!--    </LinearLayout>-->
+
+
+</LinearLayout>
