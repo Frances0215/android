@@ -54,6 +54,7 @@ import android.widget.Toast;
 
 
 import com.example.news.R;
+import com.example.news.ui.home.News;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -164,7 +165,7 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
     protected AMapNavi mAMapNavi;
 
 
-
+    private AddressBean myAddress;//从搜索页面传入的地点
 
 
     /** Called when the activity is first created. */
@@ -173,7 +174,10 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_recognize);
+        setContentView(R.layout.activity_navimap);
+        Intent intent=this.getIntent();
+        Bundle bundle = intent.getExtras();
+        myAddress = (AddressBean)bundle.getSerializable("address");
 
         //导航创建
         try {

@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat;
 //import android.support.v4.app.ActivityCompat;
 //import android.support.v4.content.ContextCompat;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Vibrator;
 import android.text.Spannable;
@@ -58,7 +59,10 @@ import com.example.news.VoiceRecord;
 import com.example.news.VoiceTrans;
 import com.example.news.ui.home.HomeFragment;
 import com.example.news.ui.home.MyNewsListAdapter;
+import com.example.news.ui.home.News;
 import com.example.news.ui.home.SearchResultActivity;
+import com.example.news.ui.home.Show_news_Activity;
+import com.example.news.ui.home.TabFragment;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -113,6 +117,7 @@ import com.amap.api.services.poisearch.PoiSearch;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -219,6 +224,23 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
                 String str = String.valueOf(mEtSearch.getText());
                 initSearch(str);
                 initListGuide();
+            }
+        });
+
+
+
+        //搜索结果跳转
+        mLvGuide.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AddressBean address = (AddressBean) parent.getItemAtPosition(position);
+
+                //跳转页面，并传递参数
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("address", address);
+                Intent intent = new Intent(getContext(), NaviMapActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -371,6 +393,8 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
         guideListAdapter = new MyGuideListAdapter(this,R.layout.activity_guidelist_item,data);
         mLvGuide.setAdapter(guideListAdapter);
     }
+
+
 
     @Override
     public void onPoiItemSearched(PoiItem poiItem, int i) {

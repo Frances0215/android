@@ -1,6 +1,8 @@
 package com.example.news.ui.photograph;
 
-public class AddressBean {
+import java.io.Serializable;
+
+public class AddressBean implements Serializable {
     private double longitude;//经度
     private double latitude;//纬度
     private String title;//信息标题
