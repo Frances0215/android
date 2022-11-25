@@ -143,6 +143,13 @@ import java.util.HashMap;
                         startActivity(intent_Register_to_Login);
                     }
                 });
+        mFlGuide.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_Register_to_Login = new Intent(getActivity(), SearchActivity.class) ;
+                startActivity(intent_Register_to_Login);
+            }
+        });
 
 //                mTvCamera = (TextView) view.findViewById(R.id.mTvCamera);
 //                mTvRecognize = (TextView) view.findViewById(R.id.mTvRecognize);
