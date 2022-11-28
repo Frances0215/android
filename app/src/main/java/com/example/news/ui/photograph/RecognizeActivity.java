@@ -87,7 +87,6 @@ import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
 import com.amap.api.navi.model.NaviLatLng;
-import com.example.news.util.TTSController;
 import com.amap.api.maps.AMapException;
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.NaviSetting;
@@ -114,7 +113,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RecognizeActivity extends Activity implements AMapNaviListener,SurfaceHolder.Callback, PoiSearch.OnPoiSearchListener
+public class RecognizeActivity extends Activity implements SurfaceHolder.Callback
 {
     public static final int REQUEST_CAMERA = 100;
 
@@ -155,55 +154,75 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
     private File pcmFile;
 
 
-    protected NaviLatLng start=new NaviLatLng(30.551793,103.992363);
-    // 终点信息
-    protected NaviLatLng end = new NaviLatLng(30.547663,104.005386);
+    private SynthesizerListener mTtsListener = new SynthesizerListener() {
 
-
-    protected NaviPoi startPoi=new NaviPoi("湖夹滩村",new LatLng(30.551793,103.992363),"B0FFF4NFLF");
-    // 构造终点POI
-    protected NaviPoi endPoi = new NaviPoi("文星(地铁站)", null, "BV10856189");
-    protected AMapNavi mAMapNavi;
-
-
-
-    private Poi selectedPoi;
-    private String city = "成都市";
-    private int pointType;
-    private PoiSearch mSearch;
-
-    //声明AMapLocationClient类对象
-    public AMapLocationClient mLocationClient = null;
-    //声明定位回调监听器
-    public AMapLocationClientOption mLocationOption = null;
-    public AMapLocationListener mLocationListener = new AMapLocationListener() {
-        /**
-         * 接收异步返回的定位结果
-         *
-         * @param aMapLocation
-         */
         @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-                    //地址
+        public void onSpeakBegin() {
+            flag=false;
+            //showTip("开始播放");
+        }
 
-                    String city=aMapLocation.getCity();//获取城市名
-                    String Poiname=aMapLocation.getPoiName();//获取Poi名
-                    double lat=aMapLocation.getLatitude();//获取纬度
-                    double lon=aMapLocation.getLongitude();//获取经度
-                    String Id=aMapLocation.getAdCode();
+        @Override
+        public void onSpeakPaused() {
+            //showTip("暂停播放");
+        }
 
-                } else {
-                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError", "location Error, ErrCode:"
-                            + aMapLocation.getErrorCode() + ", errInfo:"
-                            + aMapLocation.getErrorInfo());
-                }
+        @Override
+        public void onSpeakResumed() {
+            //showTip("继续播放");
+        }
+
+        @Override
+        public void onBufferProgress(int percent, int beginPos, int endPos,
+                                     String info) {
+            // 合成进度
+            Log.e("MscSpeechLog_", "percent =" + percent);
+            mPercentForBuffering = percent;
+            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
+        }
+
+        @Override
+        public void onSpeakProgress(int percent, int beginPos, int endPos) {
+            // 播放进度
+            Log.e("MscSpeechLog_", "percent =" + percent);
+            mPercentForPlaying = percent;
+            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
+
+            SpannableStringBuilder style = new SpannableStringBuilder(texts);
+            Log.e(TAG, "beginPos = " + beginPos + "  endPos = " + endPos);
+            style.setSpan(new BackgroundColorSpan(Color.RED), beginPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //((EditText) findViewById(R.id.tts_text)).setText(style);
+        }
+
+        @Override
+        public void onCompleted(SpeechError error) {
+            //showTip("播放完成");
+            flag=true;
+            if (error != null) {
+                showTip(error.getPlainDescription(true));
+                return;
             }
         }
 
+        @Override
+        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            //	 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
+            //	 若使用本地能力，会话id为null
+            if (SpeechEvent.EVENT_SESSION_ID == eventType) {
+                String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
+                Log.d(TAG, "session id =" + sid);
+            }
+            // 当设置 SpeechConstant.TTS_DATA_NOTIFY 为1时，抛出buf数据
+            if (SpeechEvent.EVENT_TTS_BUFFER == eventType) {
+                byte[] buf = obj.getByteArray(SpeechEvent.KEY_EVENT_TTS_BUFFER);
+                Log.e(TAG, "EVENT_TTS_BUFFER = " + buf.length);
+                // 保存文件
+                appendFile(pcmFile, buf);
+            }
+
+        }
     };
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -221,6 +240,7 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
 
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=cf3e02db");
         mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
+        setParam();
         cameraView = (SurfaceView) findViewById(R.id.cameraview);
 
         cameraView.getHolder().setFormat(PixelFormat.RGBA_8888);
@@ -280,7 +300,7 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
 //        });
 
         reload();
-        /*
+        mTts.startSpeaking("开始实时识物模式",mTtsListener);
         new Thread(new Runnable() {
 
             public void run() {
@@ -290,80 +310,51 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
                     if(isexit){
                         break;
                     }
+                    try {
+                        Thread.sleep(5 * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     if(!ispause&&flag){
                         texts = "";
                         flag=false;
 
-                        try {
-                            Thread.sleep(5 * 1000);
-                            returnTag = nanodetncnn.getTag();
+
+
+                        returnTag = nanodetncnn.getTag();
 //                            Log.v("tag", returnTag);
 
-                            if (returnTag != "") {
-                                String[] tag=returnTag.split(",");
-                                Log.v("caiqi",returnTag);
-                                for(int i=0;i<tag.length/2;i++){
-                                    int a=Integer.parseInt(tag[i*2]);
-                                    String temp=tagArray[a];
-                                    int b=Integer.parseInt(tag[i*2+1]);
-                                    //Log.v("caiqi", String.valueOf(a));
-                                    //Log.v("caiqi", String.valueOf(b));
-                                    texts+=strpos[b-1];
-                                    texts+=temp;
-                                }
-                                if(texts!="") {
-                                    onPlay();
-                                }
-                                Log.v("caiqi", texts);
+                        if (returnTag != "") {
+                            String[] tag=returnTag.split(",");
+                            Log.v("caiqi",returnTag);
+                            for(int i=0;i<tag.length/2;i++){
+                                int a=Integer.parseInt(tag[i*2]);
+                                String temp=tagArray[a];
+                                int b=Integer.parseInt(tag[i*2+1]);
+                                //Log.v("caiqi", String.valueOf(a));
+                                //Log.v("caiqi", String.valueOf(b));
+                                texts+=strpos[b-1];
+                                texts+=temp;
                             }
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            if(texts!="") {
+                                onPlay();
+                            }
+                            Log.v("caiqi", texts);
                         }
                     }
+
                 }
             }
         }).start();
-        */
+
         //用于添加上方标题栏中的返回按钮1
 //        ActionBar actionBar = getSupportActionBar();
 //        if (actionBar != null) {
 //            actionBar.setHomeButtonEnabled(true);
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
-        initLocation();
-        mLocationClient.startLocation();
-        try {
-            PoiSearch.Query query = new PoiSearch.Query("四川大学", "", city);
-            mSearch = new PoiSearch(getApplicationContext(), query);
-            //设置异步监听
-            mSearch.setOnPoiSearchListener(this);
-            //查询POI异步接口
-            mSearch.searchPOIAsyn();
-        } catch (com.amap.api.services.core.AMapException e) {
-            e.printStackTrace();
-            Log.i("SearchERROR","SearchERROR");
-        }
-
-        try {
-            NaviSetting.updatePrivacyShow(getApplicationContext(), true, true);
-            NaviSetting.updatePrivacyAgree(getApplicationContext(), true);
-            mAMapNavi = AMapNavi.getInstance(getApplicationContext());
-            mAMapNavi.addAMapNaviListener(this);
-
-            //mAMapNavi.setUseInnerVoice(true, true);
-            //mAMapNavi.setEmulatorNaviSpeed(10);
 
 
-
-
-
-
-
-        } catch (AMapException e) {
-            e.printStackTrace();
-            Log.e("ERROR","calculateERROR");
-        }
     }
 
     private void reload()
@@ -446,11 +437,11 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
             // 收到onCompleted 回调时，合成结束、生成合成音频
             // 合成的音频格式：只支持pcm格式
 
-            pcmFile = new File(getExternalCacheDir().getAbsolutePath(), "tts_pcmFile.pcm");
-            pcmFile.delete();
+//            pcmFile = new File(getExternalCacheDir().getAbsolutePath(), "tts_pcmFile.pcm");
+//            pcmFile.delete();
 
             // 设置参数
-            setParam();
+
             // 合成并播放
             int code = mTts.startSpeaking(texts, mTtsListener);
 //			/**
@@ -484,73 +475,7 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
         }
     };
 
-    private SynthesizerListener mTtsListener = new SynthesizerListener() {
 
-        @Override
-        public void onSpeakBegin() {
-            //showTip("开始播放");
-        }
-
-        @Override
-        public void onSpeakPaused() {
-            //showTip("暂停播放");
-        }
-
-        @Override
-        public void onSpeakResumed() {
-            //showTip("继续播放");
-        }
-
-        @Override
-        public void onBufferProgress(int percent, int beginPos, int endPos,
-                                     String info) {
-            // 合成进度
-            Log.e("MscSpeechLog_", "percent =" + percent);
-            mPercentForBuffering = percent;
-            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
-        }
-
-        @Override
-        public void onSpeakProgress(int percent, int beginPos, int endPos) {
-            // 播放进度
-            Log.e("MscSpeechLog_", "percent =" + percent);
-            mPercentForPlaying = percent;
-            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
-
-            SpannableStringBuilder style = new SpannableStringBuilder(texts);
-            Log.e(TAG, "beginPos = " + beginPos + "  endPos = " + endPos);
-            style.setSpan(new BackgroundColorSpan(Color.RED), beginPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //((EditText) findViewById(R.id.tts_text)).setText(style);
-        }
-
-        @Override
-        public void onCompleted(SpeechError error) {
-            //showTip("播放完成");
-            flag=true;
-            if (error != null) {
-                showTip(error.getPlainDescription(true));
-                return;
-            }
-        }
-
-        @Override
-        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
-            //	 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
-            //	 若使用本地能力，会话id为null
-            if (SpeechEvent.EVENT_SESSION_ID == eventType) {
-                String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
-                Log.d(TAG, "session id =" + sid);
-            }
-            // 当设置 SpeechConstant.TTS_DATA_NOTIFY 为1时，抛出buf数据
-            if (SpeechEvent.EVENT_TTS_BUFFER == eventType) {
-                byte[] buf = obj.getByteArray(SpeechEvent.KEY_EVENT_TTS_BUFFER);
-                Log.e(TAG, "EVENT_TTS_BUFFER = " + buf.length);
-                // 保存文件
-                appendFile(pcmFile, buf);
-            }
-
-        }
-    };
 
     private void showTip(final String str) {
         runOnUiThread(() -> {
@@ -610,258 +535,6 @@ public class RecognizeActivity extends Activity implements AMapNaviListener,Surf
         }
     }
 
-    @Override
-    public void onInitNaviFailure() {
-        Log.i("InitNaviFailure","InitNaviFailure");
-    }
 
-    @Override
-    public void onInitNaviSuccess() {
-        Log.v("InitNaviSuccess","InitNaviSuccess");
-        mAMapNavi.calculateWalkRoute(startPoi, endPoi,TravelStrategy.MULTIPLE);
-        //mAMapNavi.calculateWalkRoute(start, end);
-    }
-
-    @Override
-    public void onStartNavi(int i) {
-
-    }
-
-    @Override
-    public void onTrafficStatusUpdate() {
-
-    }
-
-    @Override
-    public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
-
-    }
-
-    @Override
-    public void onGetNavigationText(int i, String s) {
-        Log.v("NavigationText",s);
-    }
-
-    @Override
-    public void onGetNavigationText(String s) {
-
-    }
-
-    @Override
-    public void onEndEmulatorNavi() {
-
-    }
-
-    @Override
-    public void onArriveDestination() {
-
-    }
-
-    @Override
-    public void onCalculateRouteFailure(int i) {
-
-    }
-
-    @Override
-    public void onReCalculateRouteForYaw() {
-
-    }
-
-    @Override
-    public void onReCalculateRouteForTrafficJam() {
-
-    }
-
-    @Override
-    public void onArrivedWayPoint(int i) {
-
-    }
-
-    @Override
-    public void onGpsOpenStatus(boolean b) {
-
-    }
-
-    @Override
-    public void onNaviInfoUpdate(NaviInfo naviInfo) {
-        String CurrentRoadName=naviInfo.getCurrentRoadName();
-        //AMapNaviToViaInfo[] info= naviInfo.getToViaInfo();
-        //Log.v("NaviInfo", String.valueOf(info[0].getDistance()));
-    }
-
-    @Override
-    public void updateCameraInfo(AMapNaviCameraInfo[] aMapNaviCameraInfos) {
-
-    }
-
-    @Override
-    public void updateIntervalCameraInfo(AMapNaviCameraInfo aMapNaviCameraInfo, AMapNaviCameraInfo aMapNaviCameraInfo1, int i) {
-
-    }
-
-    @Override
-    public void onServiceAreaUpdate(AMapServiceAreaInfo[] aMapServiceAreaInfos) {
-
-    }
-
-    @Override
-    public void showCross(AMapNaviCross aMapNaviCross) {
-
-    }
-
-    @Override
-    public void hideCross() {
-
-    }
-
-    @Override
-    public void showModeCross(AMapModelCross aMapModelCross) {
-
-    }
-
-    @Override
-    public void hideModeCross() {
-
-    }
-
-    @Override
-    public void showLaneInfo(AMapLaneInfo[] aMapLaneInfos, byte[] bytes, byte[] bytes1) {
-
-    }
-
-    @Override
-    public void showLaneInfo(AMapLaneInfo aMapLaneInfo) {
-
-    }
-
-    @Override
-    public void hideLaneInfo() {
-
-    }
-
-    @Override
-    public void onCalculateRouteSuccess(int[] ints) {
-
-        Log.v("Successa","Successa");
-    }
-
-    @Override
-    public void notifyParallelRoad(int i) {
-
-    }
-
-    @Override
-    public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo[] aMapNaviTrafficFacilityInfos) {
-
-    }
-
-    @Override
-    public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo aMapNaviTrafficFacilityInfo) {
-
-    }
-
-    @Override
-    public void updateAimlessModeStatistics(AimLessModeStat aimLessModeStat) {
-
-    }
-
-    @Override
-    public void updateAimlessModeCongestionInfo(AimLessModeCongestionInfo aimLessModeCongestionInfo) {
-
-    }
-
-    @Override
-    public void onPlayRing(int i) {
-
-    }
-
-    @Override
-    public void onCalculateRouteSuccess(AMapCalcRouteResult routeResult) {
-        // 开启导航
-        Log.v("Successb","Successb");
-        try {
-            AMapNaviPath naviPaths = AMapNavi.getInstance(this).getNaviPath();
-            List<AMapNaviRouteGuideGroup> naviPath=naviPaths.getNaviGuideList();
-            AMapNaviRouteGuideGroup first=naviPath.get(0);
-            AMapNavi.getInstance(this).startNavi(NaviType.EMULATOR);
-        } catch (AMapException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onCalculateRouteFailure(AMapCalcRouteResult aMapCalcRouteResult) {
-        Log.i("Failureb","Failureb");
-    }
-
-    @Override
-    public void onNaviRouteNotify(AMapNaviRouteNotifyData aMapNaviRouteNotifyData) {
-
-    }
-
-    @Override
-    public void onGpsSignalWeak(boolean b) {
-
-    }
-
-    @Override
-    public void onPoiSearched(PoiResult poiResult, int rCode) {
-        Log.v("onPoiSearched","onPoiSearched");
-
-        if(poiResult != null){
-            ArrayList<AddressBean> data = new ArrayList<AddressBean>();
-            ArrayList<PoiItem> items = poiResult.getPois();
-            for(PoiItem item : items){
-                //获取经纬度对象
-                LatLonPoint llp = item.getLatLonPoint();
-                double lon = llp.getLongitude();
-                double lat = llp.getLatitude();
-                //获取标题
-                String title = item.getTitle();
-                //获取内容
-                String text = item.getSnippet();
-                //获取Poi ID
-                String Poi=item.getPoiId();
-                data.add(new AddressBean(lon, lat, title, text,Poi));
-            }
-
-        }
-
-    }
-
-    @Override
-    public void onPoiItemSearched(PoiItem poiItem, int i) {
-
-    }
-
-
-
-    private void initLocation() {
-        //初始化定位
-        try {
-            mLocationClient = new AMapLocationClient(getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-        //获取一次定位结果：
-        mLocationOption.setOnceLocation(true);
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
-        mLocationOption.setOnceLocationLatest(true);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-        //设置定位请求超时时间，单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(20000);
-        //关闭缓存机制，高精度定位会产生缓存。
-        mLocationOption.setLocationCacheEnable(false);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-    }
 
 }

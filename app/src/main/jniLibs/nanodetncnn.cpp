@@ -50,8 +50,7 @@ static int draw_unsupported(cv::Mat& rgb)
     cv::rectangle(rgb, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),
                     cv::Scalar(255, 255, 255), -1);
 
-    cv::putText(rgb, text, cv::Point(x, y + label_size.height),
-                cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 0, 0));
+    cv::putText(rgb, text, cv::Point(x, y + label_size.height),cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 0, 0));
 
     return 0;
 }
@@ -101,11 +100,9 @@ static int draw_fps(cv::Mat& rgb)
     int y = 0;
     int x = rgb.cols - label_size.width;
 
-    cv::rectangle(rgb, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),
-                    cv::Scalar(255, 255, 255), -1);
+    //cv::rectangle(rgb, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),cv::Scalar(255, 255, 255), -1);
 
-    cv::putText(rgb, text, cv::Point(x, y + label_size.height),
-                cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+    //cv::putText(rgb, text, cv::Point(x, y + label_size.height),cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
 
     return 0;
 }

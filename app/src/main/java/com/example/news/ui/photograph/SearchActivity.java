@@ -152,6 +152,9 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
     protected NaviPoi startPoi;
     protected NaviLatLng start;
 
+    protected NaviPoi endPoi;
+    protected NaviLatLng end;
+
     private ListView mLvGuide;
     private FontIconView mFiVoice;
     private DropDownEditText mEtSearch;
@@ -204,6 +207,8 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
         }
 
         setContentView(R.layout.activity_guide);
+        NaviSetting.updatePrivacyShow(getApplicationContext(), true, true);
+        NaviSetting.updatePrivacyAgree(getApplicationContext(), true);
         initLocation();//初始化定位
         checkingAndroidVersion();//获取权限
 
@@ -234,11 +239,14 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AddressBean address = (AddressBean) parent.getItemAtPosition(position);
-
+                end=new NaviLatLng(address.getLatitude(),address.getLongitude());
+                endPoi=new NaviPoi(address.getTitle(), new LatLng(address.getLatitude(),address.getLongitude()), address.getPoiID());
                 //跳转页面，并传递参数
+                StartAndEnd startAndEnd=new StartAndEnd(startPoi.getName(),start.getLatitude(),start.getLongitude(),endPoi.getName(),end.getLatitude(),end.getLongitude(),endPoi.getPoiId());
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("address", address);
-                Intent intent = new Intent(getContext(), NaviMapActivity.class);
+                bundle.putSerializable("startAndEnd",startAndEnd);
+
+                Intent intent = new Intent(SearchActivity.this, NaviMapActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -260,8 +268,8 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
 
                         mEtSearch.setText(str);
                         //Toast.makeText(getContext(), "语音输入已完成可以按搜索键开始查询了",Toast.LENGTH_SHORT).show();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        View view2 = View.inflate(getContext(), R.layout.voice_input, null);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
+                        View view2 = View.inflate(SearchActivity.this, R.layout.voice_input, null);
                         TextView mTvVoice = view2.findViewById(R.id.mTvVoice);
                         if(str.equals("")){
                             mTvVoice.setText("空");
@@ -275,7 +283,7 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
                         public void onClick(DialogInterface dialog, int which) {
                             //用户点击开始查询之后，才开始查询
                             initSearch(str);
-                            initListGuide();
+
                         }
                     }).setNegativeButton("取消查询", new DialogInterface.OnClickListener() {
                         @Override
@@ -383,8 +391,9 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
                 //获取Poi ID
                 String Poi=item.getPoiId();
                 data.add(new AddressBean(lon, lat, title, text,Poi));
-            }
 
+            }
+            initListGuide();
         }
 
     }
@@ -458,6 +467,7 @@ public class SearchActivity extends Activity implements PoiSearch.OnPoiSearchLis
             mLocationClient = new AMapLocationClient(getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("initLocationERROR","initLocationERROR");
         }
         //设置定位回调监听
         mLocationClient.setLocationListener(mLocationListener);

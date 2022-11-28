@@ -154,13 +154,13 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
 
      *******/
     //经纬度形式起终点，在onInitNaviSuccess()作为参数输入并计算路线，start和startPoi在最终应为从SearchActivity传入
-    protected NaviLatLng start = new NaviLatLng(103.990602,30.550530);
+    protected NaviLatLng start;
     // 终点信息
-    protected NaviLatLng end = new NaviLatLng(104.005386,30.547663);
+    protected NaviLatLng end;
 
     //Poi形式起终点
-    protected NaviPoi startPoi = new NaviPoi("四川大学江安校区", null, "B0FFF4NFLF");
-    protected NaviPoi endPoi = new NaviPoi("文星(地铁站)", null, "BV10856189");
+    protected NaviPoi startPoi;
+    protected NaviPoi endPoi ;
     //Navi对象
     protected AMapNavi mAMapNavi;
 
@@ -168,6 +168,76 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
     private AddressBean myAddress;//从搜索页面传入的地点
 
 
+
+
+    private SynthesizerListener mTtsListener = new SynthesizerListener() {
+
+        @Override
+        public void onSpeakBegin() {
+            //showTip("开始播放");
+            flag=false;
+        }
+
+        @Override
+        public void onSpeakPaused() {
+            //showTip("暂停播放");
+        }
+
+        @Override
+        public void onSpeakResumed() {
+            //showTip("继续播放");
+        }
+
+        @Override
+        public void onBufferProgress(int percent, int beginPos, int endPos,
+                                     String info) {
+            // 合成进度
+            Log.e("MscSpeechLog_", "percent =" + percent);
+            mPercentForBuffering = percent;
+            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
+        }
+
+        @Override
+        public void onSpeakProgress(int percent, int beginPos, int endPos) {
+            // 播放进度
+            Log.e("MscSpeechLog_", "percent =" + percent);
+            mPercentForPlaying = percent;
+            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
+
+            SpannableStringBuilder style = new SpannableStringBuilder(texts);
+            Log.e(TAG, "beginPos = " + beginPos + "  endPos = " + endPos);
+            style.setSpan(new BackgroundColorSpan(Color.RED), beginPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //((EditText) findViewById(R.id.tts_text)).setText(style);
+        }
+
+        @Override
+        public void onCompleted(SpeechError error) {
+            //showTip("播放完成");
+            flag=true;
+            if (error != null) {
+                showTip(error.getPlainDescription(true));
+                return;
+            }
+        }
+
+        @Override
+        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            //	 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
+            //	 若使用本地能力，会话id为null
+            if (SpeechEvent.EVENT_SESSION_ID == eventType) {
+                String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
+                Log.d(TAG, "session id =" + sid);
+            }
+            // 当设置 SpeechConstant.TTS_DATA_NOTIFY 为1时，抛出buf数据
+            if (SpeechEvent.EVENT_TTS_BUFFER == eventType) {
+                byte[] buf = obj.getByteArray(SpeechEvent.KEY_EVENT_TTS_BUFFER);
+                Log.e(TAG, "EVENT_TTS_BUFFER = " + buf.length);
+                // 保存文件
+                appendFile(pcmFile, buf);
+            }
+
+        }
+    };
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -177,21 +247,23 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
         setContentView(R.layout.activity_navimap);
         Intent intent=this.getIntent();
         Bundle bundle = intent.getExtras();
-        myAddress = (AddressBean)bundle.getSerializable("address");
+        StartAndEnd startAndEnd;
+        startAndEnd=(StartAndEnd)bundle.getSerializable("startAndEnd");
+        endPoi= new NaviPoi(startAndEnd.getEndName(),new LatLng(startAndEnd.getEndLat(),startAndEnd.getEndLon()),startAndEnd.getEndPoiID());
+        startPoi= new NaviPoi(startAndEnd.getStartName(),new LatLng(startAndEnd.getStartLat(),startAndEnd.getStartLon()),null);
 
         //导航创建
         try {
             //updatePrivacyShow,updatePrivacyAgree检查合法性
-            NaviSetting.updatePrivacyShow(getApplicationContext(), true, true);
-            NaviSetting.updatePrivacyAgree(getApplicationContext(), true);
+
             //创建导航对象
             mAMapNavi = AMapNavi.getInstance(getApplicationContext());
             //添加监听
             mAMapNavi.addAMapNaviListener(this);
             //设置声音
-            mAMapNavi.setUseInnerVoice(true, true);
+            //mAMapNavi.setUseInnerVoice(true, true);
             //设置速度
-            mAMapNavi.setEmulatorNaviSpeed(10);
+            //mAMapNavi.setEmulatorNaviSpeed(10);
 
         } catch (AMapException e) {
             e.printStackTrace();
@@ -210,7 +282,7 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
         //讯飞语音创建
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=cf3e02db");
         mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
-
+        setParam();
         //实时识别创建
         cameraView = (SurfaceView) findViewById(R.id.cameraview);
 
@@ -235,7 +307,51 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
 
 
         reload();
+        new Thread(new Runnable() {
 
+            public void run() {
+                String[] strpos={"左上方有","左下方有","右上方有","右下方有"};
+                while (true) {
+                    Log.v("NaviFlag", String.valueOf(flag));
+                    try {
+                        Thread.sleep(5 * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(isexit){
+                        break;
+                    }
+                    if(!ispause&&flag){
+                        texts = "";
+                        flag=false;
+
+
+                        //Thread.sleep(5 * 1000);
+                        returnTag = nanodetncnn.getTag();
+//                            Log.v("tag", returnTag);
+
+                        if (returnTag != "") {
+                            String[] tag=returnTag.split(",");
+                            //Log.v("caiqi",returnTag);
+                            for(int i=0;i<tag.length/2;i++){
+                                int a=Integer.parseInt(tag[i*2]);
+                                String temp=tagArray[a];
+                                int b=Integer.parseInt(tag[i*2+1]);
+                                //Log.v("caiqi", String.valueOf(a));
+                                //Log.v("caiqi", String.valueOf(b));
+                                texts+=strpos[b-1];
+                                texts+=temp;
+                            }
+                            if(texts!="") {
+                                onPlay();
+                            }
+                            //Log.v("caiqi", texts);
+                        }
+
+                    }
+                }
+            }
+        }).start();
 
     }
 
@@ -319,11 +435,9 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
         // 收到onCompleted 回调时，合成结束、生成合成音频
         // 合成的音频格式：只支持pcm格式
 
-        pcmFile = new File(getExternalCacheDir().getAbsolutePath(), "tts_pcmFile.pcm");
-        pcmFile.delete();
 
         // 设置参数
-        setParam();
+        //setParam();
         // 合成并播放
         int code = mTts.startSpeaking(texts, mTtsListener);
 //			/**
@@ -357,73 +471,7 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
         }
     };
 
-    private SynthesizerListener mTtsListener = new SynthesizerListener() {
 
-        @Override
-        public void onSpeakBegin() {
-            //showTip("开始播放");
-        }
-
-        @Override
-        public void onSpeakPaused() {
-            //showTip("暂停播放");
-        }
-
-        @Override
-        public void onSpeakResumed() {
-            //showTip("继续播放");
-        }
-
-        @Override
-        public void onBufferProgress(int percent, int beginPos, int endPos,
-                                     String info) {
-            // 合成进度
-            Log.e("MscSpeechLog_", "percent =" + percent);
-            mPercentForBuffering = percent;
-            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
-        }
-
-        @Override
-        public void onSpeakProgress(int percent, int beginPos, int endPos) {
-            // 播放进度
-            Log.e("MscSpeechLog_", "percent =" + percent);
-            mPercentForPlaying = percent;
-            //showTip(String.format(getString(R.string.tts_toast_format),mPercentForBuffering, mPercentForPlaying));
-
-            SpannableStringBuilder style = new SpannableStringBuilder(texts);
-            Log.e(TAG, "beginPos = " + beginPos + "  endPos = " + endPos);
-            style.setSpan(new BackgroundColorSpan(Color.RED), beginPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //((EditText) findViewById(R.id.tts_text)).setText(style);
-        }
-
-        @Override
-        public void onCompleted(SpeechError error) {
-            //showTip("播放完成");
-            flag=true;
-            if (error != null) {
-                showTip(error.getPlainDescription(true));
-                return;
-            }
-        }
-
-        @Override
-        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
-            //	 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
-            //	 若使用本地能力，会话id为null
-            if (SpeechEvent.EVENT_SESSION_ID == eventType) {
-                String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
-                Log.d(TAG, "session id =" + sid);
-            }
-            // 当设置 SpeechConstant.TTS_DATA_NOTIFY 为1时，抛出buf数据
-            if (SpeechEvent.EVENT_TTS_BUFFER == eventType) {
-                byte[] buf = obj.getByteArray(SpeechEvent.KEY_EVENT_TTS_BUFFER);
-                Log.e(TAG, "EVENT_TTS_BUFFER = " + buf.length);
-                // 保存文件
-                appendFile(pcmFile, buf);
-            }
-
-        }
-    };
 
     private void showTip(final String str) {
         runOnUiThread(() -> {
@@ -513,7 +561,9 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
 
     @Override
     public void onGetNavigationText(int i, String s) {
-
+//        mTts.stopSpeaking();
+//        mTts.startSpeaking(s, mTtsListener);
+//        flag=false;
     }
 
     @Override
@@ -653,7 +703,7 @@ public class NaviMapActivity extends Activity implements AMapNaviListener,Surfac
         Log.v("Successb","Successb");
         try {
             //实时导航，启用GPS
-            AMapNavi.getInstance(this).startNavi(NaviType.GPS);
+            AMapNavi.getInstance(this).startNavi(NaviType.EMULATOR);
         } catch (AMapException e) {
             e.printStackTrace();
         }
